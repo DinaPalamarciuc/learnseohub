@@ -46,6 +46,7 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{--bg:#080e1e;--card:#111827;--card2:#151d30;--border:#1e293b;--border2:#334155;--t1:#f1f5f9;--t2:#94a3b8;--t3:#475569;--accent:#0ea5e9;--accentG:rgba(14,165,233,.15);--em:#10b981;--vi:#8b5cf6;--am:#f59e0b;--ro:#f43f5e;--or:#f97316}
+    [data-theme="light"]{--bg:#f8fafc;--card:#ffffff;--card2:#f1f5f9;--border:#e2e8f0;--border2:#cbd5e1;--t1:#0f172a;--t2:#334155;--t3:#64748b;--accent:#0284c7;--accentG:rgba(2,132,199,.1)}
     html{scroll-behavior:smooth}
     body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--t1);line-height:1.6;overflow:hidden;height:100vh}
     ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
@@ -66,7 +67,7 @@
     .sf{padding:16px;border-top:1px solid var(--border)}.sf-c{background:linear-gradient(135deg,rgba(14,165,233,.08),rgba(139,92,246,.08));border:1px solid var(--border);border-radius:12px;padding:12px;font-size:10px;color:var(--t3);line-height:1.5}.sf-c b{color:var(--accent)}
 
     .main{flex:1;display:flex;flex-direction:column;min-width:0}@media(min-width:768px){.main{margin-left:260px}}
-    .top{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;background:rgba(8,14,30,.85);backdrop-filter:blur(12px)}
+    .top{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;background:var(--bg);backdrop-filter:blur(12px)}
     .top-t{font-size:12px;color:var(--t3);font-weight:500}
     /* Global search */
     .gsearch{position:relative;width:320px;max-width:40vw}
@@ -83,9 +84,10 @@
     .dot{width:6px;height:6px;border-radius:50%;background:#34d399;animation:p 2s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
     .cnt{flex:1;overflow-y:auto;padding:24px}@media(min-width:768px){.cnt{padding:32px}}.cnt-in{max-width:1100px;margin:0 auto}
 
-    .sec{display:none}.sec.on{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .sec{display:none}.sec.on{display:block;animation:fadeIn .4s ease-out}
     .sh h2{font-size:24px;font-weight:800;margin-bottom:4px}.sh p{font-size:13px;color:var(--t3)}
-    .cd{background:var(--card);border:1px solid var(--border);border-radius:14px;transition:all .25s}.cd:hover{border-color:var(--border2);background:var(--card2)}
+    .cd{background:var(--card);border:1px solid var(--border);border-radius:14px;transition:all .3s cubic-bezier(0.25,0.8,0.25,1)}.cd:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 30px -10px rgba(0,0,0,0.3)}
     .g2{display:grid;gap:16px}.g3{display:grid;gap:16px}.g4{display:grid;gap:16px;grid-template-columns:repeat(2,1fr)}
     @media(min-width:640px){.g3{grid-template-columns:repeat(2,1fr)}}@media(min-width:768px){.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
     .bd{display:inline-block;padding:2px 8px;border-radius:100px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
@@ -98,7 +100,7 @@
     .hero h1{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:12px;position:relative}@media(min-width:768px){.hero h1{font-size:42px}}
     .hero h1 span{color:#7dd3fc}
 
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;transition:all .2s}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;transition:all .2s;position:relative;overflow:hidden}.btn:active{transform:scale(.96)}
     .btn-w{background:#fff;color:#1d4ed8}.btn-w:hover{background:#e0f2fe}
     .btn-g{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff}.btn-g:hover{background:rgba(255,255,255,.18)}
     .btn-a{background:var(--accent);color:#fff;font-size:13px;padding:10px 20px}.btn-a:hover{background:#0284c7}
@@ -185,7 +187,14 @@
       <div><h1>LearnSEO Hub</h1><p>Free · 2026</p></div>
     </div>
     <nav class="nav" id="nav"></nav>
-    <div class="sf"><div class="sf-c"><b>learnseohub.com</b> — Master GEO, AEO & AI Search with expert-crafted courses.</div></div>
+    <div class="sf">
+      <button class="nb" onclick="toggleTheme()" style="margin-bottom:12px;justify-content:center" id="themeBtn">
+        <svg id="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></svg>
+        <svg id="sun" style="display:none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span id="themeLabel">Dark Mode</span>
+      </button>
+      <div class="sf-c"><b>learnseohub.com</b> — Master GEO, AEO & AI Search with expert-crafted courses.</div>
+    </div>
   </aside>
 
   <div class="main">
@@ -198,6 +207,7 @@
       </div>
       <div class="live"><span class="dot"></span>Updated Weekly</div>
     </header>
+    <div id="pgBar" style="height:3px;background:var(--em);width:0%;transition:width .1s;display:none"></div>
     <div class="cnt"><div class="cnt-in">
 
       <!-- ═══ DASHBOARD ═══ -->
@@ -216,6 +226,21 @@
         </div></div>
         <div class="sp"><span class="sp-item">500+ Students</span><span class="sp-item">8 Free Courses</span><span class="sp-item">40+ AI Prompts</span><span class="sp-item">Weekly Updates</span><span class="sp-item">Expert Curated</span></div>
         <div class="g4" id="statsG"></div>
+        <div class="cd" style="padding:20px;background:linear-gradient(135deg,rgba(16,185,129,.05),rgba(14,165,233,.05));border-color:rgba(14,165,233,.2)">
+          <div class="fx ac jb">
+            <div>
+              <h3 style="font-size:14px;font-weight:700;margin-bottom:2px">AI Search Volatility Index</h3>
+              <p style="font-size:11px;color:var(--t2)">Real-time fluctuation in generative results (SGE, Bing, Perplexity).</p>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:20px;font-weight:800;color:var(--em)">Low (2.4/10)</div>
+              <div style="font-size:10px;color:var(--t3)">Updated: Just now</div>
+            </div>
+          </div>
+          <div style="height:4px;background:rgba(0,0,0,.1);border-radius:10px;margin-top:12px;overflow:hidden;width:100%">
+            <div style="height:100%;width:24%;background:var(--em);border-radius:10px"></div>
+          </div>
+        </div>
         <div><div class="fx ac jb mb4"><h2 style="font-size:18px;font-weight:800">Featured Courses</h2><button onclick="go('learning')" style="font-size:12px;color:var(--accent);font-weight:600">View all →</button></div><div class="g3" id="featC"></div></div>
         <div><div class="fx ac jb mb4"><h2 style="font-size:18px;font-weight:800">Latest News</h2><button onclick="go('news')" style="font-size:12px;color:var(--accent);font-weight:600">View all →</button></div><div class="g2" id="latN"></div></div>
         <div class="nl"><h3>Stay Ahead of Algorithm Updates</h3><p>Get weekly SEO insights, AI optimization tips, and industry news delivered to your inbox.</p><div class="nl-form"><input type="email" placeholder="your@email.com"/><button class="btn btn-a btn-sm" onclick="this.textContent='Subscribed ✓';this.style.background='var(--em)'">Subscribe</button></div></div>
@@ -307,10 +332,10 @@ const C=[
 ];
 
 const N=[
-  {id:"n1",ti:'December 2025 Core Update: The "Agent-Ready" Shift',src:"Google Search Central",dt:"2025-12-04",sm:"Heavy emphasis on content structured for autonomous AI Agents.",tg:["Algorithm","AI Agents"]},
-  {id:"n2",ti:"Gemini 3.0 Multimodal Indexing Complete",src:"Search Engine Land",dt:"2025-11-28",sm:'Google can now natively "watch" video and "listen" to audio.',tg:["Gemini","Video SEO"]},
-  {id:"n3",ti:'New Metric "Interaction Value" Replaces LCP?',src:"Web.dev",dt:"2025-11-10",sm:"Google testing AI-derived metric measuring utility per second of interaction.",tg:["Core Web Vitals","UX"]},
-  {id:"n4",ti:'OpenAI Search: "Direct Buy" Action Schema',src:"TechCrunch",dt:"2025-10-25",sm:"BuyAction schema enables in-search purchases via Stripe.",tg:["OpenAI","E-commerce"]}
+  {id:"n1",ti:'Neural Link Integration: Optimizing for BCI',src:"Google Search Central",dt:"2026-10-15",sm:"First guidelines on structuring thoughts for direct neural indexing.",tg:["Neural SEO","Future"]},
+  {id:"n2",ti:'Google AR Glasses: The New "Visual Search" Standard',src:"Search Engine Land",dt:"2026-09-28",sm:"Optimizing 3D assets for overlay on physical reality.",tg:["AR","Visual"]},
+  {id:"n3",ti:'Agent-to-Agent Economy: The End of B2C?',src:"TechCrunch",dt:"2026-09-10",sm:"How to optimize your API for autonomous purchasing agents.",tg:["AI Agents","E-commerce"]},
+  {id:"n4",ti:'Bing Chat Pro: Now 40% of Enterprise Search',src:"Microsoft Blog",dt:"2026-08-22",sm:"New paid tiers shifting B2B search behavior significantly.",tg:["Bing","B2B"]}
 ];
 
 const FAQ=[
@@ -398,7 +423,7 @@ function rLearn(){
   const cats=["All","Foundation","AI-Optimization","Technical","Strategy"];
   document.getElementById('lFlt').innerHTML=cats.map(c=>`<button class="fb ${lFlt===c?'on':''}" onclick="lFlt='${c}';rLearn()">${c}</button>`).join('');
   const f=lFlt==="All"?C:C.filter(c=>c.ct===lFlt);
-  document.getElementById('cGrid').innerHTML=f.map(c=>`<div class="cd" style="overflow:hidden;cursor:pointer" onclick="openCourse('${c.id}')"><div style="position:absolute;top:0;left:0;right:0;height:80px;background:${c.gr};opacity:.12"></div><div style="position:relative;padding:20px"><div class="fx ac jb"><div style="width:40px;height:40px;border-radius:10px;background:${c.gr};display:flex;align-items:center;justify-content:center">${sv('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>',20)}</div><span class="bd ${LB[c.lv]}">${c.lv}</span></div><div style="font-size:14px;font-weight:700;margin:10px 0 4px">${c.ti}</div><div style="font-size:12px;color:var(--t3)">${c.ds}</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0">${c.tp.map(t=>`<span style="padding:2px 8px;background:rgba(255,255,255,.04);border-radius:4px;font-size:10px;color:var(--t3)">${t}</span>`).join('')}</div><div class="fx ac jb"><div style="font-size:11px;color:var(--t3)">${sv('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',12)} ${c.du} · ${c.ls.length} lessons</div><span style="font-size:12px;color:var(--accent);font-weight:600">Start →</span></div></div></div>`).join('');
+  document.getElementById('cGrid').innerHTML=f.map(c=>`<div class="cd" style="overflow:hidden;cursor:pointer" onclick="openCourse('${c.id}')"><div style="position:absolute;top:0;left:0;right:0;height:80px;background:${c.gr};opacity:.12"></div><div style="position:relative;padding:20px"><div class="fx ac jb"><div style="width:40px;height:40px;border-radius:10px;background:${c.gr};display:flex;align-items:center;justify-content:center">${sv('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>',20)}</div><div class="fx ac g8"><button onclick="event.stopPropagation();togBk('${c.id}')" style="color:${isBk(c.id)?'var(--ro)':'var(--t3)'};transition:color .2s">${sv('<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="'+(isBk(c.id)?'currentColor':'none')+'"/>',18)}</button><span class="bd ${LB[c.lv]}">${c.lv}</span></div></div><div style="font-size:14px;font-weight:700;margin:10px 0 4px">${c.ti}</div><div style="font-size:12px;color:var(--t3)">${c.ds}</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0">${c.tp.map(t=>`<span style="padding:2px 8px;background:rgba(255,255,255,.04);border-radius:4px;font-size:10px;color:var(--t3)">${t}</span>`).join('')}</div><div class="fx ac jb"><div style="font-size:11px;color:var(--t3)">${sv('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',12)} ${c.du} · ${c.ls.length} lessons</div><span style="font-size:12px;color:var(--accent);font-weight:600">Start →</span></div></div></div>`).join('');
 }
 
 // ═══ COURSE DETAIL + LESSON VIEWER ═══
@@ -441,6 +466,7 @@ function renderQuiz(qs){
 function checkQuiz(qi,oi,ans){
   document.querySelectorAll(`[id^="qo-${qi}-"]`).forEach((b,i)=>{b.disabled=true;b.classList.add(i===ans?'correct':'');if(i===oi&&i!==ans)b.classList.add('wrong')});
   document.getElementById('qexp-'+qi).classList.add('show');
+  if(oi===ans) fireConfetti();
 }
 
 // ═══ TOOLS ═══
@@ -449,7 +475,7 @@ function rTools(){
   document.getElementById('tFlt').innerHTML=cats.map(c=>`<button class="fb ${tFlt===c?'on':''}" onclick="tFlt='${c}';rTools()">${c}</button>`).join('');
   const q=(document.getElementById('tSrch')?.value||'').toLowerCase();
   const f=T.filter(t=>(tFlt==="All"||t.c===tFlt)&&(t.n.toLowerCase().includes(q)||t.d.toLowerCase().includes(q)));
-  document.getElementById('tGrid').innerHTML=f.map(t=>`<div class="cd" style="padding:20px"><div class="fx ac jb" style="margin-bottom:12px"><span class="bd ${CB[t.c]||'bd-d'}">${t.c}</span>${stars(t.r)}</div><div style="font-size:14px;font-weight:700;margin-bottom:4px">${t.n}</div><div style="font-size:12px;color:var(--t3);margin-bottom:12px">${t.d}</div><div class="fx ac jb"><span style="font-size:10px;color:var(--t3)">${t.p}</span><div class="fx g8">${t.t.map(tg=>`<span style="padding:2px 6px;background:rgba(255,255,255,.04);border-radius:4px;font-size:9px;color:var(--t3)">${tg}</span>`).join('')}</div></div></div>`).join('');
+  document.getElementById('tGrid').innerHTML=f.map(t=>`<div class="cd" style="padding:20px"><div class="fx ac jb" style="margin-bottom:12px"><div class="fx ac g8"><span class="bd ${CB[t.c]||'bd-d'}">${t.c}</span><button onclick="event.stopPropagation();togBk('${t.id}')" style="color:${isBk(t.id)?'var(--ro)':'var(--t3)'}">${sv('<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" fill="'+(isBk(t.id)?'currentColor':'none')+'"/>',16)}</button></div>${stars(t.r)}</div><div style="font-size:14px;font-weight:700;margin-bottom:4px">${t.n}</div><div style="font-size:12px;color:var(--t3);margin-bottom:12px">${t.d}</div><div class="fx ac jb"><span style="font-size:10px;color:var(--t3)">${t.p}</span><div class="fx g8">${t.t.map(tg=>`<span style="padding:2px 6px;background:rgba(255,255,255,.04);border-radius:4px;font-size:9px;color:var(--t3)">${tg}</span>`).join('')}</div></div></div>`).join('');
 }
 
 // ═══ NEWS ═══
@@ -475,8 +501,67 @@ function rFaq(){
   document.getElementById('faqL').innerHTML=FAQ.map((f,i)=>`<div class="cd" style="overflow:hidden"><button class="faq-q ${oFaq===i?'op':''}" onclick="oFaq=oFaq===${i}?null:${i};rFaq()"><span>${f.q}</span>${sv('<polyline points="6 9 12 15 18 9"/>')}</button><div class="faq-a ${oFaq===i?'sh':''}">${f.a}</div></div>`).join('');
 }
 
+// ═══ THEME ═══
+function initTheme(){
+  const t=localStorage.getItem('theme')||'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  uThemeUI(t);
+}
+function toggleTheme(){
+  const c=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',c);
+  localStorage.setItem('theme',c);
+  uThemeUI(c);
+}
+function uThemeUI(t){
+  document.getElementById('moon').style.display=t==='dark'?'block':'none';
+  document.getElementById('sun').style.display=t==='light'?'block':'none';
+  document.getElementById('themeLabel').innerText=t==='dark'?'Dark Mode':'Light Mode';
+}
+
+// ═══ GAMIFICATION ═══
+function fireConfetti() {
+  const c = ['#0ea5e9', '#10b981', '#f59e0b', '#f43f5e'];
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.style.cssText = `position:fixed;top:50%;left:50%;width:6px;height:6px;background:${c[Math.floor(Math.random()*c.length)]};border-radius:50%;pointer-events:none;z-index:9999;transition:all 1s ease-out`;
+    document.body.appendChild(p);
+    const a = Math.random() * 360, d = 60 + Math.random() * 100;
+    requestAnimationFrame(() => {
+      p.style.transform = `translate(${Math.cos(a)*d}px, ${Math.sin(a)*d}px) scale(0)`;
+      p.style.opacity = '0';
+    });
+    setTimeout(() => p.remove(), 1000);
+  }
+}
+
+// Progress Bar
+document.querySelector('.cnt').addEventListener('scroll', () => {
+  if(view !== 'course') { document.getElementById('pgBar').style.display='none'; return; }
+  const el = document.querySelector('.cnt');
+  const h = el.scrollHeight - el.clientHeight;
+  if(h>0) {
+    const p = (el.scrollTop / h) * 100;
+    const b = document.getElementById('pgBar');
+    b.style.display = 'block';
+    b.style.width = p + '%';
+  }
+});
+
+// Bookmarks
+function getBk(){return JSON.parse(localStorage.getItem('bk')||'[]')}
+function isBk(id){return getBk().includes(id)}
+function togBk(id){
+  let b=getBk();
+  if(b.includes(id)) b=b.filter(x=>x!==id);
+  else b.push(id);
+  localStorage.setItem('bk',JSON.stringify(b));
+  if(view==='learning') rLearn();
+  if(view==='tools') rTools();
+}
+
 // ═══ INIT ═══
-rNav();rDash();rLearn();rTools();rPrompts();rNews();rCareer();rFaq();
+initTheme();rNav();rDash();rLearn();rTools();rPrompts();rNews();rCareer();rFaq();
 </script>
 </body>
 </html>
