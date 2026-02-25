@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>LearnSEO Hub — Master SEO for the AI Search Era</title>
@@ -8,31 +8,83 @@
 @font-face{font-family:'Inter Tight';src:url('./fonts/InterTight-VariableFont_wght.ttf') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:'Inter Tight';src:url('./fonts/InterTight-Italic-VariableFont_wght.ttf') format('truetype');font-weight:100 900;font-style:italic;font-display:swap}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root,[data-theme="dark"]{
---bg:#050a14;--bg2:#0a1628;--card:#0d1b2e;--card2:#132640;
---border:#1a2d4a;--border2:#2a4060;
---t1:#e8edf5;--t2:#8899b0;--t3:#5a6f8a;
---accent:#38bdf8;--accent2:#0ea5e9;--accentG:rgba(56,189,248,.08);
---em:#34d399;--vi:#a78bfa;--am:#fbbf24;--ro:#fb7185;
---r:14px;--maxW:1120px;
---inputBg:rgba(255,255,255,.04);--hoverBg:rgba(255,255,255,.03);
---trend-svg:url("data:image/svg+xml,%3Csvg width='120' height='40' viewBox='0 0 120 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 35 L20 20 L40 28 L60 10 L80 22 L100 5 L120 15' stroke='%2338bdf8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='.04'/%3E%3C/svg%3E")
+/* ========== THEME TOKENS (clean + predictable) ========== */
+:root{
+  /* Light = default */
+  --bg:#f8fafc;
+  --bg2:#eef2ff;
+  --card:#ffffff;
+  --card2:#f1f5f9;
+
+  --border:#e2e8f0;
+  --border2:#cbd5e1;
+
+  --t1:#0f172a;
+  --t2:#475569;
+  --t3:#94a3b8;
+
+  /* Brand accents */
+  --accent:#0284c7;
+  --accent2:#6366f1;
+  --accentG:rgba(2,132,199,.16);
+
+  --em:#059669;
+  --vi:#7c3aed;
+  --am:#d97706;
+  --ro:#e11d48;
+  --or:#ea580c;
+
+  --r:16px;
+  --maxW:1120px;
+
+  --inputBg:rgba(15,23,42,.04);
+  --hoverBg:rgba(2,132,199,.08);
+
+  --shadow:0 10px 30px rgba(2,6,23,.08);
+  --shadow2:0 18px 55px rgba(2,6,23,.12);
+
+  --trend-svg:url("data:image/svg+xml,%3Csvg width='120' height='40' viewBox='0 0 120 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 35 L20 20 L40 28 L60 10 L80 22 L100 5 L120 15' stroke='%230284c7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='.06'/%3E%3C/svg%3E");
 }
-[data-theme="light"]{
---bg:#f4f7fb;--bg2:#e8eef5;--card:#ffffff;--card2:#f0f4f8;
---border:#dce4ee;--border2:#c0cfde;
---t1:#0c1829;--t2:#4a5e78;--t3:#8294aa;
---accent:#0284c7;--accent2:#0369a1;--accentG:rgba(2,132,199,.06);
---em:#059669;--vi:#7c3aed;--am:#d97706;--ro:#e11d48;
---inputBg:rgba(0,0,0,.03);--hoverBg:rgba(0,0,0,.02);
---trend-svg:url("data:image/svg+xml,%3Csvg width='120' height='40' viewBox='0 0 120 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 35 L20 20 L40 28 L60 10 L80 22 L100 5 L120 15' stroke='%230284c7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='.04'/%3E%3C/svg%3E")
+
+[data-theme="dark"]{
+  --bg:#050a14;
+  --bg2:#0a1628;
+  --card:#0d1b2e;
+  --card2:#132640;
+
+  --border:#1a2d4a;
+  --border2:#2a4060;
+
+  --t1:#e8edf5;
+  --t2:#b6c2d6;
+  --t3:#6f86a6;
+
+  --accent:#38bdf8;
+  --accent2:#818cf8;
+  --accentG:rgba(56,189,248,.14);
+
+  --em:#34d399;
+  --vi:#a78bfa;
+  --am:#fbbf24;
+  --ro:#fb7185;
+  --or:#fb923c;
+
+  --inputBg:rgba(255,255,255,.06);
+  --hoverBg:rgba(255,255,255,.07);
+
+  --shadow:0 12px 34px rgba(0,0,0,.35);
+  --shadow2:0 22px 70px rgba(0,0,0,.45);
+
+  --trend-svg:url("data:image/svg+xml,%3Csvg width='120' height='40' viewBox='0 0 120 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 35 L20 20 L40 28 L60 10 L80 22 L100 5 L120 15' stroke='%2338bdf8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='.05'/%3E%3C/svg%3E");
 }
+
 html{scroll-behavior:smooth}
 body{font-family:'Inter Tight',system-ui,sans-serif;background:var(--bg);color:var(--t1);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 /* ═══ TOP NAVBAR ═══ */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border)}
-.navbar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#38bdf8,#818cf8,#34d399,#fbbf24)}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:color-mix(in srgb, var(--bg) 82%, transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+[data-theme="dark"] .navbar{background:rgba(5,10,20,.85)}
+.navbar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0ea5e9,#818cf8,#34d399,#fbbf24)}
 .nav-inner{max-width:var(--maxW);margin:0 auto;padding:0 24px;display:flex;align-items:center;height:60px;gap:8px}
 .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;margin-right:24px}
 .nav-logo-icon{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#38bdf8,#818cf8);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .3s,box-shadow .3s}
@@ -85,19 +137,29 @@ body{font-family:'Inter Tight',system-ui,sans-serif;background:var(--bg);color:v
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
 /* ═══ HERO ═══ */
-.hero{position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(135deg,#0c2d4a,#162050,#1a1040);padding:56px 48px;margin:28px 0;min-height:320px}
-.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,black,transparent);pointer-events:none}
+.hero{position:relative;overflow:hidden;border-radius:20px;padding:56px 48px;margin:28px 0;min-height:320px;border:1px solid var(--border);box-shadow:var(--shadow);background:
+  radial-gradient(900px 420px at 85% 5%, rgba(99,102,241,.18), transparent 60%),
+  radial-gradient(760px 360px at 10% 25%, rgba(2,132,199,.18), transparent 55%),
+  linear-gradient(180deg, var(--card) 0%, color-mix(in srgb, var(--card2) 90%, transparent) 100%);
+}
+[data-theme="dark"] .hero{background:
+  radial-gradient(900px 420px at 85% 10%, rgba(129,140,248,.18), transparent 60%),
+  radial-gradient(760px 360px at 15% 30%, rgba(56,189,248,.16), transparent 55%),
+  linear-gradient(180deg, rgba(13,27,46,.92) 0%, rgba(5,10,20,.92) 100%);
+}
+.hero::before{content:'';position:absolute;inset:0;background-image:var(--trend-svg);background-size:120px 40px;opacity:.9;mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,black,transparent);pointer-events:none}
+
 .hero-orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:orbDrift 20s ease-in-out infinite alternate}
 @keyframes orbDrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(20px,-15px) scale(1.1)}}
 .hero-content{position:relative;z-index:2;max-width:640px}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;font-size:10px;font-weight:700;margin-bottom:20px}
 .hero h1{font-size:44px;font-weight:900;line-height:1.1;letter-spacing:-.05em;margin-bottom:16px;color:#fff}
 .hero h1 span{background:linear-gradient(135deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-desc{font-size:16px;color:rgba(255,255,255,.55);line-height:1.75;margin-bottom:28px;max-width:540px}
-.hero-desc strong{color:rgba(255,255,255,.85)}
+.hero-desc{font-size:16px;color:rgba(255,255,255,.7);line-height:1.75;margin-bottom:28px;max-width:540px}
+.hero-desc strong{color:#fff}
 .hero-features{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:32px}
-.hero-feat{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.45);font-weight:600}
-.hero-feat svg{width:14px;height:14px;color:var(--em)}
+.hero-feat{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.7);font-weight:600}
+.hero-feat svg{width:14px;height:14px;color:#34d399}
 .hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
 @media(max-width:640px){.hero{padding:36px 24px}.hero h1{font-size:28px}}
 
@@ -109,7 +171,7 @@ body{font-family:'Inter Tight',system-ui,sans-serif;background:var(--bg);color:v
 
 /* ═══ CARDS ═══ */
 .cd{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);transition:all .25s;overflow:hidden}
-.cd:hover{border-color:var(--border2);box-shadow:0 8px 32px rgba(0,0,0,.12)}
+[data-theme="light"] .cd{box-shadow:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.02)}
 
 /* ═══ GRIDS ═══ */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -120,11 +182,11 @@ body{font-family:'Inter Tight',system-ui,sans-serif;background:var(--bg);color:v
 
 /* ═══ BUTTONS ═══ */
 .btn{display:inline-flex;align-items:center;gap:7px;padding:11px 24px;border-radius:10px;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:inherit;transition:all .2s}
-.btn-w{background:#fff;color:#0f172a}.btn-w:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
+.btn-w{background:#fff;color:#0f172a;box-shadow:0 2px 12px rgba(0,0,0,.1)}.btn-w:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
 .btn-g{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7)}.btn-g:hover{background:rgba(255,255,255,.12);color:#fff}
-.btn-a{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff}.btn-a:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(14,165,233,.3)}
+.btn-a{background:linear-gradient(135deg,#0ea5e9,#7c3aed);color:#fff;box-shadow:0 2px 12px rgba(14,165,233,.15)}.btn-a:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(14,165,233,.25)}
 .btn-sm{font-size:12px;padding:8px 16px}
-.btn-outline{background:none;border:1.5px solid var(--border);color:var(--t2)}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--t2)}.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:var(--accentG)}
 
 /* ═══ BADGES ═══ */
 .bd{display:inline-block;padding:4px 12px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
@@ -264,8 +326,50 @@ body{font-family:'Inter Tight',system-ui,sans-serif;background:var(--bg);color:v
 .stagger>*{animation:fadeUp .35s ease backwards}.stagger>*:nth-child(2){animation-delay:.05s}.stagger>*:nth-child(3){animation-delay:.1s}.stagger>*:nth-child(4){animation-delay:.15s}
 .btt{position:fixed;bottom:24px;right:24px;width:40px;height:40px;border-radius:50%;background:var(--card);border:1.5px solid var(--border);color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(10px);transition:all .3s;z-index:50}
 .btt.show{opacity:1;transform:translateY(0)}.btt:hover{border-color:var(--accent);color:var(--accent)}
-::selection{background:rgba(56,189,248,.2)}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}::-webkit-scrollbar-thumb:hover{background:var(--border2)}
+::selection{background:rgba(14,165,233,.15)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#0ea5e9,#818cf8);border-radius:10px}::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#0284c7,#6366f1)}
+
+/* ═══ BRAND IDENTITY LAYER ═══ */
+/* Cards get subtle brand shadow on hover */
+.cd:hover{border-color:rgba(14,165,233,.2);box-shadow:0 8px 32px rgba(14,165,233,.06),0 2px 8px rgba(0,0,0,.04)}
+/* Blog cards get gradient border-top on hover */
+.blog-card:hover{box-shadow:0 12px 40px rgba(14,165,233,.08),0 4px 12px rgba(0,0,0,.04)}
+/* Section backgrounds alternate subtly */
+.sec:nth-child(even){background:transparent}
+/* Newsletter gets brand gradient border */
+.nl{border-color:rgba(14,165,233,.12)}
+[data-theme="light"] .nl{background:linear-gradient(135deg,rgba(14,165,233,.02),rgba(124,58,237,.02))}
+/* Filter active has brand gradient */
+[data-theme="light"] .fb.on{background:linear-gradient(135deg,#0ea5e9,#7c3aed);box-shadow:0 2px 12px rgba(14,165,233,.2)}
+/* Tool panels get brand top accent */
+.tool-panel{position:relative;overflow:hidden}
+.tool-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0ea5e9,#818cf8)}
+/* Download cards get brand hover */
+.dl-card:hover .dl-icon{transform:scale(1.1)}
+.dl-icon{transition:transform .3s}
+/* Guide cards get numbered accent */
+[data-theme="light"] .guide-card:hover{border-color:rgba(14,165,233,.3);box-shadow:0 8px 24px rgba(14,165,233,.06)}
+/* Stat cards in about get brand top line */
+[data-theme="light"] .cd{box-shadow:0 1px 3px rgba(0,0,0,.04)}
+/* Active nav link brand underline */
+[data-theme="light"] .nav-link.on{color:#0ea5e9}
+[data-theme="light"] .nav-link.on::after{background:linear-gradient(90deg,#0ea5e9,#818cf8)}
+/* Footer in light gets soft bg */
+[data-theme="light"] .site-footer{background:linear-gradient(180deg,transparent,rgba(14,165,233,.015))}
+/* Hero badges light adjustments */
+[data-theme="light"] .hero{background:linear-gradient(135deg,#0ea5e9,#6366f1,#7c3aed)}
+/* Search focus glow */
+.nav-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.08)}
+/* Brand accent on inputs */
+.tool-panel input:focus,.tool-panel textarea:focus{box-shadow:0 0 0 3px rgba(14,165,233,.06)}
+
+/* Accessibility + feel */
+:focus{outline:none}
+:focus-visible{outline:2px solid color-mix(in srgb, var(--accent) 70%, transparent);outline-offset:2px;border-radius:12px;box-shadow:0 0 0 4px var(--accentG)}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
 </style>
 </head>
 <body>
@@ -370,6 +474,15 @@ body{font-family:'Inter Tight',system-ui,sans-serif;background:var(--bg);color:v
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg></button>
 
 <script>
+/* Theme: system default + remember choice */
+(function initTheme(){
+  const root = document.documentElement;
+  const saved = localStorage.getItem('lsh_theme');
+  if(saved){ root.setAttribute('data-theme', saved); return; }
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+})();
+
 // ═══ DATA (preserved from v4) ═══
 const ARTICLES=[
 {id:"a1",ti:"SEO Fundamentals: How Search Engines Work in 2026",cat:"Foundation",lv:"Beginner",du:"8 min read",date:"Feb 20, 2026",gr:"linear-gradient(135deg,#0ea5e9,#22d3ee)",desc:"Master search psychology, crawling & indexing, and keyword strategy. Everything you need to know about how Google finds, processes, and ranks content.",
@@ -525,7 +638,7 @@ function go(id){
   window.scrollTo({top:0,behavior:'smooth'});
   render();
 }
-function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t)}
+function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('lsh_theme',t)}
 
 // ═══ SEARCH ═══
 function gSearch(){const q=document.getElementById('gsI').value.toLowerCase().trim();const r=document.getElementById('gsR');if(q.length<2){r.classList.remove('show');return}let res=[];
@@ -547,11 +660,11 @@ function render(){
 function rHome(){
 document.getElementById('sec-home').innerHTML=`
 <div class="hero">
-<div class="hero-orb" style="width:250px;height:250px;background:rgba(56,189,248,.1);top:-80px;right:-60px"></div>
-<div class="hero-orb" style="width:180px;height:180px;background:rgba(129,140,248,.08);bottom:-50px;left:-30px;animation-delay:-8s"></div>
-<div class="hero-orb" style="width:120px;height:120px;background:rgba(52,211,153,.06);top:40%;left:55%;animation-delay:-14s"></div>
+<div class="hero-orb" style="width:250px;height:250px;background:rgba(255,255,255,.12);top:-80px;right:-60px"></div>
+<div class="hero-orb" style="width:180px;height:180px;background:rgba(255,255,255,.08);bottom:-50px;left:-30px;animation-delay:-8s"></div>
+<div class="hero-orb" style="width:120px;height:120px;background:rgba(52,211,153,.15);top:40%;left:55%;animation-delay:-14s"></div>
 <div class="hero-content">
-<div class="hero-badge" style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.15);color:#6ee7b7"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse 2s infinite"></span>Updated Feb 2026</div>
+<div class="hero-badge" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse 2s infinite"></span>Updated Feb 2026</div>
 <h1>Your SEO Resource Hub<br/>for the <span>AI Search Era</span></h1>
 <p class="hero-desc">Free <strong>tools</strong>, <strong>guides</strong>, <strong>templates</strong>, and <strong>articles</strong> for modern SEO, GEO, and Answer Engine Optimization. Everything updated monthly with the latest Google changes.</p>
 <div class="hero-features">
@@ -567,21 +680,22 @@ document.getElementById('sec-home').innerHTML=`
 </div>
 </div>
 </div>
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 <!-- Featured Tools -->
-<div style="margin:40px 0 16px"><h3 style="font-size:18px;font-weight:900;letter-spacing:-.02em">Interactive Tools</h3><p style="font-size:13px;color:var(--t2);margin-top:4px">Free SEO tools — no signup required</p></div>
+<div style="margin:40px 0 16px;position:relative;padding-left:18px"><div style="position:absolute;left:0;top:2px;width:4px;height:28px;border-radius:4px;background:linear-gradient(180deg,#0ea5e9,#818cf8)"></div><h3 style="font-size:20px;font-weight:900;letter-spacing:-.03em">Interactive Tools</h3><p style="font-size:13px;color:var(--t2);margin-top:2px">Free SEO tools — no signup required</p></div>
 <div class="g4 stagger" style="margin-bottom:40px">
 ${[{id:'serp',n:'SERP Previewer',d:'Preview your Google search appearance',ic:'🖥️',gr:'linear-gradient(135deg,#0ea5e9,#22d3ee)'},{id:'schema',n:'Schema Generator',d:'Create JSON-LD markup instantly',ic:'⚡',gr:'linear-gradient(135deg,#7c3aed,#a855f7)'},{id:'geoscore',n:'GEO Score',d:'Measure AI search readiness',ic:'📊',gr:'linear-gradient(135deg,#059669,#34d399)'},{id:'workflow',n:'Content Workflow',d:'7-step optimization process',ic:'✍️',gr:'linear-gradient(135deg,#d97706,#fbbf24)'}].map(t=>`<div class="cd" style="cursor:pointer;padding:0" onclick="go('${t.id}')"><div style="height:3px;background:${t.gr}"></div><div style="padding:22px"><div style="font-size:28px;margin-bottom:10px">${t.ic}</div><div style="font-size:15px;font-weight:800;margin-bottom:4px;color:var(--t1)">${t.n}</div><div style="font-size:13px;color:var(--t2);line-height:1.5">${t.d}</div></div></div>`).join('')}
 </div>
 
 <!-- Latest Articles -->
-<div class="fx ac jb" style="margin-bottom:16px"><div><h3 style="font-size:18px;font-weight:900;letter-spacing:-.02em">Latest Articles</h3><p style="font-size:13px;color:var(--t2);margin-top:4px">SEO guides, strategies, and insights</p></div><button class="btn btn-outline btn-sm" onclick="go('blog')">View All →</button></div>
+<div class="fx ac jb" style="margin-bottom:16px"><div style="position:relative;padding-left:18px"><div style="position:absolute;left:0;top:2px;width:4px;height:28px;border-radius:4px;background:linear-gradient(180deg,#0ea5e9,#818cf8)"></div><h3 style="font-size:20px;font-weight:900;letter-spacing:-.03em">Latest Articles</h3><p style="font-size:13px;color:var(--t2);margin-top:2px">SEO guides, strategies, and insights</p></div><button class="btn btn-outline btn-sm" onclick="go('blog')">View All →</button></div>
 <div class="g3 stagger" style="margin-bottom:40px">
 ${ARTICLES.slice(0,3).map(a=>`<div class="cd blog-card" onclick="openArticle('${a.id}')"><div class="blog-thumb" style="background:${a.gr}"></div><div class="blog-meta"><div class="blog-tag" style="color:${a.gr.match(/#[a-f0-9]{6}/)?.[0]||'var(--accent)'}">${a.cat}</div><div class="blog-title">${a.ti}</div><div class="blog-desc">${a.desc.slice(0,100)}...</div><div class="blog-footer"><span>${a.date}</span><span>${a.du}</span></div></div></div>`).join('')}
 </div>
 
 <!-- Latest News -->
-<div class="fx ac jb" style="margin-bottom:16px"><div><h3 style="font-size:18px;font-weight:900;letter-spacing:-.02em">News & Trends</h3><p style="font-size:13px;color:var(--t2);margin-top:4px">February 2026 updates</p></div><button class="btn btn-outline btn-sm" onclick="go('news')">View All →</button></div>
+<div class="fx ac jb" style="margin-bottom:16px"><div style="position:relative;padding-left:18px"><div style="position:absolute;left:0;top:2px;width:4px;height:28px;border-radius:4px;background:linear-gradient(180deg,#34d399,#0ea5e9)"></div><h3 style="font-size:20px;font-weight:900;letter-spacing:-.03em">News & Trends</h3><p style="font-size:13px;color:var(--t2);margin-top:2px">February 2026 updates</p></div><button class="btn btn-outline btn-sm" onclick="go('news')">View All →</button></div>
 <div class="g2 stagger" style="margin-bottom:40px">${N.slice(0,2).map(n=>`<div class="cd" style="padding:22px;cursor:pointer" onclick="go('news')"><div class="fx g6 fw" style="margin-bottom:10px">${n.tg.map(t=>`<span style="padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;background:${n.cl}15;color:${n.cl}">${t}</span>`).join('')}</div><div style="font-size:15px;font-weight:800;margin-bottom:6px;line-height:1.35">${n.ti}</div><div style="font-size:13px;color:var(--t2);line-height:1.6">${n.sm}</div></div>`).join('')}</div>
 
 <div class="nl"><h3>Stay Updated</h3><p>Weekly newsletter with SEO tips, AI optimization strategies, and tool updates.</p><div class="nl-form"><input type="email" placeholder="your@email.com"/><button class="btn btn-a btn-sm" onclick="this.textContent='Subscribed ✓';this.style.background='var(--em)'">Subscribe</button></div></div>`}
@@ -739,4 +853,3 @@ render();
 </script>
 </body>
 </html>
-
