@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Block non-existent admin areas (future-proofing)
+Disallow: /admin/
+Disallow: /api/internal/
+
+# Allow AI crawlers (important for GEO!)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://learnseohub.com/sitemap.xml
