@@ -152,6 +152,8 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .ts-desc{font-size:12px;color:var(--t3);margin-top:1px}
 .ts-arrow{width:18px;height:18px;color:var(--t3);opacity:0;transition:opacity .15s,transform .15s;flex-shrink:0}
 #crawlViewToggle{gap:4px}#crawlViewToggle .fb{margin:0;border-radius:6px}
+.ed-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);margin-bottom:5px}
+.ed-label+select{width:100%;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);background:var(--inputBg);color:var(--t1);font-size:13px;font-family:inherit;appearance:auto;cursor:pointer}
 @media(min-width:768px){.tools-strip{flex-direction:row}.ts-item{flex:1;border-bottom:none;border-right:1px solid var(--border);padding:20px 22px;flex-direction:column;text-align:center;gap:10px}.ts-item:last-child{border-right:none}.ts-item::before{left:0;right:0;top:0;bottom:auto;width:auto;height:3px}.ts-arrow{display:none}.ts-icon{margin:0 auto}}
 .blog-thumb{height:160px;position:relative;overflow:hidden;transition:transform .4s;display:flex;align-items:center;justify-content:center}
 .blog-thumb svg{width:100%;height:100%;display:block}
@@ -264,6 +266,8 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 <div class="nav-dd-item" onclick="go('news')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>News &amp; Trends</div>
 <div class="nav-dd-item" onclick="go('career')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Career Paths</div>
 <div class="nav-dd-item" onclick="go('faq')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ</div>
+<div style="height:1px;background:var(--border);margin:4px 8px"></div>
+<div class="nav-dd-item" onclick="go('editor')" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Article Editor</div>
 </div>
 </div>
 <div class="nav-link" onclick="go('about')" data-id="about">About</div>
@@ -294,6 +298,7 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 <a onclick="go('career')">Career Paths</a>
 <a onclick="go('faq')">FAQ</a>
 <div class="mm-group">More</div>
+<a onclick="go('editor')" style="color:var(--accent)">✏️ Article Editor</a>
 <a onclick="go('about')">About</a>
 </div>
 
@@ -318,6 +323,7 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 <div class="sec" id="sec-faq"></div>
 <div class="sec" id="sec-about"></div>
 <div class="sec" id="sec-crawl"></div>
+<div class="sec" id="sec-editor"></div>
 </div>
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -335,7 +341,7 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 </div>
 <div class="ft-col"><h4>Content</h4><a onclick="go('blog')">Blog</a><a onclick="go('news')">News & Trends</a><a onclick="go('guides')">Guides</a><a onclick="go('glossary')">SEO Glossary</a></div>
 <div class="ft-col"><h4>Tools</h4><a onclick="go('serp')">SERP Previewer</a><a onclick="go('schema')">Schema Generator</a><a onclick="go('geoscore')">GEO Score</a><a onclick="go('workflow')">Content Workflow</a><a onclick="go('crawl')">2MB Crawl Checker</a></div>
-<div class="ft-col"><h4>Resources</h4><a onclick="go('downloads')">Downloads</a><a onclick="go('prompts')">AI Prompts</a><a onclick="go('compare')">Tool Comparison</a><a onclick="go('about')">About</a></div>
+<div class="ft-col"><h4>Resources</h4><a onclick="go('downloads')">Downloads</a><a onclick="go('prompts')">AI Prompts</a><a onclick="go('compare')">Tool Comparison</a><a onclick="go('editor')">Article Editor</a><a onclick="go('about')">About</a></div>
 </div>
 <div class="ft-bottom"><span>&copy; 2026 LearnSEO Hub &middot; All rights reserved</span><span>Made with &#10084; for the SEO community</span></div>
 </div>
@@ -527,7 +533,7 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
 
 // ═══ RENDER ═══
 function render(){
-  const r={home:rHome,blog:rBlog,article:rArticle,tools:rTools,serp:rSerp,schema:rSchema,geoscore:rGeo,workflow:rWorkflow,downloads:rDownloads,guides:rGuides,glossary:rGloss,prompts:rPrompts,compare:rCompare,news:rNews,career:rCareer,faq:rFaq,about:rAbout,crawl:rCrawl};
+  const r={home:rHome,blog:rBlog,article:rArticle,tools:rTools,serp:rSerp,schema:rSchema,geoscore:rGeo,workflow:rWorkflow,downloads:rDownloads,guides:rGuides,glossary:rGloss,prompts:rPrompts,compare:rCompare,news:rNews,career:rCareer,faq:rFaq,about:rAbout,crawl:rCrawl,editor:rEditor};
   if(r[view])r[view]();
 }
 
@@ -557,6 +563,7 @@ document.getElementById('sec-home').innerHTML=`
 </div>
 </div>
 </div>
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 <!-- Featured Tools -->
 <div style="margin:40px 0 16px;position:relative;padding-left:18px"><div style="position:absolute;left:0;top:3px;width:4px;height:24px;border-radius:4px;background:linear-gradient(180deg,var(--accent),var(--vi))"></div><h3 style="font-size:18px;font-weight:900;letter-spacing:-.02em">Interactive Tools</h3><p style="font-size:13px;color:var(--t3);margin-top:2px">Use them right now — no account needed</p></div>
@@ -863,6 +870,103 @@ o+='</div>'+tN;
 if(rc.length){o+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin:20px 0 10px">Recommendations</div>';for(var j=0;j<rc.length;j++){o+='<div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:8px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;font-size:12px;color:var(--t2);line-height:1.6"><span style="flex-shrink:0;font-size:16px">'+rc[j][0]+'</span><span>'+rc[j][1]+'</span></div>'}}
 document.getElementById('crawlResults').innerHTML=o;
 showCrawlPreview(html,bytes,over);
+}
+
+
+// ═══ ARTICLE EDITOR / CMS ═══
+var editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
+function edVal(k,v){editorData[k]=v;edPreview()}
+function edOptVal(i,v){editorData.quizOpts[i]=v}
+function rEditor(){
+var d=editorData;
+if(!d.date){var now=new Date();d.date=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
+document.getElementById('sec-editor').innerHTML='<div class="sh"><h2>Article Editor</h2><p>Create and publish blog articles</p></div>'+
+'<div class="g2" style="gap:24px;align-items:start">'+
+'<div>'+
+'<div class="tool-panel">'+
+'<h3>Article Details</h3>'+
+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">'+
+'<div style="grid-column:1/-1"><label class="ed-label">Title</label><input id="edTi" value="'+esc(d.ti)+'" oninput="edVal(\'ti\',this.value)" placeholder="Your Article Title"/></div>'+
+'<div><label class="ed-label">Category</label><select id="edCat" onchange="edVal(\'cat\',this.value)"><option'+(d.cat==='Foundation'?' selected':'')+'>Foundation</option><option'+(d.cat==='AI-Optimization'?' selected':'')+'>AI-Optimization</option><option'+(d.cat==='Technical'?' selected':'')+'>Technical</option><option'+(d.cat==='Strategy'?' selected':'')+'>Strategy</option></select></div>'+
+'<div><label class="ed-label">Level</label><select id="edLv" onchange="edVal(\'lv\',this.value)"><option'+(d.lv==='Beginner'?' selected':'')+'>Beginner</option><option'+(d.lv==='Intermediate'?' selected':'')+'>Intermediate</option><option'+(d.lv==='Advanced'?' selected':'')+'>Advanced</option><option'+(d.lv==='Specialized'?' selected':'')+'>Specialized</option></select></div>'+
+'<div><label class="ed-label">Read Time</label><input id="edDu" value="'+esc(d.du)+'" oninput="edVal(\'du\',this.value)" placeholder="5 min read"/></div>'+
+'<div><label class="ed-label">Date</label><input id="edDate" value="'+esc(d.date)+'" oninput="edVal(\'date\',this.value)"/></div>'+
+'<div style="grid-column:1/-1"><label class="ed-label">Short Description</label><input id="edDesc" value="'+esc(d.desc)+'" oninput="edVal(\'desc\',this.value)" placeholder="Appears on the blog card preview..."/></div>'+
+'<div><label class="ed-label">Gradient Color 1</label><div style="display:flex;gap:6px;align-items:center"><input type="color" value="'+d.gr1+'" onchange="edVal(\'gr1\',this.value)" style="width:36px;height:32px;padding:2px;border-radius:6px;cursor:pointer"/><code style="font-size:11px;color:var(--t3)">'+d.gr1+'</code></div></div>'+
+'<div><label class="ed-label">Gradient Color 2</label><div style="display:flex;gap:6px;align-items:center"><input type="color" value="'+d.gr2+'" onchange="edVal(\'gr2\',this.value)" style="width:36px;height:32px;padding:2px;border-radius:6px;cursor:pointer"/><code style="font-size:11px;color:var(--t3)">'+d.gr2+'</code></div></div>'+
+'</div>'+
+'</div>'+
+'<div class="tool-panel" style="margin-top:16px">'+
+'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">Article Content (HTML)</h3><div style="display:flex;gap:6px"><button class="btn btn-outline btn-sm" onclick="insertTag(\'h3\')" style="font-size:10px;padding:4px 8px">&lt;h3&gt;</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'p\')" style="font-size:10px;padding:4px 8px">&lt;p&gt;</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'ul\')" style="font-size:10px;padding:4px 8px">&lt;ul&gt;</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'tip\')" style="font-size:10px;padding:4px 8px">Tip</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'pre\')" style="font-size:10px;padding:4px 8px">&lt;pre&gt;</button></div></div>'+
+'<textarea id="edHtml" rows="16" oninput="edVal(\'html\',this.value)" placeholder="<h3>Section Title</h3>&#10;<p>Your content here...</p>&#10;&#10;<div class=&quot;tip&quot;><strong>Pro tip:</strong> Highlighted callout.</div>" style="font-family:monospace;font-size:12px;line-height:1.6;tab-size:2">'+esc(d.html)+'</textarea>'+
+'</div>'+
+'<details class="tool-panel" style="margin-top:16px">'+
+'<summary style="cursor:pointer;font-weight:700;font-size:14px;color:var(--t1)">Quiz (optional)</summary>'+
+'<div style="margin-top:14px;display:grid;gap:10px">'+
+'<div><label class="ed-label">Question</label><input id="edQQ" value="'+esc(d.quizQ)+'" oninput="editorData.quizQ=this.value" placeholder="What is the main concept?"/></div>'+
+'<div class="g2" style="gap:8px"><div><label class="ed-label">Option A</label><input value="'+esc(d.quizOpts[0])+'" oninput="edOptVal(0,this.value)"/></div><div><label class="ed-label">Option B</label><input value="'+esc(d.quizOpts[1])+'" oninput="edOptVal(1,this.value)"/></div><div><label class="ed-label">Option C</label><input value="'+esc(d.quizOpts[2])+'" oninput="edOptVal(2,this.value)"/></div><div><label class="ed-label">Option D</label><input value="'+esc(d.quizOpts[3])+'" oninput="edOptVal(3,this.value)"/></div></div>'+
+'<div class="g2" style="gap:8px"><div><label class="ed-label">Correct Answer (0-3)</label><input type="number" min="0" max="3" value="'+d.quizAns+'" oninput="editorData.quizAns=parseInt(this.value)||0"/></div><div><label class="ed-label">Explanation</label><input value="'+esc(d.quizExp)+'" oninput="editorData.quizExp=this.value" placeholder="Why this is correct..."/></div></div>'+
+'</div>'+
+'</details>'+
+'<div style="display:flex;gap:10px;margin-top:20px">'+
+'<button class="btn btn-a" onclick="publishArticle()" style="flex:1;padding:14px;font-size:15px;font-weight:800">📝 Publish Article</button>'+
+'<button class="btn btn-outline" onclick="resetEditor()">Reset</button>'+
+'</div>'+
+'</div>'+
+'<div>'+
+'<div class="tool-panel" style="position:sticky;top:80px">'+
+'<h3>Live Preview</h3>'+
+'<div id="edPreviewCard" style="margin-bottom:20px"></div>'+
+'<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:10px">Article Body Preview</div>'+
+'<div id="edPreviewBody" class="article-body" style="border:1px solid var(--border);border-radius:10px;padding:20px;max-height:500px;overflow-y:auto;background:var(--bg)"></div>'+
+'</div>'+
+'</div>'+
+'</div>';
+edPreview();
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function insertTag(tag){
+var ta=document.getElementById('edHtml');if(!ta)return;
+var start=ta.selectionStart,end=ta.selectionEnd,sel=ta.value.substring(start,end);
+var ins='';
+if(tag==='h3')ins='<h3>'+(sel||'Section Title')+'</h3>';
+else if(tag==='p')ins='<p>'+(sel||'Your paragraph text here.')+'</p>';
+else if(tag==='ul')ins='<ul>\n  <li>'+(sel||'Item 1')+'</li>\n  <li>Item 2</li>\n</ul>';
+else if(tag==='tip')ins='<div class="tip"><strong>Pro tip:</strong> '+(sel||'Your tip here.')+'</div>';
+else if(tag==='pre')ins='<pre>'+(sel||'code block')+'</pre>';
+ta.value=ta.value.substring(0,start)+ins+ta.value.substring(end);
+editorData.html=ta.value;
+ta.focus();ta.selectionStart=ta.selectionEnd=start+ins.length;
+edPreview();
+}
+function edPreview(){
+var d=editorData;
+var gr='linear-gradient(135deg,'+d.gr1+','+d.gr2+')';
+var pc=document.getElementById('edPreviewCard');
+var pb=document.getElementById('edPreviewBody');
+if(!pc||!pb)return;
+if(!d.ti&&!d.desc){pc.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Fill in the details to see card preview</div>';pb.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Write HTML content to see body preview</div>';return}
+pc.innerHTML='<div class="cd blog-card" style="pointer-events:none"><div class="blog-thumb" style="background:'+gr+'"></div><div class="blog-meta"><div style="display:flex;align-items:center;justify-content:space-between"><span class="blog-tag" style="color:'+d.gr1+'">'+(d.cat||'Category')+'</span><span class="bd bd-s">'+(d.lv||'Level')+'</span></div><div class="blog-title" style="margin-top:8px">'+(d.ti||'Article Title')+'</div><div class="blog-desc">'+(d.desc||'Description...')+'</div><div class="blog-footer"><span>'+(d.date||'Date')+'</span><span>'+(d.du||'5 min read')+'</span></div></div></div>';
+pb.innerHTML=d.html||'<p style="color:var(--t3)">Start writing to see preview...</p>';
+}
+function publishArticle(){
+var d=editorData;
+if(!d.ti.trim()){alert('Please enter an article title.');return}
+if(!d.html.trim()){alert('Please add article content.');return}
+var newId='a'+(ARTICLES.length+1);
+var gr='linear-gradient(135deg,'+d.gr1+','+d.gr2+')';
+var quiz=[];
+if(d.quizQ.trim()&&d.quizOpts.filter(function(o){return o.trim()}).length>=2){
+quiz=[{q:d.quizQ,opts:d.quizOpts.filter(function(o){return o.trim()}),ans:d.quizAns,exp:d.quizExp}];
+}
+var article={id:newId,ti:d.ti,cat:d.cat,lv:d.lv,du:d.du,date:d.date,gr:gr,desc:d.desc,html:d.html,quiz:quiz};
+ARTICLES.unshift(article);
+editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
+openArticle(newId);
+}
+function resetEditor(){
+editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
+rEditor();
 }
 
 function rAbout(){document.getElementById('sec-about').innerHTML=`<div class="sh"><h2>About LearnSEO Hub</h2><p>Free SEO resources for the AI search era</p></div>
