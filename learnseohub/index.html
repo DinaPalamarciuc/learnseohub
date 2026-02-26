@@ -139,6 +139,20 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 .fb:hover{color:var(--t1);border-color:var(--border2)}
 .fb.on{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;box-shadow:0 2px 8px rgba(37,99,235,.18)}
 .blog-card{cursor:pointer;overflow:hidden}.blog-card:hover{box-shadow:0 10px 32px rgba(0,0,0,.07)}.blog-card:hover .blog-thumb{transform:scale(1.04)}
+.tools-strip{display:flex;flex-direction:column;border-radius:var(--r);overflow:hidden;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow)}
+.ts-item{display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;transition:background .15s,border-color .15s;border-bottom:1px solid var(--border);position:relative}
+.ts-item:last-child{border-bottom:none}
+.ts-item:hover{background:color-mix(in srgb,var(--tc) 5%,transparent)}
+.ts-item:hover .ts-arrow{opacity:1;transform:translateX(2px)}
+.ts-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tc);opacity:0;transition:opacity .15s}
+.ts-item:hover::before{opacity:1}
+.ts-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.ts-text{flex:1;min-width:0}
+.ts-name{font-size:14px;font-weight:800;color:var(--t1);letter-spacing:-.01em}
+.ts-desc{font-size:12px;color:var(--t3);margin-top:1px}
+.ts-arrow{width:18px;height:18px;color:var(--t3);opacity:0;transition:opacity .15s,transform .15s;flex-shrink:0}
+#crawlViewToggle{gap:4px}#crawlViewToggle .fb{margin:0;border-radius:6px}
+@media(min-width:768px){.tools-strip{flex-direction:row}.ts-item{flex:1;border-bottom:none;border-right:1px solid var(--border);padding:20px 22px;flex-direction:column;text-align:center;gap:10px}.ts-item:last-child{border-right:none}.ts-item::before{left:0;right:0;top:0;bottom:auto;width:auto;height:3px}.ts-arrow{display:none}.ts-icon{margin:0 auto}}
 .blog-thumb{height:160px;position:relative;overflow:hidden;transition:transform .4s;display:flex;align-items:center;justify-content:center}
 .blog-thumb svg{width:100%;height:100%;display:block}
 .blog-meta{padding:20px}
@@ -543,12 +557,11 @@ document.getElementById('sec-home').innerHTML=`
 </div>
 </div>
 </div>
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 <!-- Featured Tools -->
 <div style="margin:40px 0 16px;position:relative;padding-left:18px"><div style="position:absolute;left:0;top:3px;width:4px;height:24px;border-radius:4px;background:linear-gradient(180deg,var(--accent),var(--vi))"></div><h3 style="font-size:18px;font-weight:900;letter-spacing:-.02em">Interactive Tools</h3><p style="font-size:13px;color:var(--t3);margin-top:2px">Use them right now — no account needed</p></div>
-<div class="g4 stagger" style="margin-bottom:40px">
-${[{id:'serp',n:'SERP Previewer',d:'Preview your Google search appearance',ic:'🖥️',gr:'linear-gradient(135deg,#0ea5e9,#22d3ee)'},{id:'schema',n:'Schema Generator',d:'Create JSON-LD markup instantly',ic:'⚡',gr:'linear-gradient(135deg,#7c3aed,#a855f7)'},{id:'geoscore',n:'GEO Score',d:'Measure AI search readiness',ic:'📊',gr:'linear-gradient(135deg,#059669,#34d399)'},{id:'workflow',n:'Content Workflow',d:'7-step optimization process',ic:'✍️',gr:'linear-gradient(135deg,#d97706,#fbbf24)'},{id:'crawl',n:'2MB Crawl Checker',d:'Test Googlebot crawl limit',ic:'🤖',gr:'linear-gradient(135deg,#ef4444,#f97316)'}].map(t=>`<div class="cd" style="cursor:pointer;padding:0" onclick="go('${t.id}')"><div style="height:3px;background:${t.gr}"></div><div style="padding:22px"><div style="font-size:28px;margin-bottom:10px">${t.ic}</div><div style="font-size:15px;font-weight:800;margin-bottom:4px;color:var(--t1)">${t.n}</div><div style="font-size:13px;color:var(--t2);line-height:1.5">${t.d}</div></div></div>`).join('')}
+<div class="tools-strip" style="margin-bottom:40px">
+${[{id:'serp',n:'SERP Previewer',d:'Google search preview',ic:'🖥️',cl:'#0ea5e9'},{id:'schema',n:'Schema Generator',d:'JSON-LD markup',ic:'⚡',cl:'#7c3aed'},{id:'geoscore',n:'GEO Score',d:'AI search readiness',ic:'📊',cl:'#059669'},{id:'workflow',n:'Content Workflow',d:'7-step SEO process',ic:'✍️',cl:'#d97706'},{id:'crawl',n:'Crawl Checker',d:'2MB Googlebot limit',ic:'🤖',cl:'#ef4444'}].map(t=>`<div class="ts-item" onclick="go('${t.id}')" style="--tc:${t.cl}"><div class="ts-icon" style="background:${t.cl}">${t.ic}</div><div class="ts-text"><div class="ts-name">${t.n}</div><div class="ts-desc">${t.d}</div></div><svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></div>`).join('')}
 </div>
 
 <!-- Latest Articles -->
@@ -585,8 +598,8 @@ function chkQ(qi,oi,ans){document.querySelectorAll(`[id^="qo${qi}"]`).forEach((b
 // ═══ TOOLS ═══
 function rTools(){const cats=["All","Extension","AI","Free","Technical"];
 document.getElementById('sec-tools').innerHTML=`<div class="sh"><h2>Tools</h2><p>Interactive SEO tools and curated directory</p></div>
-<div style="margin-bottom:32px"><h3 style="font-size:16px;font-weight:800;margin-bottom:14px">Our Tools</h3><div class="g4 stagger">
-${[{id:'serp',n:'SERP Previewer',d:'Preview Google search results',ic:'🖥️',gr:'linear-gradient(135deg,#0ea5e9,#22d3ee)'},{id:'schema',n:'Schema Generator',d:'Create JSON-LD markup',ic:'⚡',gr:'linear-gradient(135deg,#7c3aed,#a855f7)'},{id:'geoscore',n:'GEO Score',d:'AI readiness checker',ic:'📊',gr:'linear-gradient(135deg,#059669,#34d399)'},{id:'workflow',n:'Content Workflow',d:'7-step SEO process',ic:'✍️',gr:'linear-gradient(135deg,#d97706,#fbbf24)'},{id:'crawl',n:'2MB Crawl Checker',d:'Test Googlebot crawl limit',ic:'🤖',gr:'linear-gradient(135deg,#ef4444,#f97316)'}].map(t=>`<div class="cd" style="cursor:pointer;padding:0" onclick="go('${t.id}')"><div style="height:3px;background:${t.gr}"></div><div style="padding:20px"><div style="font-size:26px;margin-bottom:8px">${t.ic}</div><div style="font-size:14px;font-weight:800;margin-bottom:3px">${t.n}</div><div style="font-size:12px;color:var(--t2)">${t.d}</div></div></div>`).join('')}
+<div style="margin-bottom:32px"><h3 style="font-size:16px;font-weight:800;margin-bottom:14px">Our Tools</h3><div class="tools-strip">
+${[{id:'serp',n:'SERP Previewer',d:'Google search preview',ic:'🖥️',cl:'#0ea5e9'},{id:'schema',n:'Schema Generator',d:'JSON-LD markup',ic:'⚡',cl:'#7c3aed'},{id:'geoscore',n:'GEO Score',d:'AI search readiness',ic:'📊',cl:'#059669'},{id:'workflow',n:'Content Workflow',d:'7-step SEO process',ic:'✍️',cl:'#d97706'},{id:'crawl',n:'Crawl Checker',d:'2MB Googlebot limit',ic:'🤖',cl:'#ef4444'}].map(t=>`<div class="ts-item" onclick="go('${t.id}')" style="--tc:${t.cl}"><div class="ts-icon" style="background:${t.cl}">${t.ic}</div><div class="ts-text"><div class="ts-name">${t.n}</div><div class="ts-desc">${t.d}</div></div><svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></div>`).join('')}
 </div></div>
 <h3 style="font-size:16px;font-weight:800;margin-bottom:14px">Tools Directory</h3>
 <div class="flt">${cats.map(c=>`<button class="fb ${tFlt===c?'on':''}" onclick="tFlt='${c}';render()">${c}</button>`).join('')}</div>
@@ -700,57 +713,62 @@ function rFaq(){document.getElementById('sec-faq').innerHTML=`<div class="sh"><h
 // ═══ ABOUT ═══
 // ═══ 2MB CRAWL LIMIT CHECKER ═══
 function rCrawl(){document.getElementById('sec-crawl').innerHTML=`<div class="sh"><h2>Googlebot 2MB Crawl Limit Checker</h2><p>Check if your HTML exceeds Google's 2MB crawl limit — content beyond this point won't be indexed</p></div>
-<div class="g2" style="gap:24px;align-items:start">
-<div>
-<div class="tool-panel">
-<h3>🔗 Enter a URL</h3>
-<p style="font-size:12px;color:var(--t3);margin:-8px 0 14px;line-height:1.6">Paste any public URL and we'll fetch the HTML for you.</p>
+<div class="tool-panel" style="margin-bottom:20px">
+<h3 style="margin-bottom:12px">🔗 Enter a URL to analyze</h3>
 <div style="display:flex;gap:8px">
 <input type="url" id="crawlUrl" placeholder="https://example.com/page" style="flex:1" onkeydown="if(event.key==='Enter')fetchCrawlUrl()"/>
 <button class="btn btn-a btn-sm" onclick="fetchCrawlUrl()" id="crawlFetchBtn">Analyze</button>
 </div>
 <div id="crawlStatus" style="margin-top:8px;font-size:12px;display:none"></div>
-</div>
-<div class="tool-panel" style="margin-top:16px">
-<details>
-<summary style="cursor:pointer;font-size:13px;font-weight:700;color:var(--t2);list-style:none;display:flex;align-items:center;gap:6px"><span style="transition:transform .2s;display:inline-block" id="pasteArrow">▶</span> Or paste HTML source manually</summary>
-<div style="margin-top:14px">
-<textarea id="crawlInput" rows="10" placeholder="<!DOCTYPE html>&#10;<html>&#10;  <head>...</head>&#10;  <body>...</body>&#10;</html>" style="font-family:monospace;font-size:11px;line-height:1.6;tab-size:2"></textarea>
-<div style="display:flex;gap:8px;margin-top:10px">
-<button class="btn btn-outline btn-sm" onclick="analyzeCrawl()" style="flex:1">Analyze Pasted HTML</button>
-<button class="btn btn-outline btn-sm" onclick="document.getElementById('crawlInput').value='';document.getElementById('crawlResults').innerHTML=crawlEmpty">Clear</button>
-</div>
+<details style="margin-top:12px">
+<summary style="cursor:pointer;font-size:12px;font-weight:600;color:var(--t3);list-style:none;display:flex;align-items:center;gap:5px"><span style="transition:transform .2s;display:inline-block" id="pasteArrow">▶</span> Or paste HTML source manually</summary>
+<div style="margin-top:10px">
+<textarea id="crawlInput" rows="6" placeholder="Paste HTML source here..." style="font-family:monospace;font-size:11px;line-height:1.5"></textarea>
+<button class="btn btn-outline btn-sm" onclick="analyzeCrawl()" style="margin-top:8px;width:100%">Analyze Pasted HTML</button>
 </div>
 </details>
 </div>
-<div class="tool-panel" style="margin-top:16px">
-<h3>Why does the 2MB limit matter?</h3>
-<div style="font-size:13px;color:var(--t2);line-height:1.8">
-<p style="margin-bottom:10px">Google's crawler (<strong style="color:var(--t1)">Googlebot</strong>) has a hard limit: it only processes the <strong style="color:var(--t1)">first 2MB (2,097,152 bytes)</strong> of any HTML page.</p>
-<p style="margin-bottom:10px">Everything beyond that cutoff is <strong style="color:var(--ro)">invisible to Google</strong>:</p>
-<ul style="margin:0 0 10px 18px">
-<li>Content below the fold may never be indexed</li>
-<li>Internal links at the bottom get ignored</li>
-<li>Schema markup in the footer won't be read</li>
-<li>Critical structured data could be truncated</li>
-</ul>
-<div class="article-body"><div class="tip"><strong>Common offenders:</strong> E-commerce pages with 100+ products, SPAs with inline JS, pages with Base64 images, bloated CSS/JS in <code>&lt;head&gt;</code>.</div></div>
-</div>
+<div class="g2" style="gap:20px;align-items:start">
+<div>
+<div id="crawlResults" class="tool-panel" style="min-height:260px">
+<h3>Analysis Results</h3>
+<div style="text-align:center;padding:30px 0;color:var(--t3)"><div style="font-size:36px;margin-bottom:10px;opacity:.4">🤖</div><div style="font-size:12px">Enter a URL above and click Analyze</div></div>
 </div>
 </div>
 <div>
-<div id="crawlResults" class="tool-panel" style="min-height:300px">
-<h3>Analysis Results</h3>
-<div style="text-align:center;padding:40px 0;color:var(--t3)">
-<div style="font-size:40px;margin-bottom:12px;opacity:.4">🤖</div>
-<div style="font-size:13px">Enter a URL above and click <strong>Analyze</strong></div>
-</div>
+<div id="crawlPreview" class="tool-panel" style="min-height:260px">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Googlebot Visualization (Rendered)</h3><div id="crawlViewToggle" style="display:none"><button class="fb on" id="crawlBtnRendered" onclick="toggleCrawlView('rendered')" style="font-size:10px;padding:4px 10px">Rendered</button><button class="fb" id="crawlBtnTrunc" onclick="toggleCrawlView('truncated')" style="font-size:10px;padding:4px 10px">After 2MB Cut</button></div></div>
+<div style="font-size:11px;color:var(--t3);margin-bottom:12px">What Googlebot sees before cutting at 2MB</div>
+<div id="crawlIframeWrap" style="text-align:center;padding:20px 0;color:var(--t3)"><div style="font-size:36px;margin-bottom:10px;opacity:.3">👁️</div><div style="font-size:12px">Rendered preview appears here after analysis</div></div>
 </div>
 </div>
 </div>`;
-document.querySelector('details')?.addEventListener('toggle',function(e){document.getElementById('pasteArrow').style.transform=this.open?'rotate(90deg)':''})
+document.querySelector('#sec-crawl details')?.addEventListener('toggle',function(){document.getElementById('pasteArrow').style.transform=this.open?'rotate(90deg)':''})
 }
-var crawlEmpty='<h3>Analysis Results</h3><div style="text-align:center;padding:40px 0;color:var(--t3)"><div style="font-size:40px;margin-bottom:12px;opacity:.4">🤖</div><div style="font-size:13px">Enter a URL above and click <strong>Analyze</strong></div></div>';
+var crawlEmpty='<h3>Analysis Results</h3><div style="text-align:center;padding:30px 0;color:var(--t3)"><div style="font-size:36px;margin-bottom:10px;opacity:.4">🤖</div><div style="font-size:12px">Enter a URL above and click Analyze</div></div>';
+var crawlFullHtml='';var crawlTruncHtml='';
+function toggleCrawlView(mode){
+var wrap=document.getElementById('crawlIframeWrap');
+var btnR=document.getElementById('crawlBtnRendered');
+var btnT=document.getElementById('crawlBtnTrunc');
+if(mode==='rendered'){btnR.classList.add('on');btnT.classList.remove('on');renderCrawlIframe(crawlFullHtml,false)}
+else{btnT.classList.add('on');btnR.classList.remove('on');renderCrawlIframe(crawlTruncHtml,true)}
+}
+function renderCrawlIframe(html,isTrunc){
+var wrap=document.getElementById('crawlIframeWrap');
+var label=isTrunc?'<div style="background:var(--ro);color:#fff;padding:6px 14px;font-size:11px;font-weight:700;text-align:center;letter-spacing:.04em">⚠️ TRUNCATED AT 2MB — Content below this point is invisible to Google</div>':'<div style="background:var(--em);color:#fff;padding:5px 14px;font-size:11px;font-weight:700;text-align:center">✅ Full page as Googlebot receives it</div>';
+wrap.innerHTML=label+'<div style="position:relative;border:1px solid var(--border);border-radius:0 0 8px 8px;overflow:hidden;background:#fff"><iframe id="crawlFrame" style="width:100%;height:500px;border:none;display:block" sandbox="allow-same-origin"></iframe></div>';
+var frame=document.getElementById('crawlFrame');
+var doc=frame.contentDocument||frame.contentWindow.document;
+doc.open();doc.write(html);doc.close();
+}
+function showCrawlPreview(fullHtml,bytes,over){
+crawlFullHtml=fullHtml;
+crawlTruncHtml=over?fullHtml.substring(0,2097152):fullHtml;
+var toggle=document.getElementById('crawlViewToggle');
+if(toggle)toggle.style.display=over?'flex':'none';
+renderCrawlIframe(fullHtml,false);
+}
 function fetchCrawlUrl(){
 var url=document.getElementById('crawlUrl').value.trim();
 if(!url){return}
@@ -844,6 +862,7 @@ for(var i=0;i<sa.length;i++){var s=sa[i];o+='<div style="padding:10px 12px;borde
 o+='</div>'+tN;
 if(rc.length){o+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin:20px 0 10px">Recommendations</div>';for(var j=0;j<rc.length;j++){o+='<div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:8px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;font-size:12px;color:var(--t2);line-height:1.6"><span style="flex-shrink:0;font-size:16px">'+rc[j][0]+'</span><span>'+rc[j][1]+'</span></div>'}}
 document.getElementById('crawlResults').innerHTML=o;
+showCrawlPreview(html,bytes,over);
 }
 
 function rAbout(){document.getElementById('sec-about').innerHTML=`<div class="sh"><h2>About LearnSEO Hub</h2><p>Free SEO resources for the AI search era</p></div>
