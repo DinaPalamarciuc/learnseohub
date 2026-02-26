@@ -509,10 +509,10 @@ function go(id){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   const sec=document.getElementById('sec-'+id);
   if(sec){sec.classList.add('on')}
-  // Update nav active state
   document.querySelectorAll('.nav-link').forEach(l=>{l.classList.remove('on');if(l.getAttribute('data-id')===id)l.classList.add('on')});
-  // Close mobile menu
   document.getElementById('mobileMenu').classList.remove('open');
+  if(id==='home')history.pushState(null,'','#');
+  else history.pushState(null,'','#'+id);
   window.scrollTo({top:0,behavior:'smooth'});
   render();
 }
@@ -561,6 +561,7 @@ document.getElementById('sec-home').innerHTML=`
 </div>
 </div>
 </div>
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 <!-- Featured Tools -->
 <div style="margin:40px 0 16px;position:relative;padding-left:18px"><div style="position:absolute;left:0;top:3px;width:4px;height:24px;border-radius:4px;background:linear-gradient(180deg,var(--accent),var(--vi))"></div><h3 style="font-size:18px;font-weight:900;letter-spacing:-.02em">Interactive Tools</h3><p style="font-size:13px;color:var(--t3);margin-top:2px">Use them right now — no account needed</p></div>
@@ -586,7 +587,7 @@ document.getElementById('sec-blog').innerHTML=`<div class="sh"><h2>Blog</h2><p>S
 <div class="flt">${cats.map(c=>`<button class="fb ${blogFlt===c?'on':''}" onclick="blogFlt='${c}';render()">${c}</button>`).join('')}</div>
 <div class="g3 stagger">${(blogFlt==="All"?ARTICLES:ARTICLES.filter(a=>a.cat===blogFlt)).map(a=>`<div class="cd blog-card" onclick="openArticle('${a.id}')"><div class="blog-thumb" style="background:${a.gr}">${BANNERS[a.id]||''}</div><div class="blog-meta"><div class="fx ac jb"><span class="blog-tag" style="color:${a.gr.match(/#[a-f0-9]{6}/)?.[0]||'var(--accent)'}">${a.cat}</span><span class="bd bd-${a.lv==='Beginner'?'s':a.lv==='Intermediate'?'a':a.lv==='Advanced'?'r':'v'}">${a.lv}</span></div><div class="blog-title" style="margin-top:8px">${a.ti}</div><div class="blog-desc">${a.desc}</div><div class="blog-footer"><span>${a.date}</span><span>${a.du}</span></div></div></div>`).join('')}</div>`}
 
-function openArticle(id){curArticle=ARTICLES.find(a=>a.id===id);view='article';document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById('sec-article').classList.add('on');window.scrollTo({top:0,behavior:'smooth'});injectMeta(curArticle);rArticle()}
+function openArticle(id){curArticle=ARTICLES.find(a=>a.id===id);if(!curArticle)return;view='article';document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById('sec-article').classList.add('on');history.pushState(null,'','#article/'+id);window.scrollTo({top:0,behavior:'smooth'});injectMeta(curArticle);rArticle()}
 function injectMeta(a){
 // Clean old injected tags
 document.querySelectorAll('meta[data-lsh]').forEach(function(el){el.remove()});
@@ -921,6 +922,8 @@ var editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',des
 try{
 var saved=localStorage.getItem('lsh_articles');
 if(saved){var arr=JSON.parse(saved);if(arr.length){for(var i=arr.length-1;i>=0;i--){ARTICLES.unshift(arr[i])}}}
+var edits=localStorage.getItem('lsh_edits');
+if(edits){var obj=JSON.parse(edits);for(var id in obj){var idx=ARTICLES.findIndex(function(a){return a.id===id});if(idx>-1){Object.assign(ARTICLES[idx],obj[id])}}}
 }catch(e){}
 })();
 
@@ -928,6 +931,10 @@ function saveArticlesToStorage(){
 try{
 var custom=ARTICLES.filter(function(a){return a._custom});
 localStorage.setItem('lsh_articles',JSON.stringify(custom));
+// Save edits to built-in articles
+var edits={};
+ARTICLES.forEach(function(a){if(!a._custom&&a._edited)edits[a.id]=a});
+localStorage.setItem('lsh_edits',JSON.stringify(edits));
 }catch(e){}
 }
 
@@ -970,21 +977,30 @@ function showEditor(){
 var d=editorData;
 if(!d.date){var now=new Date();d.date=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
 var customArts=ARTICLES.filter(function(a){return a._custom});
-var savedList='';
+var builtinArts=ARTICLES.filter(function(a){return !a._custom});
+var savedList='<div class="tool-panel" style="margin-bottom:20px">';
+savedList+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px"><h3 style="margin:0">All Articles ('+ARTICLES.length+')</h3>';
+if(customArts.length)savedList+='<button class="btn btn-outline btn-sm" onclick="if(confirm(\'Delete ALL custom articles?\')){ARTICLES=ARTICLES.filter(function(a){return !a._custom});saveArticlesToStorage();showEditor()}" style="font-size:10px;color:var(--ro)">Delete All Custom</button>';
+savedList+='</div>';
 if(customArts.length){
-savedList='<div class="tool-panel" style="margin-bottom:20px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Published Articles ('+customArts.length+')</h3><button class="btn btn-outline btn-sm" onclick="if(confirm(\'Delete ALL custom articles?\')){ARTICLES=ARTICLES.filter(function(a){return !a._custom});saveArticlesToStorage();showEditor()}" style="font-size:10px;color:var(--ro)">Delete All</button></div>';
+savedList+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);margin-bottom:8px">Custom Articles ('+customArts.length+')</div>';
 for(var i=0;i<customArts.length;i++){
 var a=customArts[i];
-savedList+='<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--bg2);margin-bottom:6px;border:1px solid var(--border)"><div style="width:32px;height:32px;border-radius:8px;background:'+a.gr+';flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(a.ti)+'</div><div style="font-size:11px;color:var(--t3)">'+a.cat+' · '+a.date+'</div></div><button class="btn btn-outline btn-sm" onclick="openArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px">View</button><button class="btn btn-outline btn-sm" onclick="deleteCustomArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px;color:var(--ro);border-color:var(--ro)">✕</button></div>';
+savedList+='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:rgba(37,99,235,.04);margin-bottom:6px;border:1px solid var(--accent);border-opacity:.2"><div style="width:32px;height:32px;border-radius:8px;background:'+a.gr+';flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(a.ti)+'</div><div style="font-size:10px;color:var(--t3)">'+a.cat+' · '+a.date+(a.meta&&a.meta.title?' · 🏷️':'')+'</div></div><button class="btn btn-outline btn-sm" onclick="editArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px;color:var(--accent);border-color:var(--accent)">✏️ Edit</button><button class="btn btn-outline btn-sm" onclick="openArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px">View</button><button class="btn btn-outline btn-sm" onclick="deleteCustomArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px;color:var(--ro);border-color:var(--ro)">✕</button></div>';
+}
+}
+savedList+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);margin:16px 0 8px">Built-in Articles ('+builtinArts.length+')</div>';
+for(var i=0;i<builtinArts.length;i++){
+var a=builtinArts[i];
+savedList+='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;background:var(--bg2);margin-bottom:6px;border:1px solid var(--border)"><div style="width:32px;height:32px;border-radius:8px;background:'+a.gr+';flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(a.ti)+'</div><div style="font-size:10px;color:var(--t3)">'+a.cat+' · '+a.date+(a._edited?' · <span style="color:var(--am)">edited</span>':'')+'</div></div><button class="btn btn-outline btn-sm" onclick="editArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px;color:var(--accent);border-color:var(--accent)">✏️ Edit</button><button class="btn btn-outline btn-sm" onclick="openArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px">View</button></div>';
 }
 savedList+='</div>';
-}
 document.getElementById('sec-editor').innerHTML='<div class="sh"><div style="display:flex;align-items:center;justify-content:space-between"><div><h2>Admin Panel</h2><p>Create and manage blog articles</p></div><button class="btn btn-outline btn-sm" onclick="adminLogged=false;go(\'home\')" style="font-size:11px">🔒 Lock & Exit</button></div></div>'+
 savedList+
 '<div class="g2" style="gap:24px;align-items:start">'+
 '<div>'+
 '<div class="tool-panel">'+
-'<h3>New Article</h3>'+
+'<h3>'+(editorData._editId?'✏️ Editing: '+esc(editorData.ti):'➕ New Article')+'</h3>'+
 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">'+
 '<div style="grid-column:1/-1"><label class="ed-label">Title</label><input id="edTi" value="'+esc(d.ti)+'" oninput="edVal(\'ti\',this.value)" placeholder="Your Article Title"/></div>'+
 '<div><label class="ed-label">Category</label><select id="edCat" onchange="edVal(\'cat\',this.value)"><option'+(d.cat==='Foundation'?' selected':'')+'>Foundation</option><option'+(d.cat==='AI-Optimization'?' selected':'')+'>AI-Optimization</option><option'+(d.cat==='Technical'?' selected':'')+'>Technical</option><option'+(d.cat==='Strategy'?' selected':'')+'>Strategy</option></select></div>'+
@@ -1024,8 +1040,8 @@ savedList+
 '</div>'+
 '</details>'+
 '<div style="display:flex;gap:10px;margin-top:20px">'+
-'<button class="btn btn-a" onclick="publishArticle()" style="flex:1;padding:14px;font-size:15px;font-weight:800">📝 Publish Article</button>'+
-'<button class="btn btn-outline" onclick="resetEditor()">Reset</button>'+
+'<button class="btn btn-a" onclick="publishArticle()" style="flex:1;padding:14px;font-size:15px;font-weight:800">'+(editorData._editId?'💾 Save Changes':'📝 Publish Article')+'</button>'+
+'<button class="btn btn-outline" onclick="resetEditor()">'+(editorData._editId?'Cancel':'Reset')+'</button>'+
 '</div>'+
 '</div>'+
 '<div>'+
@@ -1104,21 +1120,64 @@ var metaDiv=document.getElementById('edMetaPreview');
 if(metaDiv)metaDiv.innerHTML=mp;
 }
 
+function editArticle(id){
+var a=ARTICLES.find(function(x){return x.id===id});
+if(!a)return;
+var m=a.meta||{};
+var grMatch=a.gr?a.gr.match(/#[0-9a-fA-F]{6}/g):null;
+editorData={
+ti:a.ti,cat:a.cat,lv:a.lv,du:a.du,date:a.date,desc:a.desc,
+gr1:grMatch&&grMatch[0]?grMatch[0]:'#0ea5e9',
+gr2:grMatch&&grMatch[1]?grMatch[1]:'#22d3ee',
+html:a.html,
+metaTitle:m.title||'',metaDesc:m.description||'',metaKeys:m.keywords||'',
+ogImage:m.ogImage||'',canonical:m.canonical||'',robots:m.robots||'index, follow',
+quizQ:a.quiz&&a.quiz[0]?a.quiz[0].q:'',
+quizOpts:a.quiz&&a.quiz[0]?[a.quiz[0].opts[0]||'',a.quiz[0].opts[1]||'',a.quiz[0].opts[2]||'',a.quiz[0].opts[3]||'']:['','','',''],
+quizAns:a.quiz&&a.quiz[0]?a.quiz[0].ans:0,
+quizExp:a.quiz&&a.quiz[0]?a.quiz[0].exp:'',
+_editId:id,_isCustom:!!a._custom
+};
+showEditor();
+setTimeout(function(){
+var el=document.getElementById('edTi');
+if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+},100);
+}
+
 function publishArticle(){
 var d=editorData;
 if(!d.ti.trim()){alert('Enter an article title.');return}
 if(!d.html.trim()){alert('Add article content.');return}
-var newId='a_'+(Date.now());
 var gr='linear-gradient(135deg,'+d.gr1+','+d.gr2+')';
 var quiz=[];
 if(d.quizQ.trim()&&d.quizOpts.filter(function(o){return o.trim()}).length>=2){
 quiz=[{q:d.quizQ,opts:d.quizOpts.filter(function(o){return o.trim()}),ans:d.quizAns,exp:d.quizExp}];
 }
-var article={id:newId,ti:d.ti,cat:d.cat,lv:d.lv,du:d.du,date:d.date,gr:gr,desc:d.desc,html:d.html,quiz:quiz,_custom:true,meta:{title:d.metaTitle||d.ti,description:d.metaDesc||d.desc,keywords:d.metaKeys,ogImage:d.ogImage,canonical:d.canonical,robots:d.robots}};
+var metaObj={title:d.metaTitle||d.ti,description:d.metaDesc||d.desc,keywords:d.metaKeys,ogImage:d.ogImage,canonical:d.canonical,robots:d.robots};
+if(d._editId){
+// Edit existing
+var idx=ARTICLES.findIndex(function(a){return a.id===d._editId});
+if(idx>-1){
+ARTICLES[idx].ti=d.ti;ARTICLES[idx].cat=d.cat;ARTICLES[idx].lv=d.lv;
+ARTICLES[idx].du=d.du;ARTICLES[idx].date=d.date;ARTICLES[idx].desc=d.desc;
+ARTICLES[idx].gr=gr;ARTICLES[idx].html=d.html;ARTICLES[idx].quiz=quiz;
+ARTICLES[idx].meta=metaObj;
+if(!ARTICLES[idx]._custom)ARTICLES[idx]._edited=true;
+}
+saveArticlesToStorage();
+var eid=d._editId;
+resetEditor();
+openArticle(eid);
+}else{
+// New article
+var newId='a_'+(Date.now());
+var article={id:newId,ti:d.ti,cat:d.cat,lv:d.lv,du:d.du,date:d.date,gr:gr,desc:d.desc,html:d.html,quiz:quiz,_custom:true,meta:metaObj};
 ARTICLES.unshift(article);
 saveArticlesToStorage();
 resetEditor();
 openArticle(newId);
+}
 }
 
 function resetEditor(){
@@ -1140,8 +1199,23 @@ ${[{v:'8',l:'Articles',cl:'var(--accent)'},{v:'4',l:'Tools',cl:'var(--em)'},{v:'
 </div>
 <div class="nl"><h3>Stay Updated</h3><p>Weekly newsletter with SEO tips and AI optimization strategies.</p><div class="nl-form"><input type="email" placeholder="your@email.com"/><button class="btn btn-a btn-sm" onclick="this.textContent='Subscribed ✓';this.style.background='var(--em)'">Subscribe</button></div></div>`}
 
+// ═══ HASH ROUTER ═══
+function routeFromHash(){
+  var h=location.hash.replace('#','');
+  if(!h||h==='/'){go('home');return}
+  if(h.startsWith('article/')){
+    var aid=h.split('/')[1];
+    var a=ARTICLES.find(function(x){return x.id===aid});
+    if(a){curArticle=a;view='article';document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('on')});document.getElementById('sec-article').classList.add('on');injectMeta(a);rArticle();window.scrollTo(0,0);return}
+  }
+  var sec=document.getElementById('sec-'+h);
+  if(sec){view=h;document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('on')});sec.classList.add('on');render();window.scrollTo(0,0)}
+  else{go('home')}
+}
+window.addEventListener('popstate',routeFromHash);
+
 // ═══ INIT ═══
-render();
+if(location.hash&&location.hash!=='#'){routeFromHash()}else{render()}
 </script>
 </body>
 </html>
