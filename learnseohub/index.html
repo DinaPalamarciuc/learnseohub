@@ -453,6 +453,7 @@ const WF_STEPS=[
 {ti:"Publish & Index",icon:"🚀",tips:["Validate Schema with Rich Results Test","Check all links","Submit to Search Console","Share on social channels"],checks:["Schema validated","Links verified","Submitted to GSC","Social shared"]}
 ];
 const DOWNLOADS=[
+{id:"d0",ti:"E-Commerce SEO To-Do List",desc:"Complete checklist for e-commerce SEO: product pages, category optimization, technical setup, schema markup, and AI Mode readiness.",format:"Google Sheets",icon:"🛒",cl:"#16a34a",bg:"rgba(22,163,74,.08)",url:"https://docs.google.com/spreadsheets/d/1AvrvwHkqqnSNowlra56DM-lbdOHi-nfz/edit?usp=sharing&ouid=116518271178255336772&rtpof=true&sd=true"},
 {id:"d1",ti:"SEO Audit Template",desc:"Complete Excel template for auditing any website. Covers technical SEO, on-page, off-page, content, and Core Web Vitals.",format:"XLSX",icon:"📊",cl:"#38bdf8",bg:"rgba(56,189,248,.08)"},
 {id:"d2",ti:"Keywords Everywhere Extension",desc:"Chrome extension providing real-time search volume, CPC, and competition data directly in your search results.",format:"Chrome Extension",icon:"🔍",cl:"#34d399",bg:"rgba(52,211,153,.08)"},
 {id:"d3",ti:"Detailed SEO Extension",desc:"One-click SEO insights for any page — view headings, schema markup, meta tags, and technical details instantly.",format:"Chrome Extension",icon:"⚡",cl:"#a78bfa",bg:"rgba(167,139,250,.08)"},
@@ -657,7 +658,7 @@ function toggleWf(step,check){if(!wfChecks[step])wfChecks[step]=[];const idx=wfC
 
 // ═══ DOWNLOADS ═══
 function rDownloads(){document.getElementById('sec-downloads').innerHTML=`<div class="sh"><h2>Downloads</h2><p>Free templates, extensions, and digital products</p></div>
-<div class="g3 stagger">${DOWNLOADS.map(d=>`<div class="cd dl-card"><div class="dl-format">${d.format}</div><div class="dl-icon" style="background:${d.bg}">${d.icon}</div><div class="dl-title">${d.ti}</div><div class="dl-desc">${d.desc}</div><div class="dl-btn">↓ Download</div></div>`).join('')}</div>
+<div class="g3 stagger">${DOWNLOADS.map(d=>`<div class="cd dl-card"${d.url?` onclick="window.open('${d.url}','_blank')"`:''}><div class="dl-format">${d.format}</div><div class="dl-icon" style="background:${d.bg}">${d.icon}</div><div class="dl-title">${d.ti}</div><div class="dl-desc">${d.desc}</div><div class="dl-btn">${d.url?'↗ Open Template':'↓ Download'}</div></div>`).join('')}</div>
 <div class="nl" style="margin-top:40px"><h3>Get Notified About New Resources</h3><p>Be the first to know when we release new templates, tools, and extensions.</p><div class="nl-form"><input type="email" placeholder="your@email.com"/><button class="btn btn-a btn-sm" onclick="this.textContent='Subscribed ✓';this.style.background='var(--em)'">Subscribe</button></div></div>`}
 
 // ═══ GUIDES ═══
