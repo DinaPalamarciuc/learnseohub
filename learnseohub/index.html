@@ -266,8 +266,6 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 <div class="nav-dd-item" onclick="go('news')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>News &amp; Trends</div>
 <div class="nav-dd-item" onclick="go('career')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Career Paths</div>
 <div class="nav-dd-item" onclick="go('faq')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ</div>
-<div style="height:1px;background:var(--border);margin:4px 8px"></div>
-<div class="nav-dd-item" onclick="go('editor')" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Article Editor</div>
 </div>
 </div>
 <div class="nav-link" onclick="go('about')" data-id="about">About</div>
@@ -298,7 +296,6 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 <a onclick="go('career')">Career Paths</a>
 <a onclick="go('faq')">FAQ</a>
 <div class="mm-group">More</div>
-<a onclick="go('editor')" style="color:var(--accent)">✏️ Article Editor</a>
 <a onclick="go('about')">About</a>
 </div>
 
@@ -341,7 +338,7 @@ border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03)}
 </div>
 <div class="ft-col"><h4>Content</h4><a onclick="go('blog')">Blog</a><a onclick="go('news')">News & Trends</a><a onclick="go('guides')">Guides</a><a onclick="go('glossary')">SEO Glossary</a></div>
 <div class="ft-col"><h4>Tools</h4><a onclick="go('serp')">SERP Previewer</a><a onclick="go('schema')">Schema Generator</a><a onclick="go('geoscore')">GEO Score</a><a onclick="go('workflow')">Content Workflow</a><a onclick="go('crawl')">2MB Crawl Checker</a></div>
-<div class="ft-col"><h4>Resources</h4><a onclick="go('downloads')">Downloads</a><a onclick="go('prompts')">AI Prompts</a><a onclick="go('compare')">Tool Comparison</a><a onclick="go('editor')">Article Editor</a><a onclick="go('about')">About</a></div>
+<div class="ft-col"><h4>Resources</h4><a onclick="go('downloads')">Downloads</a><a onclick="go('prompts')">AI Prompts</a><a onclick="go('compare')">Tool Comparison</a><a onclick="go('about')">About</a></div>
 </div>
 <div class="ft-bottom"><span>&copy; 2026 LearnSEO Hub &middot; All rights reserved</span><span>Made with &#10084; for the SEO community</span></div>
 </div>
@@ -508,6 +505,7 @@ let blogFlt="All";
 // ═══ NAVIGATION ═══
 function go(id){
   view=id;
+  if(id!=='article'&&typeof clearMeta==='function')clearMeta();
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   const sec=document.getElementById('sec-'+id);
   if(sec){sec.classList.add('on')}
@@ -563,7 +561,6 @@ document.getElementById('sec-home').innerHTML=`
 </div>
 </div>
 </div>
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 <!-- Featured Tools -->
 <div style="margin:40px 0 16px;position:relative;padding-left:18px"><div style="position:absolute;left:0;top:3px;width:4px;height:24px;border-radius:4px;background:linear-gradient(180deg,var(--accent),var(--vi))"></div><h3 style="font-size:18px;font-weight:900;letter-spacing:-.02em">Interactive Tools</h3><p style="font-size:13px;color:var(--t3);margin-top:2px">Use them right now — no account needed</p></div>
@@ -589,7 +586,37 @@ document.getElementById('sec-blog').innerHTML=`<div class="sh"><h2>Blog</h2><p>S
 <div class="flt">${cats.map(c=>`<button class="fb ${blogFlt===c?'on':''}" onclick="blogFlt='${c}';render()">${c}</button>`).join('')}</div>
 <div class="g3 stagger">${(blogFlt==="All"?ARTICLES:ARTICLES.filter(a=>a.cat===blogFlt)).map(a=>`<div class="cd blog-card" onclick="openArticle('${a.id}')"><div class="blog-thumb" style="background:${a.gr}">${BANNERS[a.id]||''}</div><div class="blog-meta"><div class="fx ac jb"><span class="blog-tag" style="color:${a.gr.match(/#[a-f0-9]{6}/)?.[0]||'var(--accent)'}">${a.cat}</span><span class="bd bd-${a.lv==='Beginner'?'s':a.lv==='Intermediate'?'a':a.lv==='Advanced'?'r':'v'}">${a.lv}</span></div><div class="blog-title" style="margin-top:8px">${a.ti}</div><div class="blog-desc">${a.desc}</div><div class="blog-footer"><span>${a.date}</span><span>${a.du}</span></div></div></div>`).join('')}</div>`}
 
-function openArticle(id){curArticle=ARTICLES.find(a=>a.id===id);view='article';document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById('sec-article').classList.add('on');window.scrollTo({top:0,behavior:'smooth'});rArticle()}
+function openArticle(id){curArticle=ARTICLES.find(a=>a.id===id);view='article';document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.getElementById('sec-article').classList.add('on');window.scrollTo({top:0,behavior:'smooth'});injectMeta(curArticle);rArticle()}
+function injectMeta(a){
+// Clean old injected tags
+document.querySelectorAll('meta[data-lsh]').forEach(function(el){el.remove()});
+document.querySelectorAll('link[data-lsh]').forEach(function(el){el.remove()});
+if(!a)return;
+var m=a.meta||{};
+var mt=m.title||a.ti;
+var md=m.description||a.desc;
+document.title=mt+' — LearnSEO Hub';
+function addMeta(name,content,prop){
+if(!content)return;
+var el=document.createElement('meta');
+if(prop)el.setAttribute('property',name);else el.setAttribute('name',name);
+el.setAttribute('content',content);
+el.setAttribute('data-lsh','1');
+document.head.appendChild(el);
+}
+addMeta('description',md);
+if(m.keywords)addMeta('keywords',m.keywords);
+if(m.robots)addMeta('robots',m.robots);
+addMeta('og:title',mt,true);
+addMeta('og:description',md,true);
+addMeta('og:type','article',true);
+if(m.ogImage)addMeta('og:image',m.ogImage,true);
+addMeta('twitter:card',m.ogImage?'summary_large_image':'summary');
+addMeta('twitter:title',mt);
+addMeta('twitter:description',md);
+if(m.canonical){var lk=document.createElement('link');lk.rel='canonical';lk.href=m.canonical;lk.setAttribute('data-lsh','1');document.head.appendChild(lk)}
+}
+function clearMeta(){document.querySelectorAll('[data-lsh]').forEach(function(el){el.remove()});document.title='LearnSEO Hub — Your SEO Workbench'}
 function rArticle(){if(!curArticle)return;const a=curArticle;
 document.getElementById('sec-article').innerHTML=`<div class="article-wrap">
 <div class="article-back" onclick="go('blog')">← Back to Blog</div>
@@ -599,6 +626,16 @@ document.getElementById('sec-article').innerHTML=`<div class="article-wrap">
 <p style="font-size:15px;color:var(--t2);line-height:1.75;margin-bottom:32px">${a.desc}</p>
 <div class="article-body">${a.html}</div>
 ${a.quiz?a.quiz.map((q,qi)=>`<div class="quiz-box"><div class="quiz-q">Quiz: ${q.q}</div>${q.opts.map((o,oi)=>`<button class="quiz-opt" id="qo${qi}${oi}" onclick="chkQ(${qi},${oi},${q.ans})">${o}</button>`).join('')}<div class="quiz-exp" id="qe${qi}">✓ ${q.exp}</div></div>`).join(''):''}
+${a.meta&&adminLogged?`<div style="margin-top:32px;padding:20px;border-radius:12px;border:1px solid var(--border);background:var(--bg2)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px"><span style="font-size:16px">🏷️</span><span style="font-size:13px;font-weight:800;color:var(--t1)">SEO Meta Tags</span><span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--accent);color:#fff;font-weight:700">ADMIN ONLY</span></div>
+<div style="display:grid;gap:8px;font-size:12px;font-family:monospace">
+${a.meta.title?`<div style="padding:8px 12px;border-radius:6px;background:var(--card);border:1px solid var(--border)"><span style="color:var(--accent);font-weight:700">&lt;title&gt;</span> <span style="color:var(--t2)">${a.meta.title}</span></div>`:''}
+${a.meta.description?`<div style="padding:8px 12px;border-radius:6px;background:var(--card);border:1px solid var(--border)"><span style="color:var(--accent);font-weight:700">description</span> <span style="color:var(--t2)">${a.meta.description}</span></div>`:''}
+${a.meta.keywords?`<div style="padding:8px 12px;border-radius:6px;background:var(--card);border:1px solid var(--border)"><span style="color:var(--accent);font-weight:700">keywords</span> <span style="color:var(--t2)">${a.meta.keywords}</span></div>`:''}
+${a.meta.robots?`<div style="padding:8px 12px;border-radius:6px;background:var(--card);border:1px solid var(--border)"><span style="color:var(--accent);font-weight:700">robots</span> <span style="color:var(--t2)">${a.meta.robots}</span></div>`:''}
+${a.meta.canonical?`<div style="padding:8px 12px;border-radius:6px;background:var(--card);border:1px solid var(--border)"><span style="color:var(--accent);font-weight:700">canonical</span> <span style="color:var(--t2)">${a.meta.canonical}</span></div>`:''}
+${a.meta.ogImage?`<div style="padding:8px 12px;border-radius:6px;background:var(--card);border:1px solid var(--border)"><span style="color:var(--accent);font-weight:700">og:image</span> <span style="color:var(--t2)">${a.meta.ogImage}</span></div>`:''}
+</div></div>`:''}
 </div>`}
 function chkQ(qi,oi,ans){document.querySelectorAll(`[id^="qo${qi}"]`).forEach((b,i)=>{b.disabled=true;if(i===ans)b.classList.add('correct');if(i===oi&&i!==ans)b.classList.add('wrong')});document.getElementById('qe'+qi).classList.add('show')}
 
@@ -873,18 +910,81 @@ showCrawlPreview(html,bytes,over);
 }
 
 
-// ═══ ARTICLE EDITOR / CMS ═══
-var editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
-function edVal(k,v){editorData[k]=v;edPreview()}
-function edOptVal(i,v){editorData.quizOpts[i]=v}
+
+// ═══ ADMIN PANEL (Password-Protected Article Editor) ═══
+var ADMIN_PASS='learnseo2026';
+var adminLogged=false;
+var editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',metaTitle:'',metaDesc:'',metaKeys:'',ogImage:'',canonical:'',robots:'index, follow',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
+
+// Load saved articles from localStorage on page load
+(function loadSavedArticles(){
+try{
+var saved=localStorage.getItem('lsh_articles');
+if(saved){var arr=JSON.parse(saved);if(arr.length){for(var i=arr.length-1;i>=0;i--){ARTICLES.unshift(arr[i])}}}
+}catch(e){}
+})();
+
+function saveArticlesToStorage(){
+try{
+var custom=ARTICLES.filter(function(a){return a._custom});
+localStorage.setItem('lsh_articles',JSON.stringify(custom));
+}catch(e){}
+}
+
+// Secret access: Ctrl+Shift+E
+document.addEventListener('keydown',function(e){
+if(e.ctrlKey&&e.shiftKey&&e.key==='E'){e.preventDefault();go('editor')}
+});
+
 function rEditor(){
+if(!adminLogged){
+document.getElementById('sec-editor').innerHTML='<div style="max-width:400px;margin:80px auto;text-align:center">'+
+'<div style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--vi));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px">🔒</div>'+
+'<h2 style="font-size:22px;font-weight:900;margin-bottom:6px">Admin Panel</h2>'+
+'<p style="font-size:13px;color:var(--t3);margin-bottom:24px">Enter your password to access the article editor.</p>'+
+'<input type="password" id="adminPass" placeholder="Password" style="text-align:center;font-size:15px;letter-spacing:2px" onkeydown="if(event.key===\'Enter\')checkAdminPass()"/>'+
+'<button class="btn btn-a" onclick="checkAdminPass()" style="width:100%;margin-top:12px;padding:14px">Unlock</button>'+
+'<div id="adminErr" style="margin-top:12px;font-size:12px;color:var(--ro);display:none"></div>'+
+'<p style="font-size:11px;color:var(--t3);margin-top:20px;opacity:.6">Access: <code style="background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:10px">Ctrl+Shift+E</code></p>'+
+'</div>';
+return;
+}
+showEditor();
+}
+
+function checkAdminPass(){
+var inp=document.getElementById('adminPass');
+if(inp.value===ADMIN_PASS){
+adminLogged=true;
+showEditor();
+}else{
+var err=document.getElementById('adminErr');
+err.style.display='block';
+err.textContent='Incorrect password. Try again.';
+inp.value='';
+inp.focus();
+}
+}
+
+function showEditor(){
 var d=editorData;
 if(!d.date){var now=new Date();d.date=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
-document.getElementById('sec-editor').innerHTML='<div class="sh"><h2>Article Editor</h2><p>Create and publish blog articles</p></div>'+
+var customArts=ARTICLES.filter(function(a){return a._custom});
+var savedList='';
+if(customArts.length){
+savedList='<div class="tool-panel" style="margin-bottom:20px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><h3 style="margin:0">Published Articles ('+customArts.length+')</h3><button class="btn btn-outline btn-sm" onclick="if(confirm(\'Delete ALL custom articles?\')){ARTICLES=ARTICLES.filter(function(a){return !a._custom});saveArticlesToStorage();showEditor()}" style="font-size:10px;color:var(--ro)">Delete All</button></div>';
+for(var i=0;i<customArts.length;i++){
+var a=customArts[i];
+savedList+='<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--bg2);margin-bottom:6px;border:1px solid var(--border)"><div style="width:32px;height:32px;border-radius:8px;background:'+a.gr+';flex-shrink:0"></div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(a.ti)+'</div><div style="font-size:11px;color:var(--t3)">'+a.cat+' · '+a.date+'</div></div><button class="btn btn-outline btn-sm" onclick="openArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px">View</button><button class="btn btn-outline btn-sm" onclick="deleteCustomArticle(\''+a.id+'\')" style="font-size:10px;padding:4px 10px;color:var(--ro);border-color:var(--ro)">✕</button></div>';
+}
+savedList+='</div>';
+}
+document.getElementById('sec-editor').innerHTML='<div class="sh"><div style="display:flex;align-items:center;justify-content:space-between"><div><h2>Admin Panel</h2><p>Create and manage blog articles</p></div><button class="btn btn-outline btn-sm" onclick="adminLogged=false;go(\'home\')" style="font-size:11px">🔒 Lock & Exit</button></div></div>'+
+savedList+
 '<div class="g2" style="gap:24px;align-items:start">'+
 '<div>'+
 '<div class="tool-panel">'+
-'<h3>Article Details</h3>'+
+'<h3>New Article</h3>'+
 '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">'+
 '<div style="grid-column:1/-1"><label class="ed-label">Title</label><input id="edTi" value="'+esc(d.ti)+'" oninput="edVal(\'ti\',this.value)" placeholder="Your Article Title"/></div>'+
 '<div><label class="ed-label">Category</label><select id="edCat" onchange="edVal(\'cat\',this.value)"><option'+(d.cat==='Foundation'?' selected':'')+'>Foundation</option><option'+(d.cat==='AI-Optimization'?' selected':'')+'>AI-Optimization</option><option'+(d.cat==='Technical'?' selected':'')+'>Technical</option><option'+(d.cat==='Strategy'?' selected':'')+'>Strategy</option></select></div>'+
@@ -897,15 +997,30 @@ document.getElementById('sec-editor').innerHTML='<div class="sh"><h2>Article Edi
 '</div>'+
 '</div>'+
 '<div class="tool-panel" style="margin-top:16px">'+
-'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">Article Content (HTML)</h3><div style="display:flex;gap:6px"><button class="btn btn-outline btn-sm" onclick="insertTag(\'h3\')" style="font-size:10px;padding:4px 8px">&lt;h3&gt;</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'p\')" style="font-size:10px;padding:4px 8px">&lt;p&gt;</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'ul\')" style="font-size:10px;padding:4px 8px">&lt;ul&gt;</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'tip\')" style="font-size:10px;padding:4px 8px">Tip</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'pre\')" style="font-size:10px;padding:4px 8px">&lt;pre&gt;</button></div></div>'+
+'<details>'+
+'<summary style="cursor:pointer;font-weight:700;font-size:13px;color:var(--t1);list-style:none;display:flex;align-items:center;gap:6px"><span style="font-size:15px">🏷️</span> SEO Meta Tags</summary>'+
+'<div style="margin-top:14px;display:grid;gap:10px">'+
+'<div><label class="ed-label">Meta Title <span style="font-weight:400;text-transform:none">(50-60 chars)</span></label><input value="'+esc(d.metaTitle)+'" oninput="edVal(\'metaTitle\',this.value);updMetaCount()" placeholder="SEO title — leave empty to use article title" id="edMetaTitle"/><div style="font-size:10px;color:var(--t3);margin-top:3px;text-align:right" id="metaTitleCount">'+(d.metaTitle||d.ti).length+'/60</div></div>'+
+'<div><label class="ed-label">Meta Description <span style="font-weight:400;text-transform:none">(150-160 chars)</span></label><textarea rows="2" oninput="edVal(\'metaDesc\',this.value);updMetaCount()" placeholder="SEO description — leave empty to use short description" style="font-size:12px" id="edMetaDesc">'+esc(d.metaDesc)+'</textarea><div style="font-size:10px;color:var(--t3);margin-top:3px;text-align:right" id="metaDescCount">'+(d.metaDesc||d.desc).length+'/160</div></div>'+
+'<div><label class="ed-label">Meta Keywords <span style="font-weight:400;text-transform:none">(comma separated)</span></label><input value="'+esc(d.metaKeys)+'" oninput="edVal(\'metaKeys\',this.value)" placeholder="seo, google, optimization, ai search"/></div>'+
+'<div><label class="ed-label">OG Image URL</label><input value="'+esc(d.ogImage)+'" oninput="edVal(\'ogImage\',this.value)" placeholder="https://example.com/image.jpg (for social sharing)"/></div>'+
+'<div class="g2" style="gap:10px">'+
+'<div><label class="ed-label">Canonical URL</label><input value="'+esc(d.canonical)+'" oninput="edVal(\'canonical\',this.value)" placeholder="https://yoursite.com/blog/article-slug"/></div>'+
+'<div><label class="ed-label">Robots</label><select onchange="edVal(\'robots\',this.value)"><option'+(d.robots==='index, follow'?' selected':'')+'>index, follow</option><option'+(d.robots==='noindex, follow'?' selected':'')+'>noindex, follow</option><option'+(d.robots==='index, nofollow'?' selected':'')+'>index, nofollow</option><option'+(d.robots==='noindex, nofollow'?' selected':'')+'>noindex, nofollow</option></select></div>'+
+'</div>'+
+'</div>'+
+'</details>'+
+'</div>'+
+'<div class="tool-panel" style="margin-top:16px">'+
+'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><h3 style="margin:0">Article Content (HTML)</h3><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn btn-outline btn-sm" onclick="insertTag(\'h3\')" style="font-size:10px;padding:4px 8px">H3</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'p\')" style="font-size:10px;padding:4px 8px">P</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'ul\')" style="font-size:10px;padding:4px 8px">UL</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'ol\')" style="font-size:10px;padding:4px 8px">OL</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'tip\')" style="font-size:10px;padding:4px 8px">TIP</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'pre\')" style="font-size:10px;padding:4px 8px">CODE</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'img\')" style="font-size:10px;padding:4px 8px">IMG</button><button class="btn btn-outline btn-sm" onclick="insertTag(\'a\')" style="font-size:10px;padding:4px 8px">LINK</button></div></div>'+
 '<textarea id="edHtml" rows="16" oninput="edVal(\'html\',this.value)" placeholder="<h3>Section Title</h3>&#10;<p>Your content here...</p>&#10;&#10;<div class=&quot;tip&quot;><strong>Pro tip:</strong> Highlighted callout.</div>" style="font-family:monospace;font-size:12px;line-height:1.6;tab-size:2">'+esc(d.html)+'</textarea>'+
 '</div>'+
-'<details class="tool-panel" style="margin-top:16px">'+
-'<summary style="cursor:pointer;font-weight:700;font-size:14px;color:var(--t1)">Quiz (optional)</summary>'+
+'<details class="tool-panel" style="margin-top:16px;padding:20px">'+
+'<summary style="cursor:pointer;font-weight:700;font-size:13px;color:var(--t1)">➕ Quiz (optional)</summary>'+
 '<div style="margin-top:14px;display:grid;gap:10px">'+
-'<div><label class="ed-label">Question</label><input id="edQQ" value="'+esc(d.quizQ)+'" oninput="editorData.quizQ=this.value" placeholder="What is the main concept?"/></div>'+
+'<div><label class="ed-label">Question</label><input value="'+esc(d.quizQ)+'" oninput="editorData.quizQ=this.value" placeholder="What is the main concept?"/></div>'+
 '<div class="g2" style="gap:8px"><div><label class="ed-label">Option A</label><input value="'+esc(d.quizOpts[0])+'" oninput="edOptVal(0,this.value)"/></div><div><label class="ed-label">Option B</label><input value="'+esc(d.quizOpts[1])+'" oninput="edOptVal(1,this.value)"/></div><div><label class="ed-label">Option C</label><input value="'+esc(d.quizOpts[2])+'" oninput="edOptVal(2,this.value)"/></div><div><label class="ed-label">Option D</label><input value="'+esc(d.quizOpts[3])+'" oninput="edOptVal(3,this.value)"/></div></div>'+
-'<div class="g2" style="gap:8px"><div><label class="ed-label">Correct Answer (0-3)</label><input type="number" min="0" max="3" value="'+d.quizAns+'" oninput="editorData.quizAns=parseInt(this.value)||0"/></div><div><label class="ed-label">Explanation</label><input value="'+esc(d.quizExp)+'" oninput="editorData.quizExp=this.value" placeholder="Why this is correct..."/></div></div>'+
+'<div class="g2" style="gap:8px"><div><label class="ed-label">Correct (0-3)</label><input type="number" min="0" max="3" value="'+d.quizAns+'" oninput="editorData.quizAns=parseInt(this.value)||0"/></div><div><label class="ed-label">Explanation</label><input value="'+esc(d.quizExp)+'" oninput="editorData.quizExp=this.value"/></div></div>'+
 '</div>'+
 '</details>'+
 '<div style="display:flex;gap:10px;margin-top:20px">'+
@@ -919,54 +1034,96 @@ document.getElementById('sec-editor').innerHTML='<div class="sh"><h2>Article Edi
 '<div id="edPreviewCard" style="margin-bottom:20px"></div>'+
 '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:10px">Article Body Preview</div>'+
 '<div id="edPreviewBody" class="article-body" style="border:1px solid var(--border);border-radius:10px;padding:20px;max-height:500px;overflow-y:auto;background:var(--bg)"></div>'+
+'<div id="edMetaPreview"></div>'+
 '</div>'+
 '</div>'+
 '</div>';
 edPreview();
 }
+
+function deleteCustomArticle(id){
+if(!confirm('Delete this article?'))return;
+ARTICLES=ARTICLES.filter(function(a){return a.id!==id});
+saveArticlesToStorage();
+showEditor();
+}
+
+function edVal(k,v){editorData[k]=v;edPreview()}
+function edOptVal(i,v){editorData.quizOpts[i]=v}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
 function insertTag(tag){
 var ta=document.getElementById('edHtml');if(!ta)return;
 var start=ta.selectionStart,end=ta.selectionEnd,sel=ta.value.substring(start,end);
 var ins='';
 if(tag==='h3')ins='<h3>'+(sel||'Section Title')+'</h3>';
-else if(tag==='p')ins='<p>'+(sel||'Your paragraph text here.')+'</p>';
+else if(tag==='p')ins='<p>'+(sel||'Paragraph text.')+'</p>';
 else if(tag==='ul')ins='<ul>\n  <li>'+(sel||'Item 1')+'</li>\n  <li>Item 2</li>\n</ul>';
+else if(tag==='ol')ins='<ol>\n  <li>'+(sel||'Step 1')+'</li>\n  <li>Step 2</li>\n</ol>';
 else if(tag==='tip')ins='<div class="tip"><strong>Pro tip:</strong> '+(sel||'Your tip here.')+'</div>';
-else if(tag==='pre')ins='<pre>'+(sel||'code block')+'</pre>';
+else if(tag==='pre')ins='<pre>'+(sel||'code here')+'</pre>';
+else if(tag==='img')ins='<img src="'+(sel||'https://...')+'" alt="" style="max-width:100%;border-radius:8px;margin:10px 0"/>';
+else if(tag==='a')ins='<a href="https://..." target="_blank">'+(sel||'Link text')+'</a>';
 ta.value=ta.value.substring(0,start)+ins+ta.value.substring(end);
-editorData.html=ta.value;
-ta.focus();ta.selectionStart=ta.selectionEnd=start+ins.length;
+editorData.html=ta.value;ta.focus();ta.selectionStart=ta.selectionEnd=start+ins.length;
 edPreview();
 }
+
+function updMetaCount(){
+var ti=document.getElementById('edMetaTitle');
+var de=document.getElementById('edMetaDesc');
+var tc=document.getElementById('metaTitleCount');
+var dc=document.getElementById('metaDescCount');
+if(ti&&tc){var l=ti.value.length;tc.textContent=l+'/60';tc.style.color=l>60?'var(--ro)':l>=50?'var(--em)':'var(--t3)'}
+if(de&&dc){var l2=de.value.length;dc.textContent=l2+'/160';dc.style.color=l2>160?'var(--ro)':l2>=150?'var(--em)':'var(--t3)'}
+}
+
 function edPreview(){
 var d=editorData;
 var gr='linear-gradient(135deg,'+d.gr1+','+d.gr2+')';
 var pc=document.getElementById('edPreviewCard');
 var pb=document.getElementById('edPreviewBody');
 if(!pc||!pb)return;
-if(!d.ti&&!d.desc){pc.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Fill in the details to see card preview</div>';pb.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Write HTML content to see body preview</div>';return}
-pc.innerHTML='<div class="cd blog-card" style="pointer-events:none"><div class="blog-thumb" style="background:'+gr+'"></div><div class="blog-meta"><div style="display:flex;align-items:center;justify-content:space-between"><span class="blog-tag" style="color:'+d.gr1+'">'+(d.cat||'Category')+'</span><span class="bd bd-s">'+(d.lv||'Level')+'</span></div><div class="blog-title" style="margin-top:8px">'+(d.ti||'Article Title')+'</div><div class="blog-desc">'+(d.desc||'Description...')+'</div><div class="blog-footer"><span>'+(d.date||'Date')+'</span><span>'+(d.du||'5 min read')+'</span></div></div></div>';
-pb.innerHTML=d.html||'<p style="color:var(--t3)">Start writing to see preview...</p>';
+if(!d.ti&&!d.desc){pc.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Fill in details to see card preview</div>';pb.innerHTML='<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Write HTML content to preview</div>';return}
+pc.innerHTML='<div class="cd blog-card" style="pointer-events:none"><div class="blog-thumb" style="background:'+gr+'"></div><div class="blog-meta"><div style="display:flex;align-items:center;justify-content:space-between"><span class="blog-tag" style="color:'+d.gr1+'">'+(d.cat||'Category')+'</span><span class="bd bd-s">'+(d.lv||'Level')+'</span></div><div class="blog-title" style="margin-top:8px">'+(d.ti||'Article Title')+'</div><div class="blog-desc">'+(d.desc||'Description...')+'</div><div class="blog-footer"><span>'+(d.date||'Date')+'</span><span>'+(d.du||'5 min')+'</span></div></div></div>';
+pb.innerHTML=d.html||'<p style="color:var(--t3)">Start writing...</p>';
+// Meta preview
+var mp='';
+var hasMeta=d.metaTitle||d.metaDesc||d.metaKeys||d.ogImage||d.canonical;
+if(hasMeta){
+mp='<div style="margin-top:16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:8px">Meta Tags Preview</div>';
+mp+='<div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;font-family:monospace;font-size:11px">';
+if(d.metaTitle)mp+='<div style="padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg)"><span style="color:var(--accent)">&lt;title&gt;</span> '+esc(d.metaTitle)+'</div>';
+if(d.metaDesc)mp+='<div style="padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg)"><span style="color:var(--accent)">description</span> '+esc(d.metaDesc)+'</div>';
+if(d.metaKeys)mp+='<div style="padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg)"><span style="color:var(--accent)">keywords</span> '+esc(d.metaKeys)+'</div>';
+if(d.canonical)mp+='<div style="padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg)"><span style="color:var(--accent)">canonical</span> '+esc(d.canonical)+'</div>';
+mp+='<div style="padding:8px 12px;background:var(--bg)"><span style="color:var(--accent)">robots</span> '+d.robots+'</div>';
+mp+='</div>';
 }
+var metaDiv=document.getElementById('edMetaPreview');
+if(metaDiv)metaDiv.innerHTML=mp;
+}
+
 function publishArticle(){
 var d=editorData;
-if(!d.ti.trim()){alert('Please enter an article title.');return}
-if(!d.html.trim()){alert('Please add article content.');return}
-var newId='a'+(ARTICLES.length+1);
+if(!d.ti.trim()){alert('Enter an article title.');return}
+if(!d.html.trim()){alert('Add article content.');return}
+var newId='a_'+(Date.now());
 var gr='linear-gradient(135deg,'+d.gr1+','+d.gr2+')';
 var quiz=[];
 if(d.quizQ.trim()&&d.quizOpts.filter(function(o){return o.trim()}).length>=2){
 quiz=[{q:d.quizQ,opts:d.quizOpts.filter(function(o){return o.trim()}),ans:d.quizAns,exp:d.quizExp}];
 }
-var article={id:newId,ti:d.ti,cat:d.cat,lv:d.lv,du:d.du,date:d.date,gr:gr,desc:d.desc,html:d.html,quiz:quiz};
+var article={id:newId,ti:d.ti,cat:d.cat,lv:d.lv,du:d.du,date:d.date,gr:gr,desc:d.desc,html:d.html,quiz:quiz,_custom:true,meta:{title:d.metaTitle||d.ti,description:d.metaDesc||d.desc,keywords:d.metaKeys,ogImage:d.ogImage,canonical:d.canonical,robots:d.robots}};
 ARTICLES.unshift(article);
-editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
+saveArticlesToStorage();
+resetEditor();
 openArticle(newId);
 }
+
 function resetEditor(){
-editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
-rEditor();
+editorData={ti:'',cat:'Foundation',lv:'Beginner',du:'5 min read',date:'',desc:'',gr1:'#0ea5e9',gr2:'#22d3ee',html:'',metaTitle:'',metaDesc:'',metaKeys:'',ogImage:'',canonical:'',robots:'index, follow',quizQ:'',quizOpts:['','','',''],quizAns:0,quizExp:''};
+if(adminLogged)showEditor();
 }
 
 function rAbout(){document.getElementById('sec-about').innerHTML=`<div class="sh"><h2>About LearnSEO Hub</h2><p>Free SEO resources for the AI search era</p></div>
