@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="./css/style.css"/>
 
     <style>
-        /* 1. Trust Band (Social Proof) */
         .hp-trust-band { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; padding: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-top: -24px; margin-bottom: 40px; background: color-mix(in srgb, var(--bg) 50%, transparent); }
         .hp-trust-text { font-size: 12px; font-weight: 700; color: var(--t3); text-transform: uppercase; letter-spacing: 0.05em; }
         .hp-trust-logos { display: flex; gap: 20px; align-items: center; }
@@ -29,7 +28,6 @@
         .hp-trust-item:hover { opacity: 1; color: var(--t1); }
         .hp-trust-item span.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 
-        /* 2. Prompt of the Week */
         .hp-prompt-box { background: #0f172a; border-radius: 16px; padding: 24px; position: relative; border: 1px solid #1e293b; box-shadow: 0 12px 30px rgba(0,0,0,0.15); overflow: hidden; }
         .hp-prompt-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #34d399, #3b82f6); }
         .hp-prompt-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #1e293b; padding-bottom: 12px; }
@@ -38,7 +36,6 @@
         .hp-prompt-copy { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .hp-prompt-copy:hover { background: #334155; color: #fff; }
 
-        /* 3. Newsletter (Lead Capture) */
         .hp-newsletter { background: linear-gradient(135deg, var(--accentG), color-mix(in srgb, var(--vi) 8%, transparent)); border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent); border-radius: 20px; padding: 40px; text-align: center; margin: 60px 0; }
         .hp-nl-title { font-size: 24px; font-weight: 900; color: var(--t1); margin-bottom: 8px; letter-spacing: -0.02em; }
         .hp-nl-desc { font-size: 15px; color: var(--t2); margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto; }
@@ -48,11 +45,10 @@
         .hp-nl-btn { background: var(--t1); color: var(--card); padding: 12px 24px; border-radius: 10px; font-weight: 700; font-size: 14px; border: none; cursor: pointer; transition: transform 0.2s; }
         .hp-nl-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
-        /* 4. FAQ Native Accordion */
         .hp-faq-wrap { display: flex; flex-direction: column; gap: 12px; }
         .hp-faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
         .hp-faq-q { padding: 18px 20px; font-size: 16px; font-weight: 800; color: var(--t1); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; }
-        .hp-faq-q::-webkit-details-marker { display: none; } /* Ascunde săgeata default pe Safari */
+        .hp-faq-q::-webkit-details-marker { display: none; } 
         .hp-faq-q::after { content: '+'; font-size: 20px; color: var(--accent); transition: transform 0.3s ease; }
         .hp-faq-item[open] .hp-faq-q::after { transform: rotate(45deg); }
         .hp-faq-a { padding: 0 20px 20px 20px; font-size: 14px; color: var(--t2); line-height: 1.6; border-top: 1px solid transparent; }
@@ -118,14 +114,16 @@
 </head>
 <body>
 
-<header class="navbar">
-    <div class="wrap">
-        <a href="./" class="logo" aria-label="LearnSEO Hub Homepage">
-            <svg width="28" height="28" viewBox="0 0 40 40"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs><rect width="40" height="40" rx="8" fill="url(#lg)"/><circle cx="17" cy="17" r="8" stroke="#fff" stroke-width="2.5" fill="none"/><line x1="23" y1="23" x2="30" y2="30" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M12 20 L15 14 L18 17 L22 11" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            LearnSEO <span style="color:var(--accent)">Hub</span>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="./" class="nav-logo" aria-label="LearnSEO Hub Homepage">
+            <div class="nav-logo-icon">
+                <svg width="19" height="19" viewBox="0 0 40 40"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#f8fafc"/></linearGradient></defs><circle cx="17" cy="17" r="8" stroke="#fff" stroke-width="2.5" fill="none"/><line x1="23" y1="23" x2="30" y2="30" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M12 20 L15 14 L18 17 L22 11" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </div>
+            <div class="nav-logo-text">LearnSEO <span style="color:var(--accent)">Hub</span></div>
         </a>
         
-        <nav class="nav-links" aria-label="Primary Navigation">
+        <div class="nav-links" aria-label="Primary Navigation">
             <a class="nav-link" href="./blog">Blog</a>
             <a class="nav-link" href="./tools">Tools</a>
             <a class="nav-link" href="./downloads">Downloads</a>
@@ -134,7 +132,7 @@
             <div class="nav-dd">
                 <div class="nav-link" tabindex="0" aria-haspopup="true">Resources ▾</div>
                 <div class="nav-dd-menu" aria-label="Resources Submenu">
-                    <a class="nav-dd-item" href="./glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253</svg>SEO Glossary</a>
+                    <a class="nav-dd-item" href="./glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477-4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253</svg>SEO Glossary</a>
                     <a class="nav-dd-item" href="./prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M7.9 20A9 9 0 1 0 4 16.1L2 22Z</svg>AI Prompts</a>
                     <a class="nav-dd-item" href="./compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Tool Comparison</a>
                     <a class="nav-dd-item" href="./news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>News &amp; Trends</a>
@@ -143,14 +141,14 @@
                 </div>
             </div>
             <a class="nav-link" href="./about">About</a>
-        </nav>
+        </div>
         
         <div class="nav-right">
             <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle Dark Mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
             <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Open Mobile Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
         </div>
     </div>
-</header>
+</nav>
 
 <div class="mobile-menu" id="mobileMenu">
     <a href="./">Home</a>
@@ -384,12 +382,10 @@ Review the following article draft. Provide a table identifying the top 3 direct
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to Top">↑</button>
 
 <script>
-// Script original pentru temă și scroll
 function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('lsh-theme',t)}
 (function(){const t=localStorage.getItem('lsh-theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
 window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
 
-// Script NOU pentru funcționalitatea "Copy Prompt"
 function copyPrompt() {
     const textToCopy = document.getElementById('promptText').innerText;
     const btn = document.getElementById('copyBtn');
