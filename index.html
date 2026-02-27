@@ -20,8 +20,43 @@
     
     <link rel="stylesheet" href="./css/style.css"/>
 
-    <style>
-        .hp-trust-band { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; padding: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-top: -24px; margin-bottom: 40px; background: color-mix(in srgb, var(--bg) 50%, transparent); }
+    <style id="homepage-premium-ui">
+        /* 1. Modernizare Navbar */
+        .navbar { background: color-mix(in srgb, var(--bg) 95%, transparent) !important; backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,.03); }
+        .nav-inner { height: 72px !important; }
+        .main { padding-top: 90px !important; } 
+
+        /* 2. Banner/Hero Centrat și Premium */
+        .hero { text-align: center !important; border-radius: 24px !important; padding: 70px 30px !important; box-shadow: 0 8px 30px -6px rgba(0,0,0,.05) !important; background: radial-gradient(700px 350px at 10% 20%, rgba(37,99,235,.1), transparent 55%), radial-gradient(600px 320px at 85% 30%, rgba(124,58,237,.08), transparent 55%), var(--card) !important; }
+        .hero-content { display: flex; flex-direction: column; align-items: center; max-width: 800px !important; margin: 0 auto !important; }
+        .hero h1 { font-size: 54px !important; line-height: 1.1 !important; margin-bottom: 24px !important; font-weight: 900; }
+        .hero-desc { font-size: 18px !important; text-align: center !important; margin: 0 auto 32px !important; max-width: 650px !important; }
+        .hero-features { justify-content: center !important; gap: 20px !important; }
+        .hero-ctas { justify-content: center !important; width: 100%; margin-top: 36px !important; gap: 16px !important; }
+        .hero-badge { margin-bottom: 24px !important; padding: 8px 18px !important; font-size: 12px !important; }
+
+        /* 3. Blocurile "Interactive Tools" centrate și egale */
+        .tools-strip { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; gap: 20px !important; flex-direction: unset !important; border: none !important; box-shadow: none !important; background: transparent !important; }
+        .ts-item { flex-direction: column !important; align-items: center !important; text-align: center !important; padding: 32px 20px !important; border: 1px solid var(--border) !important; border-radius: 16px !important; background: var(--card); }
+        .ts-icon { margin: 0 auto 16px !important; width: 56px !important; height: 56px !important; font-size: 28px !important; border-radius: 14px !important; }
+        .ts-arrow { display: none !important; } /* Ascundem săgeata veche pentru un grid mai curat */
+        .ts-name { font-size: 17px !important; margin-bottom: 6px !important; }
+
+        /* 4. Efecte de Hover (Lift Effect) pentru toate cardurile */
+        .start-step, .ts-item, .cd { transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s !important; }
+        .start-step:hover, .ts-item:hover, .cd:hover { transform: translateY(-6px) !important; box-shadow: 0 16px 32px -10px rgba(0,0,0,.1) !important; border-color: var(--accent) !important; }
+
+        /* 5. Butoane curbate și moderne */
+        .btn { padding: 12px 28px !important; border-radius: 30px !important; font-size: 14px !important; }
+        .btn-a { box-shadow: 0 4px 14px rgba(37,99,235,.39) !important; }
+        .btn-a:hover { box-shadow: 0 6px 20px rgba(37,99,235,.5) !important; transform: translateY(-2px); }
+
+        /* Spațiere Generală */
+        .section-spacing { margin-top: 80px; margin-bottom: 80px; }
+        .start-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+
+        /* --- SECȚIUNILE NOI DE AUTORITATE (Trust, Prompt, Newsletter, FAQ) --- */
+        .hp-trust-band { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; padding: 24px 0; border-bottom: 1px solid var(--border); margin-top: -24px; margin-bottom: 40px; background: color-mix(in srgb, var(--bg) 50%, transparent); }
         .hp-trust-text { font-size: 12px; font-weight: 700; color: var(--t3); text-transform: uppercase; letter-spacing: 0.05em; }
         .hp-trust-logos { display: flex; gap: 20px; align-items: center; }
         .hp-trust-item { font-size: 14px; font-weight: 800; color: var(--t2); display: flex; align-items: center; gap: 6px; opacity: 0.7; transition: opacity 0.2s; }
@@ -47,7 +82,7 @@
 
         .hp-faq-wrap { display: flex; flex-direction: column; gap: 12px; }
         .hp-faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-        .hp-faq-q { padding: 18px 20px; font-size: 16px; font-weight: 800; color: var(--t1); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .hp-faq-q { padding: 18px 20px; font-size: 16px; font-weight: 800; color: var(--t1); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; margin: 0; }
         .hp-faq-q::-webkit-details-marker { display: none; } 
         .hp-faq-q::after { content: '+'; font-size: 20px; color: var(--accent); transition: transform 0.3s ease; }
         .hp-faq-item[open] .hp-faq-q::after { transform: rotate(45deg); }
@@ -132,7 +167,7 @@
             <div class="nav-dd">
                 <div class="nav-link" tabindex="0" aria-haspopup="true">Resources ▾</div>
                 <div class="nav-dd-menu" aria-label="Resources Submenu">
-                    <a class="nav-dd-item" href="./glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477-4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253</svg>SEO Glossary</a>
+                    <a class="nav-dd-item" href="./glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253</svg>SEO Glossary</a>
                     <a class="nav-dd-item" href="./prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M7.9 20A9 9 0 1 0 4 16.1L2 22Z</svg>AI Prompts</a>
                     <a class="nav-dd-item" href="./compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Tool Comparison</a>
                     <a class="nav-dd-item" href="./news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>News &amp; Trends</a>
@@ -247,29 +282,29 @@ Review the following article draft. Provide a table identifying the top 3 direct
             
             <div class="tools-strip">
                 <a class="ts-item" href="./tools/serp-previewer" style="--tc:#0ea5e9;text-decoration:none;color:inherit">
-                    <div class="ts-icon" style="background:#0ea5e9">🖥️</div>
-                    <div class="ts-text"><h3 class="ts-name" style="margin:0;">SERP Previewer</h3><div class="ts-desc">Google search preview</div></div>
-                    <svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg>
+                    <div class="ts-icon" style="background:#0ea5e9;color:#fff;">🖥️</div>
+                    <h3 class="ts-name">SERP Previewer</h3>
+                    <div class="ts-desc">Google search preview</div>
                 </a>
                 <a class="ts-item" href="./tools/schema-generator" style="--tc:#7c3aed;text-decoration:none;color:inherit">
-                    <div class="ts-icon" style="background:#7c3aed">⚡</div>
-                    <div class="ts-text"><h3 class="ts-name" style="margin:0;">Schema Generator</h3><div class="ts-desc">JSON-LD markup</div></div>
-                    <svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg>
+                    <div class="ts-icon" style="background:#7c3aed;color:#fff;">⚡</div>
+                    <h3 class="ts-name">Schema Generator</h3>
+                    <div class="ts-desc">JSON-LD markup</div>
                 </a>
                 <a class="ts-item" href="./tools/geo-score" style="--tc:#059669;text-decoration:none;color:inherit">
-                    <div class="ts-icon" style="background:#059669">📊</div>
-                    <div class="ts-text"><h3 class="ts-name" style="margin:0;">GEO Score</h3><div class="ts-desc">AI search readiness</div></div>
-                    <svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg>
+                    <div class="ts-icon" style="background:#059669;color:#fff;">📊</div>
+                    <h3 class="ts-name">GEO Score</h3>
+                    <div class="ts-desc">AI search readiness</div>
                 </a>
                 <a class="ts-item" href="./tools/content-workflow" style="--tc:#d97706;text-decoration:none;color:inherit">
-                    <div class="ts-icon" style="background:#d97706">✍️</div>
-                    <div class="ts-text"><h3 class="ts-name" style="margin:0;">Content Workflow</h3><div class="ts-desc">7-step SEO process</div></div>
-                    <svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg>
+                    <div class="ts-icon" style="background:#d97706;color:#fff;">✍️</div>
+                    <h3 class="ts-name">Content Workflow</h3>
+                    <div class="ts-desc">7-step SEO process</div>
                 </a>
                 <a class="ts-item" href="./tools/crawl-checker" style="--tc:#ef4444;text-decoration:none;color:inherit">
-                    <div class="ts-icon" style="background:#ef4444">🤖</div>
-                    <div class="ts-text"><h3 class="ts-name" style="margin:0;">Crawl Checker</h3><div class="ts-desc">2MB Googlebot limit</div></div>
-                    <svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg>
+                    <div class="ts-icon" style="background:#ef4444;color:#fff;">🤖</div>
+                    <h3 class="ts-name">Crawl Checker</h3>
+                    <div class="ts-desc">2MB Googlebot limit</div>
                 </a>
             </div>
         </section>
