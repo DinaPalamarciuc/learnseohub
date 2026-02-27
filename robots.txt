@@ -1,16 +1,24 @@
-User-agent: *
-Allow: /
-
 Sitemap: https://learnseohub.com/sitemap.xml
 
-User-agent: GPTBot
+User-agent: Googlebot
+Disallow: /admin
+
+User-agent: Googlebot-image
+User-agent: Googlebot-video
 Allow: /
 
-User-agent: Google-Extended
+User-agent: Bingbot
 Allow: /
 
-User-agent: anthropic-ai
-Allow: /
-
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-User
 User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: YouBot
+User-agent: BingPreview
+User-agent: adidxbot
+User-agent: DuckDuckBot
 Allow: /
