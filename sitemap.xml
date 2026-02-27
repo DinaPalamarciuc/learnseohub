@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://learnseohub.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://learnseohub.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://learnseohub.com/blog/seo-fundamentals</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/blog/geo-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/blog/aeo-snippets</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/blog/technical-seo</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/blog/eeat-content</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/blog/programmatic-seo</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/blog/local-seo</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/blog/ecommerce-seo</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnseohub.com/tools</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://learnseohub.com/tools/serp-previewer</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/tools/schema-generator</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/tools/geo-score</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/tools/content-workflow</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/tools/crawl-checker</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/downloads</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/guides</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/glossary</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://learnseohub.com/prompts</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://learnseohub.com/compare</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://learnseohub.com/news</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://learnseohub.com/career</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://learnseohub.com/faq</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://learnseohub.com/about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+</urlset>
