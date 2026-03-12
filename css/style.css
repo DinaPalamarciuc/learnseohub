@@ -244,3 +244,136 @@ h1, h2, h3, h4, h5, h6 { margin-top: 0; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--t3); }
+
+/* ═══════════════════════════════════════════════════════════════
+   LearnSEO Hub — style-patch.css
+   Adaugă aceste stiluri LA FINALUL fișierului css/style.css
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── FIX: Badge-uri lipsă (Intermediate + Advanced) ──────────── */
+/* Fără acestea, badge-urile .bd-a și .bd-r sunt invizibile pe blog */
+
+.bd-a {
+  background: rgba(234, 72, 153, .10);
+  color: #ec4899;
+}
+
+.bd-r {
+  background: rgba(124, 58, 237, .10);
+  color: #7c3aed;
+}
+
+
+/* ── FIX: Quiz buttons (lipseau clasele .correct și .wrong) ───── */
+/* Fără acestea, răspunsurile corecte/greșite din quiz nu colorează */
+
+.quiz-box {
+  margin: 32px 0;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.quiz-q {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: var(--t1);
+}
+
+.quiz-opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 11px 16px;
+  margin-bottom: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--t2);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  font-family: inherit;
+}
+
+.quiz-opt:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--t1);
+}
+
+.quiz-opt.correct {
+  background: rgba(45, 106, 79, .08);
+  border-color: var(--em);
+  color: var(--em);
+  font-weight: 700;
+}
+
+.quiz-opt.wrong {
+  background: rgba(155, 34, 38, .08);
+  border-color: var(--ro);
+  color: var(--ro);
+}
+
+.quiz-exp {
+  display: none;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--em);
+  padding: 10px 14px;
+  background: rgba(45, 106, 79, .06);
+  border-radius: 8px;
+}
+
+.quiz-exp.show {
+  display: block;
+}
+
+
+/* ── ÎMBUNĂTĂȚIRE: Filter/tag buttons (pentru blog și prompts) ── */
+
+.flt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.fb {
+  padding: 7px 16px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--inputBg);
+  color: var(--t2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+}
+
+.fb:hover {
+  border-color: var(--accent);
+  color: var(--t1);
+}
+
+.fb.on {
+  background: var(--t1);
+  color: var(--bg);
+  border-color: var(--t1);
+}
+
+
+/* ── ÎMBUNĂTĂȚIRE: Active nav link fix pentru sub-pagini ─────── */
+/* Asigură că sub-paginile (/blog/articol) colorează corect "Blog" */
+
+.nav-link.on {
+  color: var(--accent) !important;
+}
+
+.nav-link.on::after {
+  width: calc(100% - 28px) !important;
+}
