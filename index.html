@@ -48,7 +48,7 @@
         .hp-faq-wrap { display: flex; flex-direction: column; gap: 12px; }
         .hp-faq-item { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
         .hp-faq-q { padding: 18px 20px; font-size: 16px; font-weight: 800; color: var(--t1); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; margin: 0; }
-        .hp-faq-q::-webkit-details-marker { display: none; } 
+        .hp-faq-q::-webkit-details-marker { display: none; }
         .hp-faq-q::after { content: '+'; font-size: 20px; color: var(--accent); transition: transform 0.3s ease; }
         .hp-faq-item[open] .hp-faq-q::after { transform: rotate(45deg); }
         .hp-faq-a { padding: 0 20px 20px 20px; font-size: 14px; color: var(--t2); line-height: 1.6; border-top: 1px solid transparent; }
@@ -114,58 +114,8 @@
 </head>
 <body>
 
-<nav class="navbar">
-    <div class="nav-inner">
-        <a href="./" class="nav-logo" aria-label="LearnSEO Hub Homepage">
-            <div class="nav-logo-icon">
-                <svg width="19" height="19" viewBox="0 0 40 40"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#f8fafc"/></linearGradient></defs><circle cx="17" cy="17" r="8" stroke="#fff" stroke-width="2.5" fill="none"/><line x1="23" y1="23" x2="30" y2="30" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M12 20 L15 14 L18 17 L22 11" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            </div>
-            <div class="nav-logo-text">LearnSEO <span style="color:var(--accent)">Hub</span></div>
-        </a>
-        
-        <div class="nav-links" aria-label="Primary Navigation">
-            <a class="nav-link" href="./blog">Blog</a>
-            <a class="nav-link" href="./tools">Tools</a>
-            <a class="nav-link" href="./downloads">Downloads</a>
-            <a class="nav-link" href="./guides">Guides</a>
-            
-            <div class="nav-dd">
-                <div class="nav-link" tabindex="0" aria-haspopup="true">Resources ▾</div>
-                <div class="nav-dd-menu" aria-label="Resources Submenu">
-                    <a class="nav-dd-item" href="./glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477-4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253</svg>SEO Glossary</a>
-                    <a class="nav-dd-item" href="./prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M7.9 20A9 9 0 1 0 4 16.1L2 22Z</svg>AI Prompts</a>
-                    <a class="nav-dd-item" href="./compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Tool Comparison</a>
-                    <a class="nav-dd-item" href="./news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>News &amp; Trends</a>
-                    <a class="nav-dd-item" href="./career"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Career Paths</a>
-                    <a class="nav-dd-item" href="./faq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ</a>
-                </div>
-            </div>
-            <a class="nav-link" href="./about">About</a>
-        </div>
-        
-        <div class="nav-right">
-            <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle Dark Mode"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
-            <button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')" aria-label="Open Mobile Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-        </div>
-    </div>
-</nav>
-
-<div class="mobile-menu" id="mobileMenu">
-    <a href="./">Home</a>
-    <a href="./blog">Blog</a>
-    <a href="./tools">Tools</a>
-    <a href="./downloads">Downloads</a>
-    <a href="./guides">Guides</a>
-    <div class="mm-group">Resources</div>
-    <a href="./glossary">SEO Glossary</a>
-    <a href="./prompts">AI Prompts</a>
-    <a href="./compare">Tool Comparison</a>
-    <a href="./news">News & Trends</a>
-    <a href="./career">Career Paths</a>
-    <a href="./faq">FAQ</a>
-    <div class="mm-group">More</div>
-    <a href="./about">About</a>
-</div>
+<!-- ✅ Înlocuiește tot nav-ul vechi (~60 linii) -->
+<script src="./js/site.js"></script>
 
 <main class="main">
     <div class="wrap">
@@ -340,12 +290,10 @@ Review the following article draft. Provide a table identifying the top 3 direct
                     <summary class="hp-faq-q">What is Generative Engine Optimization (GEO)?</summary>
                     <div class="hp-faq-a">GEO is the process of optimizing content to be easily understood, verified, and cited by AI language models and generative search engines like ChatGPT, Gemini, and Perplexity. It involves clear entity relationships and direct answers.</div>
                 </details>
-                
                 <details class="hp-faq-item">
                     <summary class="hp-faq-q">How is AEO different from traditional SEO?</summary>
                     <div class="hp-faq-a">While traditional SEO focuses on ranking ten blue links for keyword queries, AEO (Answer Engine Optimization) focuses on providing direct, concise, and structured answers to conversational questions to win Featured Snippets and AI Overviews.</div>
                 </details>
-
                 <details class="hp-faq-item">
                     <summary class="hp-faq-q">Are the tools on LearnSEO Hub free to use?</summary>
                     <div class="hp-faq-a">Yes, all interactive tools, including the SERP Previewer, Schema Generator, and Crawl Checker, are 100% free to use directly in your browser without creating an account or providing an email address.</div>
@@ -356,46 +304,19 @@ Review the following article draft. Provide a table identifying the top 3 direct
     </div>
 </main>
 
-<footer class="ft">
-    <div class="wrap">
-        <div class="ft-grid">
-            <div class="ft-col">
-                <h2 style="font-size:16px;">Learn</h2>
-                <a href="./blog">Blog</a><a href="./guides">Guides</a><a href="./downloads">Downloads</a><a href="./glossary">Glossary</a>
-            </div>
-            <div class="ft-col">
-                <h2 style="font-size:16px;">Tools</h2>
-                <a href="./tools/serp-previewer">SERP Previewer</a><a href="./tools/schema-generator">Schema Generator</a><a href="./tools/geo-score">GEO Score</a><a href="./tools/content-workflow">Content Workflow</a><a href="./tools/crawl-checker">Crawl Checker</a>
-            </div>
-            <div class="ft-col">
-                <h2 style="font-size:16px;">Resources</h2>
-                <a href="./downloads">Downloads</a><a href="./prompts">AI Prompts</a><a href="./compare">Tool Comparison</a><a href="./about">About</a>
-            </div>
-        </div>
-        <div class="ft-bottom">
-            <span>© 2026 LearnSEO Hub. Free & open-source.</span>
-            <span style="font-size:11px;color:var(--t3)">Built for the AI Search Era</span>
-        </div>
-    </div>
-</footer>
-
+<!-- ✅ Înlocuiește tot footer-ul vechi (~20 linii) + scriptul inline -->
+<div id="site-footer"></div>
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to Top">↑</button>
 
 <script>
-function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('lsh-theme',t)}
-(function(){const t=localStorage.getItem('lsh-theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
-window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
-
 function copyPrompt() {
     const textToCopy = document.getElementById('promptText').innerText;
     const btn = document.getElementById('copyBtn');
-    
     navigator.clipboard.writeText(textToCopy).then(() => {
         const originalContent = btn.innerHTML;
         btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
         btn.style.color = "#34d399";
         btn.style.borderColor = "#34d399";
-        
         setTimeout(() => {
             btn.innerHTML = originalContent;
             btn.style.color = "";
@@ -404,6 +325,7 @@ function copyPrompt() {
     });
 }
 </script>
-<script src="./js/effects.js"></script>    
+<script src="./js/effects.js"></script>
+
 </body>
 </html>
