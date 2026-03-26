@@ -123,9 +123,18 @@
   .nav-link:hover { color: var(--t1); background: var(--card); }
   .nav-link.on {
     color: var(--t1);
-    border-bottom: 2px solid var(--accent);
-    border-radius: 0;
-    padding-bottom: 4px;
+    font-weight: 800;
+    position: relative;
+  }
+  .nav-link.on::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 4px;
+    right: 4px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px 2px 0 0;
   }
   /* Dropdown */
   .nav-dd { position: relative; }
