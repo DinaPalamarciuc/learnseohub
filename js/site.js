@@ -124,17 +124,7 @@
   .nav-link.on {
     color: var(--t1);
     font-weight: 800;
-    position: relative;
-  }
-  .nav-link.on::after {
-    content: '';
-    position: absolute;
-    bottom: -18px;
-    left: 4px;
-    right: 4px;
-    height: 2px;
-    background: var(--accent);
-    border-radius: 2px 2px 0 0;
+    box-shadow: 0 2px 0 0 var(--accent);
   }
   /* Dropdown */
   .nav-dd { position: relative; }
