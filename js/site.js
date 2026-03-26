@@ -124,7 +124,10 @@
   .nav-link.on {
     color: var(--t1);
     font-weight: 800;
-    box-shadow: 0 2px 0 0 var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
   }
   /* Dropdown */
   .nav-dd { position: relative; }
