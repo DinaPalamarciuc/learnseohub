@@ -58,6 +58,12 @@
     --logo-g1: #3b82f6;
     --logo-g2: #8b5cf6;
   }
+  /* ── Global top-spacing reset ── */
+  .main { padding-top: 0 !important; margin-top: 0 !important; }
+  .main > .wrap { padding-top: 0 !important; }
+  .main > .wrap > *:first-child,
+  .main > .wrap > section:first-child,
+  .main > .wrap > div:first-child { margin-top: 0 !important; padding-top: 0 !important; }
   .navbar {
     position: sticky;
     top: 0;
