@@ -28,22 +28,39 @@
     return prefix + path;
   }
 
-  /* ── 4. Logo SVG — works on light & dark ── */
+  /* ── 4. Logo SVG — lightbulb circuit board ── */
   const logoSVG = `
-    <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg width="38" height="48" viewBox="0 0 100 125" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
-        <linearGradient id="lgr" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="var(--logo-g1, #2563eb)"/>
-          <stop offset="100%" stop-color="var(--logo-g2, #7c3aed)"/>
+        <linearGradient id="bulbg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#a855f7"/>
+          <stop offset="50%" stop-color="#6366f1"/>
+          <stop offset="100%" stop-color="#06b6d4"/>
         </linearGradient>
       </defs>
-      <rect width="38" height="38" rx="9" fill="url(#lgr)"/>
-      <!-- magnifier circle -->
-      <circle cx="16" cy="16" r="7.5" stroke="white" stroke-width="2.2" fill="none"/>
-      <!-- magnifier handle -->
-      <line x1="21.5" y1="21.5" x2="27.5" y2="27.5" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-      <!-- trend line inside magnifier -->
-      <path d="M11.5 18.5 L14 14.5 L16.5 16.5 L20 11.5" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <polygon points="50,4 72,16 84,34 80,56 68,72 60,80 40,80 32,72 20,56 16,34 28,16"
+        fill="none" stroke="url(#bulbg)" stroke-width="3" stroke-linejoin="round"/>
+      <line x1="50" y1="4" x2="32" y2="72" stroke="url(#bulbg)" stroke-width="1.5" stroke-opacity="0.45"/>
+      <line x1="50" y1="4" x2="68" y2="72" stroke="url(#bulbg)" stroke-width="1.5" stroke-opacity="0.45"/>
+      <line x1="28" y1="16" x2="72" y2="34" stroke="url(#bulbg)" stroke-width="1.2" stroke-opacity="0.35"/>
+      <line x1="72" y1="16" x2="28" y2="34" stroke="url(#bulbg)" stroke-width="1.2" stroke-opacity="0.35"/>
+      <line x1="50" y1="44" x2="50" y2="68" stroke="url(#bulbg)" stroke-width="2.2" stroke-linecap="round"/>
+      <polyline points="50,52 38,52 38,44" fill="none" stroke="url(#bulbg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="38" cy="44" r="2.5" fill="none" stroke="url(#bulbg)" stroke-width="1.8"/>
+      <polyline points="50,48 62,48 62,40" fill="none" stroke="url(#bulbg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="62" cy="40" r="2.5" fill="none" stroke="url(#bulbg)" stroke-width="1.8"/>
+      <polyline points="50,44 42,38 36,38" fill="none" stroke="url(#bulbg)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="36" cy="38" r="1.8" fill="#a855f7" fill-opacity="0.8"/>
+      <polyline points="50,44 58,36 64,36" fill="none" stroke="url(#bulbg)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="64" cy="36" r="1.8" fill="#06b6d4" fill-opacity="0.8"/>
+      <polyline points="50,44 50,32 44,26" fill="none" stroke="url(#bulbg)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="44" cy="26" r="1.8" fill="#6366f1" fill-opacity="0.8"/>
+      <polyline points="50,32 56,26" fill="none" stroke="url(#bulbg)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="56" cy="26" r="1.8" fill="#6366f1" fill-opacity="0.8"/>
+      <rect x="37" y="80" width="26" height="22" rx="3" fill="none" stroke="url(#bulbg)" stroke-width="2.5"/>
+      <line x1="39" y1="87" x2="61" y2="87" stroke="url(#bulbg)" stroke-width="1.8"/>
+      <line x1="39" y1="93" x2="61" y2="93" stroke="url(#bulbg)" stroke-width="1.4"/>
+      <line x1="39" y1="99" x2="61" y2="99" stroke="url(#bulbg)" stroke-width="1"/>
     </svg>`;
 
   /* ── 5. Nav HTML ── */
