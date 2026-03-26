@@ -4,8 +4,8 @@
 
 /* ═══ 1. BRAND VARIABLES — BEIGE & BLACK (Editorial Classic) ═══ */
 :root{
---bg:#F7F5F0;      /* Bej cald, culoarea hârtiei (fundal principal) */
---bg2:#EBE7DF;     /* Bej secundar (pentru footer, secțiuni) */
+--bg:#FAFAF7;      /* Bej cald, culoarea hârtiei (fundal principal) */
+--bg2:#F2EFE9;     /* Bej secundar (pentru footer, secțiuni) */
 --card:#FFFFFF;    /* Alb pur pentru carduri ca să iasă elegant în evidență */
 --card2:#F2EFE9;   
 --border:#DCD7CC;  /* Contururi bej-cenușiu fin */
