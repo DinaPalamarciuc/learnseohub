@@ -115,11 +115,25 @@
     height: auto !important;
   }
   .nav-logo:hover .nav-logo-icon { transform: scale(1.08); }
+  .nav-logo-text-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
   .nav-logo-text {
     font-size: 17px;
     font-weight: 900;
     letter-spacing: -0.03em;
     color: var(--t1);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .nav-logo-tag {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--t3);
+    letter-spacing: 0.01em;
+    line-height: 1;
     white-space: nowrap;
   }
   .nav-logo-text em {
@@ -262,7 +276,10 @@
   <div class="nav-inner">
     <a href="${root('')}" class="nav-logo" aria-label="LearnSEO Hub Homepage">
       <div class="nav-logo-icon">${logoSVG}</div>
-      <div class="nav-logo-text">LearnSEO <em>Hub</em></div>
+      <div class="nav-logo-text-wrap">
+        <div class="nav-logo-text">LearnSEO <em>Hub</em></div>
+        <div class="nav-logo-tag">SEO tools, resources &amp; expert help</div>
+      </div>
     </a>
 
     <div class="nav-links" aria-label="Primary Navigation">
