@@ -8,6 +8,20 @@
   const saved = localStorage.getItem('lsh-theme');
   if (saved) document.documentElement.setAttribute('data-theme', saved);
 
+  /* ── 2. Favicon injection ── */
+  (function() {
+    const faviconSVG = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><defs><linearGradient id='fg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%23a855f7'/><stop offset='100%' stop-color='%2306b6d4'/></linearGradient></defs><rect width='36' height='36' rx='9' fill='url(%23fg)'/><path d='M18 6C13 6 10 9.5 10 13.5c0 3 1.5 5.5 4 7L14 23h8l0-2.5c2.5-1.5 4-4 4-7C26 9.5 23 6 18 6Z' fill='none' stroke='white' stroke-width='1.8'/><rect x='14' y='23' width='8' height='2' rx='0.5' fill='white' fill-opacity='0.9'/><rect x='14.5' y='25' width='7' height='2' rx='0.5' fill='white' fill-opacity='0.7'/><line x1='18' y1='20' x2='18' y2='15' stroke='white' stroke-width='1.4' stroke-linecap='round'/><line x1='18' y1='17' x2='14.5' y2='14' stroke='white' stroke-width='1.2' stroke-linecap='round'/><circle cx='14' cy='13.5' r='1.2' fill='%2367e8f9'/><line x1='18' y1='16' x2='21.5' y2='13.5' stroke='white' stroke-width='1.2' stroke-linecap='round'/><circle cx='22' cy='13' r='1.2' fill='%23e879f9'/><line x1='18' y1='15' x2='18' y2='11' stroke='white' stroke-width='1.2' stroke-linecap='round'/><circle cx='16' cy='10' r='1.2' fill='%23a5f3fc'/></svg>`;
+    const encoded = 'data:image/svg+xml,' + faviconSVG;
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.type = 'image/svg+xml';
+    link.href = encoded;
+  })();
+
   /* ── 2. Active path detection ── */
   function getActivePath() {
     const p = location.pathname.replace(/\/$/, '').replace(/\/index\.html$/, '');
