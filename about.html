@@ -3,65 +3,174 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>About — LearnSEO Hub</title>
-<meta name="description" content="LearnSEO Hub is a free, open-source SEO workbench for the AI search era. No ads, no paywalls — just practical tools and guides."/>
+<title>About LearnSEO Hub — SEO Tools, Resources & Expert Services</title>
+<meta name="description" content="LearnSEO Hub provides free SEO tools, expert guides, and professional services including SEO audits, content briefs, and GEO optimization for the AI search era."/>
 <link rel="canonical" href="https://learnseohub.com/about"/>
-<meta property="og:title" content="About — LearnSEO Hub"/>
-<meta property="og:description" content="Free SEO tools, guides, and resources for the AI search era."/>
+<meta property="og:title" content="About LearnSEO Hub — SEO Tools, Resources & Expert Services"/>
+<meta property="og:description" content="Free SEO tools, guides, and professional services for the AI search era. Audits, briefs, and GEO optimization."/>
 <meta property="og:type" content="website"/>
 <link rel="stylesheet" href="./css/style.css"/>
 <style>
-  .about-hero{text-align:center;padding:64px 0 48px;max-width:620px;margin:0 auto}
-  .about-hero h1{font-size:clamp(28px,5vw,42px);font-weight:900;line-height:1.15;margin-bottom:16px}
+  .about-hero{text-align:center;padding:56px 0 40px;max-width:640px;margin:0 auto}
+  .about-hero h1{font-size:clamp(26px,5vw,40px);font-weight:900;line-height:1.15;margin-bottom:14px}
   .about-hero p{font-size:15px;color:var(--t2);line-height:1.8}
-  .about-pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin:48px 0}
-  .pillar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 24px}
-  .pillar-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px}
-  .pillar h3{font-size:15px;font-weight:800;margin-bottom:8px;color:var(--t1)}
+  .about-pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:40px 0}
+  .pillar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+  .pillar-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:20px}
+  .pillar h3{font-size:14px;font-weight:800;margin-bottom:6px;color:var(--t1)}
   .pillar p{font-size:13px;color:var(--t2);line-height:1.7}
-  .tools-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-  .tool-chip{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:700;color:var(--t1);text-decoration:none;transition:border-color .2s,transform .15s}
-  .tool-chip:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .tool-dot{width:8px;height:8px;border-radius:50%;background:var(--em);flex-shrink:0}
-  .about-mission{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;margin:0 0 48px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .about-mission{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;margin:0 0 48px;display:grid;grid-template-columns:1fr 1fr;gap:36px}
   @media(max-width:640px){.about-mission{grid-template-columns:1fr;padding:24px 20px}}
-  .mission-block h3{font-size:17px;font-weight:900;margin-bottom:12px}
+  .mission-block h3{font-size:16px;font-weight:900;margin-bottom:10px}
   .mission-block p{font-size:13px;color:var(--t2);line-height:1.8}
-  .section-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:16px}
+  .section-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:14px}
+  .tools-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .tool-chip{display:flex;align-items:center;gap:8px;padding:9px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;font-size:13px;font-weight:700;color:var(--t1);text-decoration:none;transition:border-color .2s,transform .15s}
+  .tool-chip:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tool-dot{width:7px;height:7px;border-radius:50%;background:var(--em);flex-shrink:0}
+  /* Services */
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:24px 0 48px}
+  .service-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;transition:border-color .2s,transform .2s}
+  .service-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+  .service-card.featured{border-color:rgba(99,102,241,.3);background:linear-gradient(135deg,rgba(99,102,241,.04),transparent)}
+  .service-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+  .service-title{font-size:16px;font-weight:900;color:var(--t1);margin-bottom:4px}
+  .service-who{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:10px}
+  .service-desc{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:14px}
+  .service-price{font-size:15px;font-weight:900;color:var(--em);margin-bottom:14px}
+  .service-includes{display:flex;flex-direction:column;gap:5px;margin-bottom:16px}
+  .si{font-size:12px;color:var(--t2);display:flex;align-items:flex-start;gap:6px}
+  .si::before{content:'✓';color:var(--em);font-weight:900;flex-shrink:0}
+  .service-cta{display:block;text-align:center;padding:10px;border-radius:10px;font-size:13px;font-weight:700;background:var(--t1);color:var(--bg);text-decoration:none;transition:opacity .2s}
+  .service-cta:hover{opacity:.85;color:var(--bg)}
+  /* Contact */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:24px 0 64px}
+  @media(max-width:640px){.contact-grid{grid-template-columns:1fr}}
+  .contact-form-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px}
+  .contact-form-wrap h3{font-size:17px;font-weight:900;margin-bottom:20px;color:var(--t1)}
+  .cf-group{margin-bottom:16px}
+  .cf-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:6px}
+  .cf-input,.cf-textarea{width:100%;padding:11px 14px;background:var(--inputBg);border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--t1);font-family:inherit;outline:none;transition:border-color .2s}
+  .cf-input:focus,.cf-textarea:focus{border-color:var(--accent)}
+  .cf-textarea{resize:vertical;min-height:100px}
+  .cf-btn{width:100%;padding:12px;background:var(--t1);color:var(--bg);border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;transition:opacity .2s}
+  .cf-btn:hover{opacity:.85}
+  .contact-info{display:flex;flex-direction:column;gap:16px;justify-content:flex-start}
+  .ci-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
+  .ci-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:6px}
+  .ci-value{font-size:14px;font-weight:700;color:var(--t1)}
+  .ci-value a{color:var(--accent);text-decoration:none}
+  .ci-value a:hover{text-decoration:underline}
+  .geo-tool-banner{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(168,85,247,.06));border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:24px;margin:40px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .geo-tool-banner h3{font-size:16px;font-weight:900;color:var(--t1);margin-bottom:4px}
+  .geo-tool-banner p{font-size:13px;color:var(--t2)}
+  .geo-btn{background:#6366f1;color:#fff;padding:10px 22px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap}
+  .geo-btn:hover{opacity:.9;color:#fff}
 </style>
 </head>
 <body>
 <script src="./js/site.js"></script>
 <div class="main"><div class="wrap">
+
+  <!-- Hero -->
   <div class="about-hero">
-    <div style="display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:700;color:var(--accent);margin-bottom:20px">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:18px">
       <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block"></span>
-      Free &amp; Open Source
+      Free Resources · Expert Services
     </div>
     <h1>Your SEO Workbench for the<br/><span style="color:var(--accent)">AI Search Era</span></h1>
-    <p>LearnSEO Hub is a free collection of tools, guides, and resources built for SEO professionals navigating the shift from traditional search to AI-powered discovery.</p>
+    <p>LearnSEO Hub is a platform built for SEO professionals navigating the shift to AI-powered search. We offer free tools and guides — and for those who want expert help, professional SEO services tailored to every skill level.</p>
   </div>
+
+  <!-- Pillars -->
   <div class="about-pillars">
-    <div class="pillar"><div class="pillar-icon" style="background:rgba(37,99,235,.10)">🛠️</div><h3>Practical Tools</h3><p>SERP Previewer, Schema Generator, GEO Score, Crawl Checker — real tools you can use right now, no account needed.</p></div>
-    <div class="pillar"><div class="pillar-icon" style="background:rgba(52,211,153,.10)">📚</div><h3>In-Depth Guides</h3><p>Step-by-step guides covering GEO, AEO, technical SEO, and content strategy for the AI search era.</p></div>
-    <div class="pillar"><div class="pillar-icon" style="background:rgba(124,58,237,.10)">🤖</div><h3>AI Prompt Library</h3><p>40+ ready-to-use prompts for keyword research, content briefs, meta descriptions, audits, and more.</p></div>
-    <div class="pillar"><div class="pillar-icon" style="background:rgba(245,158,11,.10)">📥</div><h3>Free Downloads</h3><p>Templates, spreadsheets, and checklists — SEO audit sheets, content briefs, schema starters.</p></div>
+    <div class="pillar"><div class="pillar-icon" style="background:rgba(37,99,235,.08)">🛠️</div><h3>Practical Tools</h3><p>SERP Previewer, Schema Generator, GEO Score, Crawl Checker — use them now, no account needed.</p></div>
+    <div class="pillar"><div class="pillar-icon" style="background:rgba(52,211,153,.08)">📚</div><h3>In-Depth Guides</h3><p>Step-by-step guides for GEO, AEO, technical SEO, and content strategy for the AI era.</p></div>
+    <div class="pillar"><div class="pillar-icon" style="background:rgba(124,58,237,.08)">🤖</div><h3>AI Prompt Library</h3><p>42+ professional prompts for briefs, audits, AIO-optimized articles, Schema, and translations.</p></div>
+    <div class="pillar"><div class="pillar-icon" style="background:rgba(245,158,11,.08)">🎯</div><h3>Expert Services</h3><p>Professional SEO audits, content briefs, and GEO strategy — for teams of any size.</p></div>
   </div>
+
+  <!-- Mission -->
   <div class="about-mission">
     <div class="mission-block">
       <h3>Why this exists</h3>
-      <p>SEO is changing faster than most learning resources can keep up with. AI search engines like ChatGPT, Perplexity, and Google's AI Overviews are reshaping how content gets discovered — and most guides are still written for 2019.</p>
+      <p>SEO is changing faster than most resources keep up with. AI search engines like ChatGPT, Perplexity, and Google's AI Overviews are reshaping how content gets discovered — and most guides are still written for 2019.</p>
       <p style="margin-top:12px">LearnSEO Hub was built to close that gap: practical, up-to-date resources that reflect how search actually works today.</p>
     </div>
     <div class="mission-block">
       <h3>Our philosophy</h3>
-      <p><strong style="color:var(--t1)">Free forever.</strong> No paywalls, no premium tiers, no email gates on core content. Good SEO education should be accessible to everyone.</p>
-      <p style="margin-top:12px"><strong style="color:var(--t1)">Practice over theory.</strong> Every article links to a tool. Every tool has a guide. Learn by doing, not just reading.</p>
-      <p style="margin-top:12px"><strong style="color:var(--t1)">No ads.</strong> Tools are recommended because they work, not because they pay. No sponsored rankings.</p>
+      <p><strong style="color:var(--t1)">No fluff.</strong> Every resource here has been tested in real campaigns. We link to tools because they work, not because they pay.</p>
+      <p style="margin-top:12px"><strong style="color:var(--t1)">Accessible to all levels.</strong> Whether you're a solo founder without a developer, a copywriter wanting better briefs, or an agency needing scalable processes — we have a path for you.</p>
+      <p style="margin-top:12px"><strong style="color:var(--t1)">AI-first, human-centered.</strong> We embrace AI tools for speed, but every strategy we recommend is built on real SEO principles that survive algorithm updates.</p>
     </div>
   </div>
-  <div style="margin-bottom:64px">
-    <div class="section-label">Free tools available now</div>
+
+  <!-- Services -->
+  <div class="sh"><h2>Professional Services</h2><p>Expert help for every budget and skill level — from quick audits to full SEO strategy</p></div>
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(56,189,248,.1)">🔍</div>
+      <div class="service-title">SEO Audit — Starter</div>
+      <div class="service-who">For: Solo founders, small businesses</div>
+      <div class="service-desc">A clear, actionable audit you can act on yourself — no developer or agency needed. Prioritized by impact so you know exactly what to fix first.</div>
+      <div class="service-price">From $49</div>
+      <div class="service-includes">
+        <div class="si">10-point technical SEO checklist</div>
+        <div class="si">On-page optimization report</div>
+        <div class="si">Top 5 quick wins with step-by-step instructions</div>
+        <div class="si">No-jargon explanations for non-technical owners</div>
+      </div>
+      <a href="#contact" class="service-cta">Request Audit</a>
+    </div>
+
+    <div class="service-card featured">
+      <div class="service-icon" style="background:rgba(99,102,241,.1)">⚡</div>
+      <div class="service-title">Content Brief + Article</div>
+      <div class="service-who">For: Copywriters, content teams, bloggers</div>
+      <div class="service-desc">Professional SEO brief with competitive gap analysis, plus a fully optimized article ready for publishing. GEO-ready, AIO-structured, human-written.</div>
+      <div class="service-price">From $79 (brief) · From $149 (brief + article)</div>
+      <div class="service-includes">
+        <div class="si">Keyword research + search intent analysis</div>
+        <div class="si">H1-H6 structure with entity map</div>
+        <div class="si">Competitive gap analysis (top 3 competitor gaps)</div>
+        <div class="si">Full article: GEO-ready, E-E-A-T signals, FAQ schema</div>
+        <div class="si">Copywriter feedback on existing drafts: +$30</div>
+      </div>
+      <a href="#contact" class="service-cta">Request Brief / Article</a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(16,185,129,.1)">🏆</div>
+      <div class="service-title">Full SEO Audit — Professional</div>
+      <div class="service-who">For: Agencies, growing businesses, e-commerce</div>
+      <div class="service-desc">Comprehensive technical + content + GEO audit with a 90-day strategy roadmap. White-label report available for agencies.</div>
+      <div class="service-price">From $149</div>
+      <div class="service-includes">
+        <div class="si">Complete technical SEO audit (crawl, indexation, schema)</div>
+        <div class="si">GEO readiness score + AI citation opportunities</div>
+        <div class="si">E-E-A-T gap analysis with specific fixes</div>
+        <div class="si">Core Web Vitals diagnosis + fix plan</div>
+        <div class="si">90-day content + technical roadmap</div>
+        <div class="si">White-label report available for agencies</div>
+      </div>
+      <a href="#contact" class="service-cta">Request Full Audit</a>
+    </div>
+
+  </div>
+
+  <!-- GEO-SEO Architect banner -->
+  <div class="geo-tool-banner">
+    <div>
+      <h3>🤖 Want to do it yourself? Use GEO-SEO Architect</h3>
+      <p>Our recommended AI tool for content creation, GEO optimization, and Schema markup — try the 3-day free demo and see the difference.</p>
+    </div>
+    <a href="https://seo-geo-arhitect.top/" target="_blank" rel="noopener" class="geo-btn">Try Demo Free →</a>
+  </div>
+
+  <!-- Free tools row -->
+  <div style="margin-bottom:48px">
+    <div class="section-label">Free tools available now — no account needed</div>
     <div class="tools-row">
       <a class="tool-chip" href="./tools/serp-previewer"><span class="tool-dot"></span>SERP Previewer</a>
       <a class="tool-chip" href="./tools/schema-generator"><span class="tool-dot"></span>Schema Generator</a>
@@ -70,6 +179,64 @@
       <a class="tool-chip" href="./tools/crawl-checker"><span class="tool-dot"></span>Crawl Checker</a>
     </div>
   </div>
+
+  <!-- Contact -->
+  <div class="sh" id="contact"><h2>Get in Touch</h2><p>Request a service, ask a question, or discuss a custom project</p></div>
+  <div class="contact-grid">
+    <div class="contact-form-wrap">
+      <h3>Send a Message</h3>
+      <form onsubmit="event.preventDefault();this.innerHTML='<p style=\'font-size:15px;font-weight:700;color:var(--em);padding:20px 0\'>✓ Message sent! We\'ll reply within 24 hours.</p>'">
+        <div class="cf-group">
+          <label class="cf-label">Your Name</label>
+          <input type="text" class="cf-input" placeholder="John Smith" required/>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Email Address</label>
+          <input type="email" class="cf-input" placeholder="you@company.com" required/>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Service Interested In</label>
+          <select class="cf-input">
+            <option value="">Select a service...</option>
+            <option>SEO Audit — Starter ($49)</option>
+            <option>Content Brief ($79)</option>
+            <option>Brief + Article ($149)</option>
+            <option>Full SEO Audit — Professional ($149)</option>
+            <option>Copywriter Feedback ($30)</option>
+            <option>Custom / Other</option>
+          </select>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Your Website + Message</label>
+          <textarea class="cf-textarea" placeholder="Tell us about your website, goals, and what you need help with..." required></textarea>
+        </div>
+        <button type="submit" class="cf-btn">Send Message →</button>
+      </form>
+    </div>
+    <div class="contact-info">
+      <div class="ci-item">
+        <div class="ci-label">Email</div>
+        <div class="ci-value"><a href="mailto:hello@learnseohub.com">hello@learnseohub.com</a></div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">Response Time</div>
+        <div class="ci-value">Within 24 hours on business days</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">Languages</div>
+        <div class="ci-value">English · Romanian · Russian</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">Services Available For</div>
+        <div class="ci-value">Solo founders · Copywriters · Agencies · E-commerce</div>
+      </div>
+      <div class="ci-item" style="background:linear-gradient(135deg,rgba(99,102,241,.06),transparent)">
+        <div class="ci-label">🤖 Recommended Tool</div>
+        <div class="ci-value"><a href="https://seo-geo-arhitect.top/" target="_blank" rel="noopener">GEO-SEO Architect</a> — try the 3-day free demo for AI-powered SEO</div>
+      </div>
+    </div>
+  </div>
+
 </div></div>
 <div id="site-footer"></div>
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
