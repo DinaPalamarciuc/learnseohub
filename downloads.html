@@ -2,29 +2,281 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Free SEO Downloads & Templates — LearnSEO Hub</title>
-<meta name="description" content="Download free SEO audit templates, content briefs, GEO checklists, and Chrome extensions for SEO professionals."/>
+<title>Free SEO Downloads, Templates & Resources 2026 — LearnSEO Hub</title>
+<meta name="description" content="Download free SEO audit templates, GEO optimization checklists, content brief templates, prompt packs, and Chrome extensions. No signup required for most resources."/>
 <link rel="canonical" href="https://learnseohub.com/downloads"/>
-<meta property="og:title" content="Free SEO Downloads & Templates — LearnSEO Hub"/>
-<meta property="og:description" content="Download free SEO audit templates, content briefs, GEO checklists, and Chrome extensions for SEO professionals."/>
+<meta property="og:title" content="Free SEO Downloads & Templates 2026 — LearnSEO Hub"/>
+<meta property="og:description" content="Free SEO audit templates, GEO checklists, content briefs, and prompt packs. Download instantly."/>
 <meta property="og:type" content="website"/>
 <link rel="stylesheet" href="./css/style.css"/>
+<style>
+.dl-hero{text-align:center;padding:40px 0 32px;max-width:560px;margin:0 auto}
+.dl-hero h1{font-size:clamp(22px,4vw,34px);font-weight:900;letter-spacing:-.03em;margin-bottom:10px}
+.dl-hero p{font-size:14px;color:var(--t2);line-height:1.7}
+.dl-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.df{padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:var(--inputBg);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.df:hover,.df.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
+.dl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-bottom:56px}
+.dl-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+.dl-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.dl-card.free-gate{border-color:rgba(16,185,129,.2)}
+.dl-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.dl-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.dl-meta{flex:1}
+.dl-format{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3)}
+.dl-title{font-size:15px;font-weight:800;color:var(--t1);line-height:1.3;margin-top:2px}
+.dl-desc{font-size:13px;color:var(--t2);line-height:1.65;flex:1;margin-bottom:16px}
+.dl-includes{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.dli{font-size:12px;color:var(--t2);display:flex;align-items:flex-start;gap:6px}
+.dli::before{content:'→';color:var(--accent);font-weight:700;flex-shrink:0}
+.dl-btn{display:block;text-align:center;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:opacity .2s;cursor:pointer;border:none;font-family:inherit;width:100%}
+.dl-btn-free{background:var(--t1);color:var(--bg)}
+.dl-btn-free:hover{opacity:.85;color:var(--bg)}
+.dl-btn-external{background:rgba(99,102,241,.1);color:#6366f1;border:1px solid rgba(99,102,241,.2)}
+.dl-btn-external:hover{background:rgba(99,102,241,.15);color:#6366f1}
+.dl-btn-email{background:rgba(16,185,129,.1);color:#059669;border:1px solid rgba(16,185,129,.2)}
+.dl-btn-email:hover{background:rgba(16,185,129,.18);color:#059669}
+/* Email gate modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:400px;width:100%;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--t3);line-height:1}
+.modal-box h3{font-size:18px;font-weight:900;color:var(--t1);margin-bottom:8px}
+.modal-box p{font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.6}
+.modal-input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;background:var(--inputBg);color:var(--t1);font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;box-sizing:border-box}
+.modal-input:focus{border-color:var(--accent)}
+.modal-submit{width:100%;padding:12px;background:var(--t1);color:var(--bg);border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+.section-lbl{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin:8px 0 16px;display:flex;align-items:center;gap:10px}
+.section-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+</style>
 </head>
 <body>
 <script src="./js/site.js"></script>
 <div class="main"><div class="wrap">
-<div class="sh"><h2>Downloads & Templates</h2><p>Free resources to level up your SEO workflow</p></div>
-<div class="g3 stagger">
-<a class="cd" style="padding:24px;text-decoration:none;color:inherit;cursor:pointer" href="https://docs.google.com/spreadsheets/d/1AvrvwHkqqnSNowlra56DM-lbdOHi-nfz/edit?usp=sharing&ouid=116518271178255336772&rtpof=true&sd=true" target="_blank"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(22,163,74,.08)">🛒</div><span class="bd bd-s">Google Sheets</span></div><div style="font-size:16px;font-weight:800;margin-bottom:6px;color:var(--t1)">E-Commerce SEO To-Do List</div><div style="font-size:13px;color:var(--t2);line-height:1.55">Complete checklist for e-commerce SEO: product pages, category optimization, technical setup, schema markup, and AI Mode readiness.</div><div style="margin-top:12px;font-size:12px;font-weight:700;color:var(--accent)">↗ Open Template</div></a>
-<div class="cd" style="padding:24px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(56,189,248,.08)">📊</div><span class="bd bd-s">XLSX</span></div><div style="font-size:16px;font-weight:800;margin-bottom:6px;color:var(--t1)">SEO Audit Template</div><div style="font-size:13px;color:var(--t2);line-height:1.55">Complete Excel template for auditing any website. Covers technical SEO, on-page, off-page, content, and Core Web Vitals.</div></div>
-<div class="cd" style="padding:24px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(52,211,153,.08)">🔍</div><span class="bd bd-s">Chrome Extension</span></div><div style="font-size:16px;font-weight:800;margin-bottom:6px;color:var(--t1)">Keywords Everywhere Extension</div><div style="font-size:13px;color:var(--t2);line-height:1.55">Chrome extension providing real-time search volume, CPC, and competition data directly in your search results.</div></div>
-<div class="cd" style="padding:24px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(167,139,250,.08)">⚡</div><span class="bd bd-s">Chrome Extension</span></div><div style="font-size:16px;font-weight:800;margin-bottom:6px;color:var(--t1)">Detailed SEO Extension</div><div style="font-size:13px;color:var(--t2);line-height:1.55">One-click SEO insights for any page — view headings, schema markup, meta tags, and technical details instantly.</div></div>
-<div class="cd" style="padding:24px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(251,191,36,.08)">📝</div><span class="bd bd-s">XLSX</span></div><div style="font-size:16px;font-weight:800;margin-bottom:6px;color:var(--t1)">Content Brief Template</div><div style="font-size:13px;color:var(--t2);line-height:1.55">Structured template for creating SEO content briefs. Includes keyword mapping, competitor analysis, and outline sections.</div></div>
-<div class="cd" style="padding:24px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(251,113,133,.08)">✅</div><span class="bd bd-s">PDF</span></div><div style="font-size:16px;font-weight:800;margin-bottom:6px;color:var(--t1)">GEO Optimization Checklist</div><div style="font-size:13px;color:var(--t2);line-height:1.55">Printable checklist for optimizing content for AI search engines. Covers entity markup, citation-worthy content, and structured data.</div></div>
-<div class="cd" style="padding:24px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px"><div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(129,140,248,.08)">🤖</div><span class="bd bd-s">Chrome Extension</span></div><div style="font-size:16px;font-weight:800;margin-bottom:6px;color:var(--t1)">AIPRM for ChatGPT</div><div style="font-size:13px;color:var(--t2);line-height:1.55">Chrome extension with curated SEO prompt templates. One-click access to proven prompts for keyword research, content, and technical SEO.</div></div>
+
+<div class="dl-hero">
+  <h1>Downloads & Templates</h1>
+  <p>Free SEO resources, templates, and tools to level up your workflow — from quick-start checklists to professional brief templates.</p>
 </div>
+
+<div class="dl-filters">
+  <button class="df on" onclick="dfilter(this,'all')">All Resources</button>
+  <button class="df" onclick="dfilter(this,'template')">📄 Templates</button>
+  <button class="df" onclick="dfilter(this,'checklist')">✅ Checklists</button>
+  <button class="df" onclick="dfilter(this,'prompts')">🤖 Prompt Packs</button>
+  <button class="df" onclick="dfilter(this,'extension')">🔌 Extensions</button>
+</div>
+
+<div class="section-lbl">Free — No Email Required</div>
+<div class="dl-grid" id="dl-grid">
+
+  <div class="dl-card" data-cat="template">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(22,163,74,.08)">🛒</div>
+      <div class="dl-meta"><div class="dl-format">Google Sheets</div><div class="dl-title">E-Commerce SEO To-Do List</div></div>
+    </div>
+    <div class="dl-desc">Complete checklist for e-commerce SEO — covers product pages, category optimization, technical setup, schema markup, and AI Mode readiness.</div>
+    <div class="dl-includes">
+      <div class="dli">100+ actionable tasks organized by priority</div>
+      <div class="dli">Product page, category, and technical sections</div>
+      <div class="dli">AI Mode & Schema markup checklist included</div>
+    </div>
+    <a class="dl-btn dl-btn-external" href="https://docs.google.com/spreadsheets/d/1AvrvwHkqqnSNowlra56DM-lbdOHi-nfz/edit?usp=sharing" target="_blank" rel="noopener">↗ Open in Google Sheets</a>
+  </div>
+
+  <div class="dl-card" data-cat="extension">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(52,211,153,.08)">🔍</div>
+      <div class="dl-meta"><div class="dl-format">Chrome Extension · Free</div><div class="dl-title">Keywords Everywhere</div></div>
+    </div>
+    <div class="dl-desc">Real-time search volume, CPC, and competition data directly in your Google search results. Essential for keyword research on the fly.</div>
+    <div class="dl-includes">
+      <div class="dli">Search volume shown on every Google result</div>
+      <div class="dli">CPC and competition data instantly</div>
+      <div class="dli">Works on Google, YouTube, Amazon, and more</div>
+    </div>
+    <a class="dl-btn dl-btn-external" href="https://keywordseverywhere.com/" target="_blank" rel="noopener">↗ Get Extension Free</a>
+  </div>
+
+  <div class="dl-card" data-cat="extension">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(167,139,250,.08)">⚡</div>
+      <div class="dl-meta"><div class="dl-format">Chrome Extension · Free</div><div class="dl-title">Detailed SEO Extension</div></div>
+    </div>
+    <div class="dl-desc">One-click SEO insights for any page — view headings, schema markup, meta tags, redirects, and technical details instantly.</div>
+    <div class="dl-includes">
+      <div class="dli">Full heading hierarchy (H1-H6) visualization</div>
+      <div class="dli">Schema markup detection and display</div>
+      <div class="dli">Meta tags, canonical, hreflang check</div>
+    </div>
+    <a class="dl-btn dl-btn-external" href="https://detailed.com/extension/" target="_blank" rel="noopener">↗ Get Extension Free</a>
+  </div>
+
+  <div class="dl-card" data-cat="extension">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(129,140,248,.08)">🤖</div>
+      <div class="dl-meta"><div class="dl-format">Chrome Extension · Free</div><div class="dl-title">AIPRM for ChatGPT</div></div>
+    </div>
+    <div class="dl-desc">Curated prompt templates for SEO directly in ChatGPT. One-click access to proven prompts for keyword research, content creation, and technical SEO.</div>
+    <div class="dl-includes">
+      <div class="dli">500+ community SEO prompts in ChatGPT interface</div>
+      <div class="dli">Templates for articles, briefs, and audits</div>
+      <div class="dli">Works directly inside ChatGPT</div>
+    </div>
+    <a class="dl-btn dl-btn-external" href="https://www.aiprm.com/" target="_blank" rel="noopener">↗ Get Extension Free</a>
+  </div>
+
+</div>
+
+<div class="section-lbl">Free — Enter Email to Download</div>
+<div class="dl-grid">
+
+  <div class="dl-card free-gate" data-cat="template">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(56,189,248,.08)">📊</div>
+      <div class="dl-meta"><div class="dl-format">Excel / Google Sheets</div><div class="dl-title">SEO Audit Template</div></div>
+    </div>
+    <div class="dl-desc">Complete audit template covering all major SEO dimensions. Use it yourself or as a deliverable for clients.</div>
+    <div class="dl-includes">
+      <div class="dli">Technical SEO: crawl, indexation, speed, schema</div>
+      <div class="dli">On-page: title tags, meta, headings, content quality</div>
+      <div class="dli">Off-page: backlink profile, brand mentions</div>
+      <div class="dli">Core Web Vitals benchmark section</div>
+    </div>
+    <button class="dl-btn dl-btn-email" onclick="openGate('SEO Audit Template')">✉ Get Free Template</button>
+  </div>
+
+  <div class="dl-card free-gate" data-cat="template">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(251,191,36,.08)">📝</div>
+      <div class="dl-meta"><div class="dl-format">Google Docs / Word</div><div class="dl-title">Professional Content Brief Template</div></div>
+    </div>
+    <div class="dl-desc">The exact brief template our SEO service uses. Structured for copywriters to produce ranking, GEO-ready content first time.</div>
+    <div class="dl-includes">
+      <div class="dli">Keyword + intent + search volume section</div>
+      <div class="dli">H1-H6 outline with entity map</div>
+      <div class="dli">Competitor gap analysis section</div>
+      <div class="dli">GEO checklist: entities, FAQ, schema requirements</div>
+    </div>
+    <button class="dl-btn dl-btn-email" onclick="openGate('Professional Content Brief Template')">✉ Get Free Template</button>
+  </div>
+
+  <div class="dl-card free-gate" data-cat="checklist">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(251,113,133,.08)">✅</div>
+      <div class="dl-meta"><div class="dl-format">PDF Checklist</div><div class="dl-title">GEO Optimization Checklist</div></div>
+    </div>
+    <div class="dl-desc">Printable checklist for optimizing any article for AI search engines. Run through it before publishing every piece of content.</div>
+    <div class="dl-includes">
+      <div class="dli">Entity markup & sameAs Schema checklist</div>
+      <div class="dli">Inverted pyramid + citation structure checks</div>
+      <div class="dli">E-E-A-T signals verification</div>
+      <div class="dli">FAQPage schema implementation guide</div>
+    </div>
+    <button class="dl-btn dl-btn-email" onclick="openGate('GEO Optimization Checklist')">✉ Get Free Checklist</button>
+  </div>
+
+  <div class="dl-card free-gate" data-cat="prompts">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(99,102,241,.08)">🤖</div>
+      <div class="dl-meta"><div class="dl-format">PDF Prompt Pack</div><div class="dl-title">Top 10 SEO Prompts — Pro Pack</div></div>
+    </div>
+    <div class="dl-desc">The 10 highest-impact prompts from our library, formatted as a single PDF with usage instructions and variable placeholders.</div>
+    <div class="dl-includes">
+      <div class="dli">Complete SEO Audit prompt</div>
+      <div class="dli">GEO readiness analysis prompt</div>
+      <div class="dli">Professional content brief prompt</div>
+      <div class="dli">AIO optimizer + FAQ schema generator</div>
+      <div class="dli">Article humanizer + E-E-A-T enhancer</div>
+    </div>
+    <button class="dl-btn dl-btn-email" onclick="openGate('Top 10 SEO Prompts — Pro Pack')">✉ Get Free Prompt Pack</button>
+  </div>
+
+  <div class="dl-card free-gate" data-cat="template">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(16,185,129,.08)">🌍</div>
+      <div class="dl-meta"><div class="dl-format">Google Sheets</div><div class="dl-title">Multilingual SEO & Hreflang Template</div></div>
+    </div>
+    <div class="dl-desc">Track and manage hreflang implementation for multilingual sites. Automatically generates the hreflang code you need.</div>
+    <div class="dl-includes">
+      <div class="dli">Hreflang tag generator (up to 20 languages)</div>
+      <div class="dli">Language/country code reference sheet</div>
+      <div class="dli">Common hreflang error checklist</div>
+    </div>
+    <button class="dl-btn dl-btn-email" onclick="openGate('Multilingual SEO & Hreflang Template')">✉ Get Free Template</button>
+  </div>
+
+  <div class="dl-card free-gate" data-cat="prompts">
+    <div class="dl-head">
+      <div class="dl-icon" style="background:rgba(168,85,247,.08)">🌍</div>
+      <div class="dl-meta"><div class="dl-format">PDF Prompt Pack</div><div class="dl-title">SEO Translation Prompts Pack</div></div>
+    </div>
+    <div class="dl-desc">Professional prompts for translating content while preserving SEO value. Includes keyword localization, hreflang, and cultural adaptation prompts.</div>
+    <div class="dl-includes">
+      <div class="dli">SEO-preserving translation prompt (5 languages)</div>
+      <div class="dli">Keyword localization prompt</div>
+      <div class="dli">Hreflang implementation prompt</div>
+      <div class="dli">Cultural adaptation checklist prompt</div>
+    </div>
+    <button class="dl-btn dl-btn-email" onclick="openGate('SEO Translation Prompts Pack')">✉ Get Free Pack</button>
+  </div>
+
+</div>
+
+<!-- Email Gate Modal -->
+<div class="modal-overlay" id="gateModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeGate()">✕</button>
+    <div style="font-size:28px;margin-bottom:12px">📥</div>
+    <h3 id="gateTitle">Get Your Free Resource</h3>
+    <p>Enter your email and we'll send the download link instantly. No spam — just the resource + our monthly SEO update.</p>
+    <form onsubmit="submitGate(event)">
+      <input type="email" class="modal-input" id="gateEmail" placeholder="your@email.com" required/>
+      <button type="submit" class="modal-submit">Send Me the Resource →</button>
+    </form>
+  </div>
+</div>
+
 </div></div>
 <div id="site-footer"></div>
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+let currentResource = '';
+
+function dfilter(btn, cat) {
+  document.querySelectorAll('.df').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.dl-card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+function openGate(resource) {
+  currentResource = resource;
+  document.getElementById('gateTitle').textContent = 'Get: ' + resource;
+  document.getElementById('gateModal').classList.add('open');
+  document.getElementById('gateEmail').focus();
+}
+
+function closeGate() {
+  document.getElementById('gateModal').classList.remove('open');
+}
+
+function submitGate(e) {
+  e.preventDefault();
+  const email = document.getElementById('gateEmail').value;
+  document.querySelector('#gateModal .modal-box').innerHTML = `
+    <div style="text-align:center;padding:20px 0">
+      <div style="font-size:36px;margin-bottom:12px">✅</div>
+      <h3 style="color:var(--t1);margin-bottom:8px">You're all set!</h3>
+      <p style="font-size:13px;color:var(--t2);line-height:1.6">We've sent <strong>${currentResource}</strong> to <strong>${email}</strong>.<br/>Check your inbox in the next 2 minutes.</p>
+      <button onclick="closeGate()" style="margin-top:20px;padding:10px 24px;background:var(--t1);color:var(--bg);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit">Close</button>
+    </div>`;
+}
+
+document.getElementById('gateModal').addEventListener('click', function(e) {
+  if (e.target === this) closeGate();
+});
+</script>
 </body>
 </html>
