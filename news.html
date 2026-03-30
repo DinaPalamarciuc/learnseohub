@@ -166,10 +166,35 @@
 <div class="subscribe-box">
   <h3>Stay Ahead — Get Monthly SEO Updates</h3>
   <p>New algorithm updates, AI search developments, and actionable recommendations delivered once a month. No spam.</p>
-  <form class="sub-form" onsubmit="event.preventDefault();this.innerHTML='<p style=\'color:var(--em);font-weight:700\'>✓ You\'re subscribed!</p>'">
-    <input type="email" class="sub-input" placeholder="your@email.com" required/>
+  <form id="newsForm" class="sub-form" onsubmit="subNews(event)">
+    <input type="hidden" name="access_key" value="d2a42b3a-babb-443b-8b89-54585fdb71f7"/>
+    <input type="hidden" name="subject" value="New LearnSEO Hub Subscriber"/>
+    <input type="hidden" name="from_name" value="LearnSEO Hub Newsletter"/>
+    <input type="email" name="email" class="sub-input" placeholder="your@email.com" required/>
     <button type="submit" class="sub-btn">Subscribe Free</button>
   </form>
+  <div id="newsMsg" style="display:none;margin-top:12px;font-size:14px;font-weight:700;color:var(--em)"></div>
+  <script>
+  async function subNews(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '...';
+    btn.disabled = true;
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {method:'POST', body: new FormData(e.target)});
+      const d = await res.json();
+      if (d.success) {
+        document.getElementById('newsForm').style.display = 'none';
+        const msg = document.getElementById('newsMsg');
+        msg.style.display = 'block';
+        msg.textContent = '✓ You're subscribed! You'll receive the next SEO update.';
+      }
+    } catch(err) {
+      btn.textContent = 'Subscribe Free';
+      btn.disabled = false;
+    }
+  }
+  </script>
 </div>
 
 </div></div>
