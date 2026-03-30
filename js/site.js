@@ -456,8 +456,9 @@
       </div>
     </div>
     <div class="ft-bottom">
-      <span>© 2026 LearnSEO Hub. Free & open-source.</span>
+      <span>© 2026 Dina Palamarciuc · LearnSEO Hub</span>
       <span>Built for the AI Search Era 🚀</span>
+        <span style="font-size:12px; color:var(--t3)"><a href="#" onclick="this.href='mai'+'lto:'+'palamarciuc.dina2'+'@gmail.com';return true;" style="color:var(--t3);text-decoration:none;">palamarciuc.dina2&#64;gmail.com</a></span>
     </div>
   </div>
 </footer>`;
