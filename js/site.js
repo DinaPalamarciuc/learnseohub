@@ -22,7 +22,56 @@
     link.href = encoded;
   })();
 
-  /* ── 2. Active path detection ── */
+  /* ── 3. Cookie Consent ── */
+  const COOKIE_KEY = 'lsh-cookie-consent';
+
+  function lshGetConsent() {
+    try { return JSON.parse(localStorage.getItem(COOKIE_KEY)); } catch(e) { return null; }
+  }
+
+  function lshSetConsent(analytics) {
+    localStorage.setItem(COOKIE_KEY, JSON.stringify({ analytics: analytics, date: new Date().toISOString() }));
+    var b = document.getElementById('lsh-cookie-banner');
+    if (b) b.remove();
+    if (analytics) lshLoadAnalytics();
+  }
+
+  function lshLoadAnalytics() {
+    // Replace G-XXXXXXXX with your GA4 measurement ID when ready
+    // var s = document.createElement('script');
+    // s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX';
+    // s.async = true;
+    // document.head.appendChild(s);
+    // window.dataLayer = window.dataLayer || [];
+    // function gtag(){dataLayer.push(arguments);}
+    // gtag('js', new Date()); gtag('config', 'G-XXXXXXXX');
+  }
+
+  window.lshCookieOpen = function() {
+    var b = document.getElementById('lsh-cookie-banner');
+    if (b) { b.style.display = 'flex'; return; }
+    lshShowBanner(true);
+  };
+
+  function lshShowBanner(force) {
+    if (!force && lshGetConsent() !== null) return;
+    var banner = document.createElement('div');
+    banner.id = 'lsh-cookie-banner';
+    banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card);border-top:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 -4px 24px rgba(0,0,0,.1);';
+    var r = root('');
+    banner.innerHTML = '<p style="font-size:13px;color:var(--t2);line-height:1.6;margin:0;flex:1;min-width:240px;">'
+      + '🍪 We use cookies to improve your experience and analyze site usage. Essential cookies are always active. '
+      + '<a href="' + r + 'cookies" style="color:var(--accent);font-weight:700;">Cookie Policy</a> · '
+      + '<a href="' + r + 'privacy" style="color:var(--accent);font-weight:700;">Privacy Policy</a>'
+      + '</p>'
+      + '<div style="display:flex;gap:8px;flex-shrink:0;">'
+      + '<button onclick="lshSetConsent(false)" style="padding:9px 20px;background:transparent;color:var(--t2);border:1px solid var(--border);border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;">Essential Only</button>'
+      + '<button onclick="lshSetConsent(true)" style="padding:9px 20px;background:var(--t1);color:var(--bg);border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;">Accept All</button>'
+      + '</div>';
+    document.body.appendChild(banner);
+  }
+
+  /* ── 4. Active path detection ── */
   function getActivePath() {
     const p = location.pathname.replace(/\/$/, '').replace(/\/index\.html$/, '');
     return p || '/';
@@ -35,14 +84,14 @@
     return p === h || p.startsWith(h + '/');
   }
 
-  /* ── 3. Resolve relative root ── */
+  /* ── 5. Resolve relative root ── */
   function root(path) {
     const depth = location.pathname.split('/').filter(Boolean).length;
     const prefix = depth > 1 ? '../' : './';
     return prefix + path;
   }
 
-  /* ── 4. Logo SVG — lightbulb circuit board on colored bg ── */
+  /* ── 6. Logo SVG — lightbulb circuit board on colored bg ── */
   const logoSVG = `
     <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
@@ -51,16 +100,12 @@
           <stop offset="100%" stop-color="#06b6d4"/>
         </linearGradient>
       </defs>
-      <!-- Rounded square background -->
       <rect width="36" height="36" rx="9" fill="url(#bulbg)"/>
-      <!-- Bulb body -->
       <path d="M18 6 C13 6 10 9.5 10 13.5 C10 16.5 11.5 19 14 20.5 L14 23 L22 23 L22 20.5 C24.5 19 26 16.5 26 13.5 C26 9.5 23 6 18 6 Z"
         fill="none" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
-      <!-- Base cap -->
       <rect x="14" y="23" width="8" height="2" rx="0.5" fill="white" fill-opacity="0.9"/>
       <rect x="14.5" y="25" width="7" height="2" rx="0.5" fill="white" fill-opacity="0.7"/>
       <rect x="15" y="27" width="6" height="1.5" rx="0.5" fill="white" fill-opacity="0.5"/>
-      <!-- Circuit lines inside bulb -->
       <line x1="18" y1="20" x2="18" y2="15" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
       <line x1="18" y1="17" x2="14.5" y2="14" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
       <circle cx="14" cy="13.5" r="1.2" fill="#67e8f9"/>
@@ -70,13 +115,12 @@
       <circle cx="16" cy="10" r="1.2" fill="#a5f3fc"/>
       <line x1="18" y1="11" x2="20" y2="9.5" stroke="white" stroke-width="1" stroke-linecap="round"/>
       <circle cx="20.5" cy="9" r="1.1" fill="#f0abfc"/>
-      <!-- Polygon facets (subtle) -->
       <line x1="18" y1="6" x2="14" y2="20.5" stroke="white" stroke-width="0.6" stroke-opacity="0.25"/>
       <line x1="18" y1="6" x2="22" y2="20.5" stroke="white" stroke-width="0.6" stroke-opacity="0.25"/>
       <line x1="10" y1="11" x2="26" y2="16" stroke="white" stroke-width="0.5" stroke-opacity="0.2"/>
     </svg>`;
 
-  /* ── 5. Nav HTML ── */
+  /* ── 7. Nav HTML ── */
   const nav = document.createElement('div');
   nav.innerHTML = `
 <style>
@@ -88,7 +132,6 @@
     --logo-g1: #3b82f6;
     --logo-g2: #8b5cf6;
   }
-  /* ── Global top-spacing reset ── */
   .main { padding-top: 0 !important; margin-top: 0 !important; }
   .main > .wrap { padding-top: 40px !important; }
   .navbar {
@@ -178,7 +221,6 @@
     font-weight: 800;
     background: color-mix(in srgb, var(--accent) 10%, transparent);
   }
-  /* Dropdown */
   .nav-dd { position: relative; }
   .nav-dd-menu {
     display: none;
@@ -210,7 +252,6 @@
   }
   .nav-dd-item:hover { background: var(--bg); color: var(--t1); }
   .nav-dd-item svg { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.6; }
-  /* Right controls */
   .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .theme-btn {
     width: 36px; height: 36px;
@@ -223,7 +264,6 @@
     transition: color 0.15s, border-color 0.15s;
   }
   .theme-btn:hover { color: var(--t1); border-color: var(--accent); }
-  /* Hamburger */
   .nav-hamburger {
     display: none;
     width: 36px; height: 36px;
@@ -234,7 +274,6 @@
     cursor: pointer;
     align-items: center; justify-content: center;
   }
-  /* Mobile menu */
   .mobile-menu {
     display: none;
     flex-direction: column;
@@ -262,7 +301,6 @@
     color: var(--t3);
     padding: 14px 12px 6px;
   }
-  /* BTT */
   .btt {
     position: fixed;
     bottom: 24px; right: 24px;
@@ -319,7 +357,7 @@
           </a>
           <a class="nav-dd-item" href="${root('news')}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            News & Trends
+            News &amp; Trends
           </a>
           <a class="nav-dd-item" href="${root('career')}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -356,28 +394,29 @@
   <a href="${root('glossary')}">SEO Glossary</a>
   <a href="${root('prompts')}">AI Prompts</a>
   <a href="${root('compare')}">Tool Comparison</a>
-  <a href="${root('news')}">News & Trends</a>
+  <a href="${root('news')}">News &amp; Trends</a>
   <a href="${root('career')}">Career Paths</a>
   <a href="${root('faq')}">FAQ</a>
   <div class="mm-group">More</div>
   <a href="${root('about')}">About</a>
 </div>`;
 
-  /* ── 6. Insert nav immediately (no flash) ── */
+  /* ── 8. Insert nav immediately (no flash) ── */
   document.body.insertBefore(nav, document.body.firstChild);
 
-  /* ── 7. Active link highlight ── */
+  /* ── 9. Active link highlight ── */
   document.querySelectorAll('.nav-link[href], .nav-dd-item[href]').forEach(a => {
     if (isActive(a.getAttribute('href'))) {
       a.classList.add('on');
-      // if inside dropdown, also mark parent
       const dd = a.closest('.nav-dd');
       if (dd) dd.querySelector('.nav-link')?.classList.add('on');
     }
   });
 
-  /* ── 8. Footer + BTT (after DOM ready) ── */
+  /* ── 10. Footer + BTT + Cookie banner (after DOM ready) ── */
   document.addEventListener('DOMContentLoaded', () => {
+
+    /* Footer */
     const ftEl = document.getElementById('site-footer');
     if (ftEl) {
       ftEl.innerHTML = `
@@ -417,7 +456,7 @@
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
     padding-top: 24px;
     border-top: 1px solid var(--border);
     font-size: 12px;
@@ -446,18 +485,24 @@
         <h4>Resources</h4>
         <a href="${root('prompts')}">AI Prompts</a>
         <a href="${root('compare')}">Tool Comparison</a>
-        <a href="${root('news')}">News & Trends</a>
+        <a href="${root('news')}">News &amp; Trends</a>
         <a href="${root('career')}">Career Paths</a>
         <a href="${root('faq')}">FAQ</a>
       </div>
       <div class="ft-col">
         <h4>Company</h4>
         <a href="${root('about')}">About</a>
+        <a href="${root('services')}">Services</a>
+        <a href="${root('privacy')}">Privacy Policy</a>
+        <a href="${root('cookies')}">Cookie Policy</a>
+        <a href="${root('terms')}">Terms &amp; Conditions</a>
       </div>
     </div>
     <div class="ft-bottom">
-      <span>© 2026 LearnSEO Hub. Free & open-source.</span>
+      <span>© 2026 Dina Palamarciuc · LearnSEO Hub</span>
       <span>Built for the AI Search Era 🚀</span>
+      <span><a href="#" onclick="this.href='mai'+'lto:'+'palamarciuc.dina2'+'@gmail.com';return true;" style="color:var(--t3);text-decoration:none;">palamarciuc.dina2&#64;gmail.com</a></span>
+      <button onclick="window.lshCookieOpen && window.lshCookieOpen()" style="background:none;border:none;color:var(--t3);font-size:12px;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">⚙ Cookie Settings</button>
     </div>
   </div>
 </footer>`;
@@ -470,6 +515,12 @@
         btt.classList.toggle('show', window.scrollY > 400);
       }, { passive: true });
     }
+
+    /* Cookie banner — show on first visit */
+    lshShowBanner(false);
+    var consent = lshGetConsent();
+    if (consent && consent.analytics) lshLoadAnalytics();
+
   });
 
 })();
