@@ -8,6 +8,88 @@
   const saved = localStorage.getItem('lsh-theme');
   if (saved) document.documentElement.setAttribute('data-theme', saved);
 
+
+  /* ── Cookie Consent ── */
+  const COOKIE_KEY = 'lsh-cookie-consent';
+
+  function lshGetConsent() {
+    try { return JSON.parse(localStorage.getItem(COOKIE_KEY)) || null; } catch(e) { return null; }
+  }
+
+  function lshSetConsent(analytics) {
+    const val = { analytics, date: new Date().toISOString() };
+    localStorage.setItem(COOKIE_KEY, JSON.stringify(val));
+    document.getElementById('lsh-cookie-banner')?.remove();
+    if (analytics) lshLoadAnalytics();
+  }
+
+  function lshLoadAnalytics() {
+    // Add your GA4 script here once you have a GA4 property
+    // Example: const s = document.createElement('script');
+    // s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX';
+    // document.head.appendChild(s);
+  }
+
+  window.lshCookieOpen = function() {
+    const b = document.getElementById('lsh-cookie-banner');
+    if (b) { b.style.display = 'flex'; return; }
+    lshShowBanner();
+  };
+
+  function lshShowBanner() {
+    const consent = lshGetConsent();
+    if (consent !== null) return; // already decided
+
+    const banner = document.createElement('div');
+    banner.id = 'lsh-cookie-banner';
+    banner.innerHTML = \`
+      <style>
+        #lsh-cookie-banner {
+          position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+          background: var(--card); border-top: 1px solid var(--border);
+          padding: 16px 24px; display: flex; align-items: center;
+          justify-content: space-between; flex-wrap: wrap; gap: 12px;
+          box-shadow: 0 -4px 24px rgba(0,0,0,.08);
+        }
+        #lsh-cookie-banner p {
+          font-size: 13px; color: var(--t2); line-height: 1.5;
+          margin: 0; flex: 1; min-width: 240px;
+        }
+        #lsh-cookie-banner a { color: var(--accent); }
+        .lsh-cb-btns { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+        .lsh-cb-accept {
+          padding: 9px 20px; background: var(--t1); color: var(--bg);
+          border: none; border-radius: 8px; font-weight: 700; font-size: 13px;
+          cursor: pointer; font-family: inherit; white-space: nowrap;
+        }
+        .lsh-cb-reject {
+          padding: 9px 20px; background: transparent; color: var(--t2);
+          border: 1px solid var(--border); border-radius: 8px; font-weight: 600;
+          font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap;
+        }
+        .lsh-cb-reject:hover { border-color: var(--border2); color: var(--t1); }
+      </style>
+      <p>
+        🍪 We use cookies to improve your experience and analyze site usage.
+        Essential cookies are always active.
+        <a href="./cookies" style="font-weight:700">Cookie Policy</a> ·
+        <a href="./privacy" style="font-weight:700">Privacy Policy</a>
+      </p>
+      <div class="lsh-cb-btns">
+        <button class="lsh-cb-reject" onclick="lshSetConsent(false)">Essential Only</button>
+        <button class="lsh-cb-accept" onclick="lshSetConsent(true)">Accept All</button>
+      </div>
+    \`;
+    document.body.appendChild(banner);
+  }
+
+  // Init cookie consent after DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    lshShowBanner();
+    const consent = lshGetConsent();
+    if (consent?.analytics) lshLoadAnalytics();
+  });
+
   /* ── 2. Favicon injection ── */
   (function() {
     const faviconSVG = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><defs><linearGradient id='fg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='%23a855f7'/><stop offset='100%' stop-color='%2306b6d4'/></linearGradient></defs><rect width='36' height='36' rx='9' fill='url(%23fg)'/><path d='M18 6C13 6 10 9.5 10 13.5c0 3 1.5 5.5 4 7L14 23h8l0-2.5c2.5-1.5 4-4 4-7C26 9.5 23 6 18 6Z' fill='none' stroke='white' stroke-width='1.8'/><rect x='14' y='23' width='8' height='2' rx='0.5' fill='white' fill-opacity='0.9'/><rect x='14.5' y='25' width='7' height='2' rx='0.5' fill='white' fill-opacity='0.7'/><line x1='18' y1='20' x2='18' y2='15' stroke='white' stroke-width='1.4' stroke-linecap='round'/><line x1='18' y1='17' x2='14.5' y2='14' stroke='white' stroke-width='1.2' stroke-linecap='round'/><circle cx='14' cy='13.5' r='1.2' fill='%2367e8f9'/><line x1='18' y1='16' x2='21.5' y2='13.5' stroke='white' stroke-width='1.2' stroke-linecap='round'/><circle cx='22' cy='13' r='1.2' fill='%23e879f9'/><line x1='18' y1='15' x2='18' y2='11' stroke='white' stroke-width='1.2' stroke-linecap='round'/><circle cx='16' cy='10' r='1.2' fill='%23a5f3fc'/></svg>`;
@@ -453,12 +535,17 @@
       <div class="ft-col">
         <h4>Company</h4>
         <a href="${root('about')}">About</a>
+        <a href="${root('services')}">Services</a>
+        <a href="${root('privacy')}">Privacy Policy</a>
+        <a href="${root('cookies')}">Cookie Policy</a>
+        <a href="${root('terms')}">Terms & Conditions</a>
       </div>
     </div>
     <div class="ft-bottom">
       <span>© 2026 Dina Palamarciuc · LearnSEO Hub</span>
       <span>Built for the AI Search Era 🚀</span>
         <span style="font-size:12px; color:var(--t3)"><a href="#" onclick="this.href='mai'+'lto:'+'palamarciuc.dina2'+'@gmail.com';return true;" style="color:var(--t3);text-decoration:none;">palamarciuc.dina2&#64;gmail.com</a></span>
+        <button onclick="window.lshCookieOpen && window.lshCookieOpen()" style="background:none;border:none;color:var(--t3);font-size:12px;cursor:pointer;font-family:inherit;padding:0;text-decoration:underline;">⚙ Cookie Settings</button>
     </div>
   </div>
 </footer>`;
