@@ -225,15 +225,15 @@
 
 <!-- Email Gate Modal -->
 <div class="modal-overlay" id="gateModal">
-  <div class="modal-box">
+  <div class="modal-box" id="gateBox">
     <button class="modal-close" onclick="closeGate()">✕</button>
     <div style="font-size:28px;margin-bottom:12px">📥</div>
     <h3 id="gateTitle">Get Your Free Resource</h3>
     <p>Enter your email and we'll send the download link instantly. No spam — just the resource + our monthly SEO update.</p>
-    <form onsubmit="submitGate(event)">
-      <input type="email" class="modal-input" id="gateEmail" placeholder="your@email.com" required/>
-      <button type="submit" class="modal-submit">Send Me the Resource →</button>
-    </form>
+    <input type="text" id="gateName" class="modal-input" placeholder="Your name (optional)"/>
+    <input type="email" id="gateEmail" class="modal-input" placeholder="your@email.com"/>
+    <div id="gateError" style="display:none;color:#ef4444;font-size:12px;margin-bottom:8px"></div>
+    <button class="modal-submit" onclick="submitGate()">Send Me the Resource →</button>
   </div>
 </div>
 
@@ -262,16 +262,46 @@ function closeGate() {
   document.getElementById('gateModal').classList.remove('open');
 }
 
-function submitGate(e) {
-  e.preventDefault();
+async function submitGate() {
   const email = document.getElementById('gateEmail').value;
-  document.querySelector('#gateModal .modal-box').innerHTML = `
-    <div style="text-align:center;padding:20px 0">
-      <div style="font-size:36px;margin-bottom:12px">✅</div>
-      <h3 style="color:var(--t1);margin-bottom:8px">You're all set!</h3>
-      <p style="font-size:13px;color:var(--t2);line-height:1.6">We've sent <strong>${currentResource}</strong> to <strong>${email}</strong>.<br/>Check your inbox in the next 2 minutes.</p>
-      <button onclick="closeGate()" style="margin-top:20px;padding:10px 24px;background:var(--t1);color:var(--bg);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit">Close</button>
-    </div>`;
+  const name = document.getElementById('gateName').value;
+  const errEl = document.getElementById('gateError');
+  if (!email || !email.includes('@')) {
+    errEl.style.display = 'block';
+    errEl.textContent = 'Please enter a valid email address.';
+    return;
+  }
+  errEl.style.display = 'none';
+  const btn = document.querySelector('#gateModal .modal-submit');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  const formData = new FormData();
+  formData.append('access_key', 'd2a42b3a-babb-443b-8b89-54585fdb71f7');
+  formData.append('subject', 'Free Resource Request: ' + currentResource);
+  formData.append('from_name', 'LearnSEO Hub Downloads');
+  formData.append('email', email);
+  formData.append('name', name || 'Not provided');
+  formData.append('message', 'Resource requested: ' + currentResource);
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('gateBox').innerHTML = `
+        <div style="text-align:center;padding:20px 0">
+          <div style="font-size:36px;margin-bottom:12px">✅</div>
+          <h3 style="color:var(--t1);margin-bottom:8px">You're all set!</h3>
+          <p style="font-size:13px;color:var(--t2);line-height:1.6">We've sent <strong>${currentResource}</strong> to <strong>${email}</strong>.<br/>Check your inbox in the next 2 minutes.</p>
+          <button onclick="closeGate()" style="margin-top:20px;padding:10px 24px;background:var(--t1);color:var(--bg);border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit">Close</button>
+        </div>`;
+    } else { throw new Error(); }
+  } catch(e) {
+    btn.textContent = 'Send Me the Resource →';
+    btn.disabled = false;
+    errEl.style.display = 'block';
+    errEl.textContent = 'Something went wrong. Email palamarciuc.dina2@gmail.com directly.';
+  }
 }
 
 document.getElementById('gateModal').addEventListener('click', function(e) {
