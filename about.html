@@ -185,18 +185,25 @@
   <div class="contact-grid">
     <div class="contact-form-wrap">
       <h3>Send a Message</h3>
-      <form onsubmit="event.preventDefault();this.innerHTML='<p style=\'font-size:15px;font-weight:700;color:var(--em);padding:20px 0\'>✓ Message sent! We\'ll reply within 24 hours.</p>'">
+      <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+        <!-- Web3Forms config — replace d2a42b3a-babb-443b-8b89-54585fdb71f7 with key from web3forms.com -->
+        <input type="hidden" name="access_key" value="d2a42b3a-babb-443b-8b89-54585fdb71f7"/>
+        <input type="hidden" name="subject" value="New LearnSEO Hub Inquiry"/>
+        <input type="hidden" name="from_name" value="LearnSEO Hub Contact Form"/>
+        <input type="hidden" name="redirect" value="false"/>
+        <input type="checkbox" name="botcheck" style="display:none"/>
+
         <div class="cf-group">
           <label class="cf-label">Your Name</label>
-          <input type="text" class="cf-input" placeholder="John Smith" required/>
+          <input type="text" name="name" class="cf-input" placeholder="John Smith" required/>
         </div>
         <div class="cf-group">
           <label class="cf-label">Email Address</label>
-          <input type="email" class="cf-input" placeholder="you@company.com" required/>
+          <input type="email" name="email" class="cf-input" placeholder="you@company.com" required/>
         </div>
         <div class="cf-group">
           <label class="cf-label">Service Interested In</label>
-          <select class="cf-input">
+          <select name="service" class="cf-input">
             <option value="">Select a service...</option>
             <option>SEO Audit — Starter ($49)</option>
             <option>Content Brief ($79)</option>
@@ -208,15 +215,48 @@
         </div>
         <div class="cf-group">
           <label class="cf-label">Your Website + Message</label>
-          <textarea class="cf-textarea" placeholder="Tell us about your website, goals, and what you need help with..." required></textarea>
+          <textarea name="message" class="cf-textarea" placeholder="Tell us about your website, goals, and what you need help with..." required></textarea>
         </div>
-        <button type="submit" class="cf-btn">Send Message →</button>
+        <div id="formResult" style="display:none;padding:12px 16px;border-radius:10px;margin-bottom:12px;font-size:14px;font-weight:600;"></div>
+        <button type="submit" id="formBtn" class="cf-btn">Send Message →</button>
       </form>
+      <script>
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const btn = document.getElementById('formBtn');
+          const result = document.getElementById('formResult');
+          btn.textContent = 'Sending...';
+          btn.disabled = true;
+          try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+              method: 'POST',
+              body: new FormData(this)
+            });
+            const data = await res.json();
+            if (data.success) {
+              result.style.display = 'block';
+              result.style.background = 'rgba(5,150,105,.1)';
+              result.style.color = '#059669';
+              result.textContent = '✓ Message sent! Dina will reply within 24 hours.';
+              this.reset();
+            } else {
+              throw new Error(data.message);
+            }
+          } catch(err) {
+            result.style.display = 'block';
+            result.style.background = 'rgba(239,68,68,.1)';
+            result.style.color = '#ef4444';
+            result.textContent = '✗ Something went wrong. Please email palamarciuc.dina2@gmail.com directly.';
+          }
+          btn.textContent = 'Send Message →';
+          btn.disabled = false;
+        });
+      </script>
     </div>
     <div class="contact-info">
       <div class="ci-item">
         <div class="ci-label">Email</div>
-        <div class="ci-value"><a href="mailto:hello@learnseohub.com">hello@learnseohub.com</a></div>
+        <div class="ci-value"><a href="/cdn-cgi/l/email-protection#bed6dbd2d2d1fed2dbdfccd0cddbd1d6cbdc90ddd1d3"><span class="__cf_email__" data-cfemail="2f474a4343406f434a4e5d415c4a40475a4d014c4042">[email&#160;protected]</span></a></div>
       </div>
       <div class="ci-item">
         <div class="ci-label">Response Time</div>
@@ -238,7 +278,4 @@
   </div>
 
 </div></div>
-<div id="site-footer"></div>
-<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-</body>
-</html>
+<
