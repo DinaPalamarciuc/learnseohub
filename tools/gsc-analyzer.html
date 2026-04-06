@@ -160,10 +160,11 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 
 <div class="upload-zone" id="upload-zone">
   <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-  <h3>Drop your GSC CSV here</h3>
-  <p>Export from GSC → Performance → Compare last 28 days vs previous 28 days → Export CSV</p>
-  <button class="btn" onclick="document.getElementById('csv-input').click()">Choose CSV file</button>
-  <input type="file" id="csv-input" accept=".csv">
+  <h3>Drop your GSC CSV files here</h3>
+  <p>You can upload multiple CSV files at once — data will be merged automatically.<br>Export from GSC → Performance → Compare last 28 days vs previous 28 days → Export CSV</p>
+  <button class="btn" onclick="document.getElementById('csv-input').click()">Choose CSV file(s)</button>
+  <input type="file" id="csv-input" accept=".csv" multiple>
+  <div id="file-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;"></div>
 </div>
 
 <div class="error-msg" id="error-msg"></div>
@@ -237,12 +238,48 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
 <script>
 (function(){
   let rows=[];
+  let loadedFiles=[]; // {name, text}
+  let pendingCount=0;
 
   const zone=document.getElementById('upload-zone');
   zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
   zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
-  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)handleFile(f);});
-  document.getElementById('csv-input').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0]);});
+  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');handleFiles(e.dataTransfer.files);});
+  document.getElementById('csv-input').addEventListener('change',e=>{if(e.target.files.length)handleFiles(e.target.files);});
+
+  function handleFiles(fileList){
+    showError('');
+    const files=Array.from(fileList).filter(f=>f.name.endsWith('.csv'));
+    if(!files.length){showError('Please upload .csv files exported from Google Search Console.');return;}
+    pendingCount=files.length;
+    files.forEach(f=>{
+      const reader=new FileReader();
+      reader.onload=e=>{
+        loadedFiles.push({name:f.name,text:e.target.result});
+        renderFileList();
+        pendingCount--;
+        if(pendingCount===0) processAllCSVs();
+      };
+      reader.readAsText(f);
+    });
+  }
+
+  function renderFileList(){
+    const el=document.getElementById('file-list');
+    el.innerHTML=loadedFiles.map((f,i)=>`
+      <span style="display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t2);">
+        📄 ${esc(f.name)}
+        <span onclick="removeFile(${i})" style="cursor:pointer;color:var(--t3);font-size:13px;line-height:1;" title="Remove">×</span>
+      </span>`).join('');
+  }
+
+  window.removeFile=function(i){
+    loadedFiles.splice(i,1);
+    renderFileList();
+    if(!loadedFiles.length){
+      document.getElementById('csv-input').value='';
+    }
+  };
 
   function splitLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){res.push(cur);cur='';continue;}cur+=c;}res.push(cur);return res;}
 
@@ -253,37 +290,65 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
     return lines.slice(1).map(l=>{const cols=splitLine(l);const row={};header.forEach((h,i)=>row[h]=(cols[i]||'').replace(/^"|"$/g,'').trim());return row;}).filter(r=>Object.values(r).some(v=>v));
   }
 
-  function handleFile(file){
-    showError('');
-    if(!file.name.endsWith('.csv')){showError('Please upload a .csv file exported from Google Search Console.');return;}
-    const reader=new FileReader();
-    reader.onload=e=>{try{processCSV(e.target.result);}catch(err){showError('Could not parse this CSV. Make sure it\'s a GSC Performance export with date comparison enabled.');}};
-    reader.readAsText(file);
-  }
-
-  function processCSV(text){
+  function extractRows(text, filename){
     const data=parseCSV(text);
-    if(!data.length){showError('The CSV appears to be empty.');return;}
+    if(!data.length) return [];
     const header=Object.keys(data[0]);
     const queryCol=header.find(h=>h==='top queries'||h==='query'||h==='queries');
-    if(!queryCol){showError('Could not find a Query column. Export from the Queries tab in GSC Performance.');return;}
+    if(!queryCol) return [];
     const imprCols=header.filter(h=>h.includes('impression'));
     const clickCols=header.filter(h=>h.includes('click'));
     const posCols=header.filter(h=>h.includes('position'));
-    if(!imprCols.length||!posCols.length){showError('Could not find Impressions or Position columns. Make sure you export with comparison mode enabled.');return;}
+    if(!imprCols.length||!posCols.length) return [];
     const imprCurr=imprCols.find(h=>!h.includes('diff')&&!h.includes('prev')&&!h.includes('change'))||imprCols[0];
     const imprDiff=imprCols.find(h=>h.includes('diff')||h.includes('change'));
     const imprPrev=imprCols.find(h=>h.includes('prev'));
     const posCol=posCols.find(h=>!h.includes('diff')&&!h.includes('prev'))||posCols[0];
     const clickCol=clickCols.find(h=>!h.includes('diff')&&!h.includes('prev'))||clickCols[0]||null;
-
-    rows=data.map(r=>{
+    return data.map(r=>{
       const curr=parseFloat(r[imprCurr])||0;
       let growth=0;
       if(imprDiff&&r[imprDiff]!==undefined){const diff=parseFloat(r[imprDiff])||0;const prev=curr-diff;growth=prev>0?(diff/prev)*100:(curr>0?100:0);}
       else if(imprPrev){const prev=parseFloat(r[imprPrev])||0;growth=prev>0?((curr-prev)/prev)*100:(curr>0?100:0);}
-      return{query:r[queryCol],impr:curr,growth,pos:parseFloat(r[posCol])||0,clicks:clickCol?(parseFloat(r[clickCol])||0):0};
-    }).filter(r=>r.query&&r.growth>=50&&r.pos>10&&r.pos<100&&r.impr>0)
+      return{query:r[queryCol],impr:curr,growth,pos:parseFloat(r[posCol])||0,clicks:clickCol?(parseFloat(r[clickCol])||0):0,source:filename};
+    }).filter(r=>r.query&&r.impr>0);
+  }
+
+  function processAllCSVs(){
+    let allRows=[];
+    let errors=[];
+    loadedFiles.forEach(f=>{
+      const extracted=extractRows(f.text, f.name);
+      if(!extracted.length) errors.push(f.name);
+      else allRows=allRows.concat(extracted);
+    });
+
+    if(errors.length&&!allRows.length){
+      showError('Could not parse: '+errors.join(', ')+'. Make sure they are GSC Performance exports with comparison mode enabled.');
+      return;
+    }
+    if(errors.length) showError('Warning: could not parse '+errors.join(', ')+' — continuing with valid files.');
+
+    // Merge duplicate queries: aggregate impressions, average position, sum clicks, average growth
+    const map={};
+    allRows.forEach(r=>{
+      const k=r.query.toLowerCase();
+      if(!map[k]){map[k]={query:r.query,impr:0,growthSum:0,growthCount:0,posSum:0,posCount:0,clicks:0};}
+      map[k].impr+=r.impr;
+      map[k].growthSum+=r.growth;
+      map[k].growthCount++;
+      map[k].posSum+=r.pos;
+      map[k].posCount++;
+      map[k].clicks+=r.clicks;
+    });
+
+    rows=Object.values(map).map(r=>({
+      query:r.query,
+      impr:r.impr,
+      growth:r.growthSum/r.growthCount,
+      pos:r.posSum/r.posCount,
+      clicks:r.clicks
+    })).filter(r=>r.growth>=50&&r.pos>10&&r.pos<100)
       .sort((a,b)=>b.growth-a.growth).slice(0,40);
 
     if(!rows.length){showError('No queries matched (impressions +50%, position 11–100). Try a broader date range or verify you exported with comparison mode enabled.');return;}
@@ -355,10 +420,11 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
   };
 
   window.resetTool=function(){
-    rows=[];
+    rows=[];loadedFiles=[];
     ['preview-section','action-row','loading-state','report-section'].forEach(id=>document.getElementById(id).style.display='none');
     document.getElementById('upload-zone').style.display='';
     document.getElementById('csv-input').value='';
+    document.getElementById('file-list').innerHTML='';
     document.getElementById('analyze-btn').disabled=false;
     showError('');setStep(1);
     window.scrollTo({top:0,behavior:'smooth'});
