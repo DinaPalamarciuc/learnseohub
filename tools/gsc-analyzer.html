@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GSC Trend Analyzer — LearnSEO Hub</title>
+<meta name="description" content="Upload your Google Search Console CSV and get an AI-powered content strategy for rising queries."/>
+<link rel="canonical" href="https://learnseohub.com/tools/gsc-analyzer"/>
+<meta property="og:title" content="GSC Trend Analyzer — LearnSEO Hub"/>
+<meta property="og:description" content="Upload your Google Search Console CSV and get an AI-powered content strategy for rising queries."/>
+<meta property="og:type" content="website"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<script src="../js/site.js"></script>
+<style>
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--bg2);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin: 24px 0;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--accent);
+  background: var(--card);
+}
+.upload-zone h3 { font-size: 16px; font-weight: 700; color: var(--t1); margin: 12px 0 6px; }
+.upload-zone p { font-size: 13px; color: var(--t3); margin-bottom: 16px; line-height: 1.6; }
+#csv-input { display: none; }
+
+.steps-bar { display: flex; align-items: center; gap: 0; margin: 0 0 24px; overflow-x: auto; padding-bottom: 4px; }
+.step-item { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--t3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.step-label { font-size: 12px; font-weight: 600; color: var(--t3); white-space: nowrap; }
+.step-item.active .step-num { background: var(--t1); color: var(--bg); border-color: var(--t1); }
+.step-item.active .step-label { color: var(--t1); }
+.step-item.done .step-num { background: #22c55e; color: white; border-color: #22c55e; }
+.step-item.done .step-label { color: #22c55e; }
+.step-sep { width: 28px; height: 1px; background: var(--border); flex-shrink: 0; }
+
+.preview-section { display: none; margin-top: 8px; }
+.preview-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+.preview-meta h3 { font-size: 15px; font-weight: 700; color: var(--t1); }
+.stat-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.stat-pill { font-size: 11px; font-weight: 600; color: var(--t2); background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; }
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--card); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { padding: 10px 14px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--t3); background: var(--bg2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+tbody tr { border-bottom: 1px solid var(--border); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg2); }
+tbody td { padding: 9px 14px; color: var(--t2); }
+.q-cell { font-weight: 600; color: var(--t1); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.trend-up { color: #16a34a; font-weight: 700; font-size: 12px; }
+.pos-badge { display: inline-block; padding: 1px 7px; border-radius: 5px; font-size: 11px; font-weight: 700; }
+.pos-close { background: #fef9c3; color: #854d0e; }
+.pos-far { background: #e0f2fe; color: #075985; }
+[data-theme="dark"] .pos-close { background: #422006; color: #fde68a; }
+[data-theme="dark"] .pos-far { background: #0c2a3f; color: #7dd3fc; }
+
+.action-row { display: none; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 20px; }
+
+.loading-state { display: none; text-align: center; padding: 56px 24px; }
+.spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-state p { font-size: 13px; color: var(--t2); line-height: 1.7; }
+.loading-state strong { display: block; font-size: 15px; color: var(--t1); margin-bottom: 4px; }
+
+.report-section { display: none; margin-top: 32px; }
+.report-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.report-top h3 { font-size: 17px; font-weight: 700; color: var(--t1); }
+.report-body { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 32px; font-size: 14px; line-height: 1.8; color: var(--t2); }
+.report-body h1 { font-size: 17px; font-weight: 700; color: var(--t1); margin: 0 0 10px; }
+.report-body h2 { font-size: 15px; font-weight: 700; color: var(--t1); margin: 24px 0 10px; }
+.report-body h3 { font-size: 14px; font-weight: 700; color: var(--t1); margin: 16px 0 8px; }
+.report-body ul, .report-body ol { padding-left: 20px; margin: 8px 0; }
+.report-body li { margin-bottom: 4px; }
+.report-body strong { color: var(--t1); }
+.report-body hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+.report-body code { font-family: monospace; font-size: 12px; background: var(--bg2); padding: 1px 5px; border-radius: 4px; }
+
+.error-msg { display: none; padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; color: #dc2626; font-size: 13px; font-weight: 500; margin: 12px 0; }
+[data-theme="dark"] .error-msg { background: #3b0f0f; border-color: #7f1d1d; color: #fca5a5; }
+
+.howto { margin-top: 40px; padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; }
+.howto h4 { font-size: 14px; font-weight: 700; color: var(--t1); margin-bottom: 16px; }
+.howto-list { display: flex; flex-direction: column; gap: 10px; }
+.howto-item { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: var(--t2); line-height: 1.6; }
+.howto-n { width: 22px; height: 22px; border-radius: 50%; background: var(--t1); color: var(--bg); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.howto-item strong { color: var(--t1); }
+</style>
+</head>
+<body>
+<div class="main"><div class="wrap">
+
+<a href="../tools" style="text-decoration:none;color:var(--accent);font-size:13px;font-weight:600">← All Tools</a>
+
+<div class="sh">
+  <h2>GSC Trend Analyzer</h2>
+  <p>Upload your Google Search Console comparison CSV and get an AI-powered content strategy — pinpointing which rising queries to act on before your competitors notice.</p>
+</div>
+
+<div class="steps-bar">
+  <div class="step-item active" id="step1"><div class="step-num">1</div><div class="step-label">Export from GSC</div></div>
+  <div class="step-sep"></div>
+  <div class="step-item" id="step2"><div class="step-num">2</div><div class="step-label">Upload &amp; Filter</div></div>
+  <div class="step-sep"></div>
+  <div class="step-item" id="step3"><div class="step-num">3</div><div class="step-label">AI Analysis</div></div>
+  <div class="step-sep"></div>
+  <div class="step-item" id="step4"><div class="step-num">4</div><div class="step-label">Content Strategy</div></div>
+</div>
+
+<div class="upload-zone" id="upload-zone">
+  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+  <h3>Drop your GSC CSV here</h3>
+  <p>Export from GSC → Performance → Compare last 28 days vs previous 28 days → Export CSV</p>
+  <button class="btn" onclick="document.getElementById('csv-input').click()">Choose CSV file</button>
+  <input type="file" id="csv-input" accept=".csv">
+</div>
+
+<div class="error-msg" id="error-msg"></div>
+
+<div class="preview-section" id="preview-section">
+  <div class="preview-meta">
+    <h3>Trending queries found</h3>
+    <div class="stat-pills" id="stat-pills"></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Query</th><th>Impressions</th><th>Growth</th><th>Avg. Position</th><th>Clicks</th></tr></thead>
+      <tbody id="preview-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="action-row" id="action-row">
+  <button class="btn" id="analyze-btn" onclick="runAnalysis()">Analyze with AI →</button>
+  <button class="btn-outline" onclick="resetTool()">↺ Start over</button>
+</div>
+
+<div class="loading-state" id="loading-state">
+  <div class="spinner"></div>
+  <p><strong>Analyzing your queries…</strong>Claude is building a prioritized content strategy. This takes 15–30 seconds.</p>
+</div>
+
+<div class="report-section" id="report-section">
+  <div class="report-top">
+    <h3>📊 Your Content Strategy Report</h3>
+    <button class="btn-outline" onclick="copyReport()">Copy report</button>
+  </div>
+  <div class="report-body" id="report-body"></div>
+  <div style="margin-top:16px">
+    <button class="btn-outline" onclick="resetTool()">↺ Analyze a new file</button>
+  </div>
+</div>
+
+<div class="howto">
+  <h4>📥 How to export the right CSV from Google Search Console</h4>
+  <div class="howto-list">
+    <div class="howto-item"><div class="howto-n">1</div><div>Open <strong>Google Search Console</strong> → <strong>Performance</strong> → <strong>Search results</strong></div></div>
+    <div class="howto-item"><div class="howto-n">2</div><div>Click <strong>Date: Last 28 days</strong> → switch to <strong>Compare</strong> tab → select <strong>Last 28 days vs previous 28 days</strong> → Apply</div></div>
+    <div class="howto-item"><div class="howto-n">3</div><div>Scroll to the <strong>Queries</strong> table → sort by <strong>Impressions: Difference</strong> (highest first)</div></div>
+    <div class="howto-item"><div class="howto-n">4</div><div>Click <strong>Export</strong> (top right of the table) → choose <strong>CSV</strong></div></div>
+    <div class="howto-item"><div class="howto-n">5</div><div>Upload the file above. The tool keeps only queries with <strong>impressions +50%</strong> and <strong>position below 10</strong> — your real opportunities.</div></div>
+  </div>
+</div>
+
+</div></div>
+<div id="site-footer"></div>
+<button class="btt" id="btt" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+(function(){
+  let rows=[];
+
+  const zone=document.getElementById('upload-zone');
+  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f)handleFile(f);});
+  document.getElementById('csv-input').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0]);});
+
+  function splitLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){res.push(cur);cur='';continue;}cur+=c;}res.push(cur);return res;}
+
+  function parseCSV(text){
+    const lines=text.trim().split('\n');
+    if(lines.length<2)return[];
+    const header=splitLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
+    return lines.slice(1).map(l=>{const cols=splitLine(l);const row={};header.forEach((h,i)=>row[h]=(cols[i]||'').replace(/^"|"$/g,'').trim());return row;}).filter(r=>Object.values(r).some(v=>v));
+  }
+
+  function handleFile(file){
+    showError('');
+    if(!file.name.endsWith('.csv')){showError('Please upload a .csv file exported from Google Search Console.');return;}
+    const reader=new FileReader();
+    reader.onload=e=>{try{processCSV(e.target.result);}catch(err){showError('Could not parse this CSV. Make sure it\'s a GSC Performance export with date comparison enabled.');}};
+    reader.readAsText(file);
+  }
+
+  function processCSV(text){
+    const data=parseCSV(text);
+    if(!data.length){showError('The CSV appears to be empty.');return;}
+    const header=Object.keys(data[0]);
+    const queryCol=header.find(h=>h==='top queries'||h==='query'||h==='queries');
+    if(!queryCol){showError('Could not find a Query column. Export from the Queries tab in GSC Performance.');return;}
+    const imprCols=header.filter(h=>h.includes('impression'));
+    const clickCols=header.filter(h=>h.includes('click'));
+    const posCols=header.filter(h=>h.includes('position'));
+    if(!imprCols.length||!posCols.length){showError('Could not find Impressions or Position columns. Make sure you export with comparison mode enabled.');return;}
+    const imprCurr=imprCols.find(h=>!h.includes('diff')&&!h.includes('prev')&&!h.includes('change'))||imprCols[0];
+    const imprDiff=imprCols.find(h=>h.includes('diff')||h.includes('change'));
+    const imprPrev=imprCols.find(h=>h.includes('prev'));
+    const posCol=posCols.find(h=>!h.includes('diff')&&!h.includes('prev'))||posCols[0];
+    const clickCol=clickCols.find(h=>!h.includes('diff')&&!h.includes('prev'))||clickCols[0]||null;
+
+    rows=data.map(r=>{
+      const curr=parseFloat(r[imprCurr])||0;
+      let growth=0;
+      if(imprDiff&&r[imprDiff]!==undefined){const diff=parseFloat(r[imprDiff])||0;const prev=curr-diff;growth=prev>0?(diff/prev)*100:(curr>0?100:0);}
+      else if(imprPrev){const prev=parseFloat(r[imprPrev])||0;growth=prev>0?((curr-prev)/prev)*100:(curr>0?100:0);}
+      return{query:r[queryCol],impr:curr,growth,pos:parseFloat(r[posCol])||0,clicks:clickCol?(parseFloat(r[clickCol])||0):0};
+    }).filter(r=>r.query&&r.growth>=50&&r.pos>10&&r.pos<100&&r.impr>0)
+      .sort((a,b)=>b.growth-a.growth).slice(0,40);
+
+    if(!rows.length){showError('No queries matched (impressions +50%, position 11–100). Try a broader date range or verify you exported with comparison mode enabled.');return;}
+    renderPreview();
+  }
+
+  function renderPreview(){
+    setStep(2);
+    document.getElementById('stat-pills').innerHTML=
+      `<div class="stat-pill">Queries: <strong>${rows.length}</strong></div>`+
+      `<div class="stat-pill">Avg. growth: <strong>+${Math.round(rows.reduce((s,r)=>s+r.growth,0)/rows.length)}%</strong></div>`;
+    document.getElementById('preview-tbody').innerHTML=rows.slice(0,15).map(r=>`
+      <tr>
+        <td class="q-cell">${esc(r.query)}</td>
+        <td>${r.impr.toLocaleString()}</td>
+        <td><span class="trend-up">↑ +${Math.round(r.growth)}%</span></td>
+        <td><span class="pos-badge ${r.pos<=20?'pos-close':'pos-far'}">${r.pos.toFixed(1)}</span></td>
+        <td>${r.clicks.toLocaleString()}</td>
+      </tr>`).join('')+(rows.length>15?`<tr><td colspan="5" style="text-align:center;color:var(--t3);font-size:12px;padding:10px">…and ${rows.length-15} more included in the analysis</td></tr>`:'');
+    document.getElementById('preview-section').style.display='block';
+    document.getElementById('action-row').style.display='flex';
+    document.getElementById('upload-zone').style.display='none';
+  }
+
+  window.runAnalysis=async function(){
+    setStep(3);
+    document.getElementById('analyze-btn').disabled=true;
+    document.getElementById('preview-section').style.display='none';
+    document.getElementById('action-row').style.display='none';
+    document.getElementById('loading-state').style.display='block';
+
+    const queryData=rows.map(r=>`Query: "${r.query}" | Impressions: ${r.impr} | Growth: +${Math.round(r.growth)}% | Avg. Position: ${r.pos.toFixed(1)} | Clicks: ${r.clicks}`).join('\n');
+    const prompt=`You are an expert SEO strategist. I have Google Search Console data comparing the last 28 days vs the previous 28 days.\n\nThe queries below are trending UP in impressions but my site ranks BELOW position 10. Rising demand not yet captured.\n\nData:\n---\n${queryData}\n---\n\nProvide a prioritized content action plan:\n\n1. **Pages to Update Immediately** — Which existing pages to update? What specific content to add? Group related queries.\n\n2. **New Pages to Create** — Which queries need a dedicated new page? Suggest a title, primary keyword, and key content sections.\n\n3. **Priority Order** — Rank all recommendations by traffic potential and urgency.\n\n4. **Quick Wins This Week** — 3 queries to act on immediately for the fastest results.\n\nBe specific. Use the actual query data. Format with clear headers and bullet points.`;
+
+    try{
+      const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+      const data=await resp.json();
+      if(!resp.ok)throw new Error(data.error?.message||'API error');
+      const text=data.content?.map(b=>b.text||'').join('')||'';
+      if(!text)throw new Error('Empty response');
+      document.getElementById('loading-state').style.display='none';
+      document.getElementById('report-body').innerHTML=mdToHtml(text);
+      document.getElementById('report-section').style.display='block';
+      document.getElementById('report-section').scrollIntoView({behavior:'smooth',block:'start'});
+      setStep(4);
+    }catch(err){
+      document.getElementById('loading-state').style.display='none';
+      showError('Analysis failed: '+err.message+'. Please try again.');
+      document.getElementById('preview-section').style.display='block';
+      document.getElementById('action-row').style.display='flex';
+      document.getElementById('analyze-btn').disabled=false;
+      setStep(2);
+    }
+  };
+
+  function mdToHtml(md){
+    return md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>')
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>')
+      .replace(/^---$/gm,'<hr>').replace(/^[-*] (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+      .replace(/(<li>[\s\S]*?<\/li>)+/g,m=>'<ul>'+m+'</ul>').replace(/\n{2,}/g,'</p><p>').replace(/<p><\/p>/g,'');
+  }
+
+  window.copyReport=function(){
+    navigator.clipboard.writeText(document.getElementById('report-body').innerText).then(()=>{
+      const btn=document.querySelector('.report-top .btn-outline');const orig=btn.textContent;
+      btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent=orig,2000);
+    });
+  };
+
+  window.resetTool=function(){
+    rows=[];
+    ['upload-zone','preview-section','action-row','loading-state','report-section'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(id==='upload-zone')el.style.display='';else el.style.display='none';
+    });
+    document.getElementById('csv-input').value='';
+    document.getElementById('analyze-btn').disabled=false;
+    showError('');setStep(1);
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  function showError(msg){const el=document.getElementById('error-msg');el.textContent=msg;el.style.display=msg?'block':'none';}
+  function setStep(n){for(let i=1;i<=4;i++){const el=document.getElementById('step'+i);el.classList.remove('active','done');if(i<n)el.classList.add('done');else if(i===n)el.classList.add('active');}}
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+})();
+</script>
+</body>
+</html>
