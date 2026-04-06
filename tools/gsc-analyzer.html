@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>GSC Trend Analyzer — LearnSEO Hub</title>
-<meta name="description" content="Upload your Google Search Console CSV and get an AI-powered content strategy for rising queries."/>
+<meta name="description" content="Upload your Google Search Console CSV or Excel file and get an AI-powered content strategy for rising queries."/>
 <link rel="canonical" href="https://learnseohub.com/tools/gsc-analyzer"/>
 <meta property="og:title" content="GSC Trend Analyzer — LearnSEO Hub"/>
-<meta property="og:description" content="Upload your Google Search Console CSV and get an AI-powered content strategy for rising queries."/>
+<meta property="og:description" content="Upload your Google Search Console CSV or Excel file and get an AI-powered content strategy for rising queries."/>
 <meta property="og:type" content="website"/>
-
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='8' fill='url(%23g)'/%3E%3Ccircle cx='17' cy='17' r='8' stroke='%23fff' stroke-width='2.5' fill='none'/%3E%3Cline x1='23' y1='23' x2='30' y2='30' stroke='%23fff' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M12 20 L15 14 L18 17 L22 11' stroke='%2334d399' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"/>
 <link rel="stylesheet" href="../css/style.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -58,12 +58,11 @@
 </div>
 
 <div class="main"><div class="wrap">
-
 <a href="../tools" style="text-decoration:none;color:var(--accent);font-size:13px;font-weight:600">← All Tools</a>
 
 <div class="sh">
   <h2>GSC Trend Analyzer</h2>
-  <p>Upload your Google Search Console comparison CSV and get an AI-powered content strategy — pinpointing which rising queries to act on before your competitors notice.</p>
+  <p>Upload your Google Search Console export and get an AI-powered content strategy — pinpointing which rising queries to act on before your competitors notice.</p>
 </div>
 
 <style>
@@ -77,13 +76,16 @@
   transition: border-color 0.2s, background 0.2s;
   margin: 24px 0;
 }
-.upload-zone:hover, .upload-zone.drag-over {
-  border-color: var(--accent);
-  background: var(--card);
-}
+.upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: var(--card); }
 .upload-zone h3 { font-size: 16px; font-weight: 700; color: var(--t1); margin: 12px 0 6px; }
 .upload-zone p { font-size: 13px; color: var(--t3); margin-bottom: 16px; line-height: 1.6; }
-#csv-input { display: none; }
+.fmt-pills { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
+.fmt-pill { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 5px; }
+.fmt-xlsx { background: #dcfce7; color: #166534; }
+.fmt-csv  { background: #dbeafe; color: #1e40af; }
+[data-theme="dark"] .fmt-xlsx { background: #14532d; color: #86efac; }
+[data-theme="dark"] .fmt-csv  { background: #1e3a5f; color: #93c5fd; }
+#file-input { display: none; }
 
 .steps-bar { display: flex; align-items: center; gap: 0; margin: 0 0 24px; overflow-x: auto; padding-bottom: 4px; }
 .step-item { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
@@ -94,6 +96,11 @@
 .step-item.done .step-num { background: #22c55e; color: white; border-color: #22c55e; }
 .step-item.done .step-label { color: #22c55e; }
 .step-sep { width: 28px; height: 1px; background: var(--border); flex-shrink: 0; }
+
+.file-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; }
+.file-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--t2); }
+.file-tag .rm { cursor: pointer; color: var(--t3); font-size: 14px; line-height: 1; }
+.file-tag .rm:hover { color: #ef4444; }
 
 .preview-section { display: none; margin-top: 8px; }
 .preview-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
@@ -112,9 +119,9 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 .trend-up { color: #16a34a; font-weight: 700; font-size: 12px; }
 .pos-badge { display: inline-block; padding: 1px 7px; border-radius: 5px; font-size: 11px; font-weight: 700; }
 .pos-close { background: #fef9c3; color: #854d0e; }
-.pos-far { background: #e0f2fe; color: #075985; }
+.pos-far   { background: #e0f2fe; color: #075985; }
 [data-theme="dark"] .pos-close { background: #422006; color: #fde68a; }
-[data-theme="dark"] .pos-far { background: #0c2a3f; color: #7dd3fc; }
+[data-theme="dark"] .pos-far   { background: #0c2a3f; color: #7dd3fc; }
 
 .action-row { display: none; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 20px; }
 
@@ -140,6 +147,9 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 .error-msg { display: none; padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; color: #dc2626; font-size: 13px; font-weight: 500; margin: 12px 0; }
 [data-theme="dark"] .error-msg { background: #3b0f0f; border-color: #7f1d1d; color: #fca5a5; }
 
+/* Debug box */
+.debug-box { display: none; padding: 12px 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; font-size: 11px; color: var(--t3); margin: 12px 0; font-family: monospace; white-space: pre-wrap; word-break: break-all; }
+
 .howto { margin-top: 40px; padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; }
 .howto h4 { font-size: 14px; font-weight: 700; color: var(--t1); margin-bottom: 16px; }
 .howto-list { display: flex; flex-direction: column; gap: 10px; }
@@ -148,6 +158,7 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 .howto-item strong { color: var(--t1); }
 </style>
 
+<!-- Steps -->
 <div class="steps-bar">
   <div class="step-item active" id="step1"><div class="step-num">1</div><div class="step-label">Export from GSC</div></div>
   <div class="step-sep"></div>
@@ -158,17 +169,24 @@ tbody td { padding: 9px 14px; color: var(--t2); }
   <div class="step-item" id="step4"><div class="step-num">4</div><div class="step-label">Content Strategy</div></div>
 </div>
 
+<!-- Upload -->
 <div class="upload-zone" id="upload-zone">
   <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-  <h3>Drop your GSC CSV files here</h3>
-  <p>You can upload multiple CSV files at once — data will be merged automatically.<br>Export from GSC → Performance → Compare last 28 days vs previous 28 days → Export CSV</p>
-  <button class="btn" onclick="document.getElementById('csv-input').click()">Choose CSV file(s)</button>
-  <input type="file" id="csv-input" accept=".csv" multiple>
-  <div id="file-list" style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;"></div>
+  <h3>Drop your GSC files here</h3>
+  <p>You can upload multiple files at once — data will be merged automatically.</p>
+  <div class="fmt-pills">
+    <span class="fmt-pill fmt-xlsx">✓ Excel (.xlsx)</span>
+    <span class="fmt-pill fmt-csv">✓ CSV (.csv)</span>
+  </div>
+  <button class="btn" onclick="document.getElementById('file-input').click()">Choose files</button>
+  <input type="file" id="file-input" accept=".csv,.xlsx,.xls" multiple>
 </div>
 
 <div class="error-msg" id="error-msg"></div>
+<div class="debug-box" id="debug-box"></div>
+<div class="file-list" id="file-list"></div>
 
+<!-- Preview -->
 <div class="preview-section" id="preview-section">
   <div class="preview-meta">
     <h3>Trending queries found</h3>
@@ -187,11 +205,13 @@ tbody td { padding: 9px 14px; color: var(--t2); }
   <button class="btn-outline" onclick="resetTool()">↺ Start over</button>
 </div>
 
+<!-- Loading -->
 <div class="loading-state" id="loading-state">
   <div class="spinner"></div>
   <p><strong>Analyzing your queries…</strong>Claude is building a prioritized content strategy. This takes 15–30 seconds.</p>
 </div>
 
+<!-- Report -->
 <div class="report-section" id="report-section">
   <div class="report-top">
     <h3>📊 Your Content Strategy Report</h3>
@@ -203,14 +223,15 @@ tbody td { padding: 9px 14px; color: var(--t2); }
   </div>
 </div>
 
+<!-- How to export -->
 <div class="howto">
-  <h4>📥 How to export the right CSV from Google Search Console</h4>
+  <h4>📥 How to export from Google Search Console</h4>
   <div class="howto-list">
     <div class="howto-item"><div class="howto-n">1</div><div>Open <strong>Google Search Console</strong> → <strong>Performance</strong> → <strong>Search results</strong></div></div>
     <div class="howto-item"><div class="howto-n">2</div><div>Click <strong>Date: Last 28 days</strong> → switch to <strong>Compare</strong> tab → select <strong>Last 28 days vs previous 28 days</strong> → Apply</div></div>
     <div class="howto-item"><div class="howto-n">3</div><div>Scroll to the <strong>Queries</strong> table → sort by <strong>Impressions: Difference</strong> (highest first)</div></div>
-    <div class="howto-item"><div class="howto-n">4</div><div>Click <strong>Export</strong> (top right of the table) → choose <strong>CSV</strong></div></div>
-    <div class="howto-item"><div class="howto-n">5</div><div>Upload the file above. The tool keeps only queries with <strong>impressions +50%</strong> and <strong>position below 10</strong> — your real opportunities.</div></div>
+    <div class="howto-item"><div class="howto-n">4</div><div>Click <strong>Export</strong> → choose <strong>Excel</strong> (recomandat) sau <strong>CSV</strong></div></div>
+    <div class="howto-item"><div class="howto-n">5</div><div>Upload above. The tool filters for queries with <strong>impressions +50%</strong> and <strong>position below 10</strong>.</div></div>
   </div>
 </div>
 
@@ -237,202 +258,267 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
 
 <script>
 (function(){
-  let rows=[];
-  let loadedFiles=[]; // {name, text}
-  let pendingCount=0;
+  var allRows = [];
+  var loadedFiles = []; // {name, data: ArrayBuffer}
+  var pending = 0;
 
-  const zone=document.getElementById('upload-zone');
-  zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
-  zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
-  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');handleFiles(e.dataTransfer.files);});
-  document.getElementById('csv-input').addEventListener('change',e=>{if(e.target.files.length)handleFiles(e.target.files);});
+  /* ── drag & drop + file input ── */
+  var zone = document.getElementById('upload-zone');
+  zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function(){ zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function(e){ e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+  document.getElementById('file-input').addEventListener('change', function(e){ if(e.target.files.length) handleFiles(e.target.files); });
 
-  function handleFiles(fileList){
+  function handleFiles(fileList) {
     showError('');
-    const files=Array.from(fileList).filter(f=>f.name.endsWith('.csv'));
-    if(!files.length){showError('Please upload .csv files exported from Google Search Console.');return;}
-    pendingCount=files.length;
-    files.forEach(f=>{
-      const reader=new FileReader();
-      reader.onload=e=>{
-        loadedFiles.push({name:f.name,text:e.target.result});
+    var files = Array.from(fileList).filter(function(f){
+      return f.name.match(/\.(csv|xlsx|xls)$/i);
+    });
+    if(!files.length){ showError('Please upload CSV or Excel (.xlsx) files exported from Google Search Console.'); return; }
+    pending = files.length;
+    files.forEach(function(f){
+      var reader = new FileReader();
+      reader.onload = function(e){
+        loadedFiles.push({ name: f.name, data: e.target.result });
         renderFileList();
-        pendingCount--;
-        if(pendingCount===0) processAllCSVs();
+        pending--;
+        if(pending === 0) processAll();
       };
-      reader.readAsText(f);
+      reader.readAsArrayBuffer(f);
     });
   }
 
   function renderFileList(){
-    const el=document.getElementById('file-list');
-    el.innerHTML=loadedFiles.map((f,i)=>`
-      <span style="display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--t2);">
-        📄 ${esc(f.name)}
-        <span onclick="removeFile(${i})" style="cursor:pointer;color:var(--t3);font-size:13px;line-height:1;" title="Remove">×</span>
-      </span>`).join('');
+    document.getElementById('file-list').innerHTML = loadedFiles.map(function(f,i){
+      return '<span class="file-tag">📄 ' + esc(f.name) + ' <span class="rm" onclick="removeFile(' + i + ')">×</span></span>';
+    }).join('');
   }
 
-  window.removeFile=function(i){
+  window.removeFile = function(i){
     loadedFiles.splice(i,1);
     renderFileList();
-    if(!loadedFiles.length){
-      document.getElementById('csv-input').value='';
-    }
+    if(!loadedFiles.length) document.getElementById('file-input').value = '';
   };
 
-  function splitLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){inQ=!inQ;continue;}if(c===','&&!inQ){res.push(cur);cur='';continue;}cur+=c;}res.push(cur);return res;}
+  /* ── parse one file with SheetJS ── */
+  function parseFile(fileObj) {
+    try {
+      var wb = XLSX.read(fileObj.data, { type: 'array' });
+      // use first sheet
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      // convert to array of arrays
+      var aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+      if(aoa.length < 2) return [];
 
-  function parseCSV(text){
-    const lines=text.trim().split('\n');
-    if(lines.length<2)return[];
-    const header=splitLine(lines[0]).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
-    return lines.slice(1).map(l=>{const cols=splitLine(l);const row={};header.forEach((h,i)=>row[h]=(cols[i]||'').replace(/^"|"$/g,'').trim());return row;}).filter(r=>Object.values(r).some(v=>v));
+      // find header row (first row with >2 non-empty cells)
+      var headerRowIdx = 0;
+      for(var i = 0; i < Math.min(5, aoa.length); i++){
+        var nonEmpty = aoa[i].filter(function(c){ return String(c).trim() !== ''; }).length;
+        if(nonEmpty >= 3){ headerRowIdx = i; break; }
+      }
+
+      var headers = aoa[headerRowIdx].map(function(h){ return String(h).trim().toLowerCase(); });
+
+      // show debug info
+      showDebug('File: ' + fileObj.name + '\nHeaders found: ' + headers.join(' | '));
+
+      // find columns — GSC exports vary by language, use fuzzy matching
+      var queryCol   = findCol(headers, ['top queries','query','queries','interogare','запрос','mot clé','suchanfrage']);
+      var imprCols   = headers.map(function(h,i){ return h.includes('impression') || h.includes('impresii') || h.includes('показ') ? i : -1; }).filter(function(i){ return i>=0; });
+      var clickCols  = headers.map(function(h,i){ return h.includes('click') || h.includes('clic') || h.includes('клик') ? i : -1; }).filter(function(i){ return i>=0; });
+      var posCols    = headers.map(function(h,i){ return h.includes('position') || h.includes('pozitie') || h.includes('pozit') || h.includes('позиц') ? i : -1; }).filter(function(i){ return i>=0; });
+
+      if(queryCol === -1 || !imprCols.length || !posCols.length){
+        showDebug('File: ' + fileObj.name + '\nHeaders: ' + headers.join(' | ') + '\nCould not find required columns.');
+        return [];
+      }
+
+      // pick current vs diff/prev impression columns
+      var imprCurr = imprCols.find(function(i){ var h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change') && !h.includes('var'); });
+      if(imprCurr === undefined) imprCurr = imprCols[0];
+      var imprDiff = imprCols.find(function(i){ var h=headers[i]; return h.includes('diff') || h.includes('change') || h.includes('var'); });
+      var imprPrev = imprCols.find(function(i){ var h=headers[i]; return h.includes('prev') || h.includes('prec'); });
+      var posCol   = posCols.find(function(i){ var h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change'); });
+      if(posCol === undefined) posCol = posCols[0];
+      var clickCol = clickCols.find(function(i){ var h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change'); });
+
+      var dataRows = aoa.slice(headerRowIdx + 1);
+      return dataRows.map(function(row){
+        var query  = String(row[queryCol] || '').trim();
+        var curr   = toNum(row[imprCurr]);
+        var pos    = toNum(row[posCol]);
+        var clicks = clickCol !== undefined ? toNum(row[clickCol]) : 0;
+        var growth = 0;
+        if(imprDiff !== undefined && row[imprDiff] !== '') {
+          var diff = toNum(row[imprDiff]);
+          var prev = curr - diff;
+          growth = prev > 0 ? (diff / prev) * 100 : (curr > 0 ? 100 : 0);
+        } else if(imprPrev !== undefined) {
+          var prev2 = toNum(row[imprPrev]);
+          growth = prev2 > 0 ? ((curr - prev2) / prev2) * 100 : (curr > 0 ? 100 : 0);
+        }
+        return { query: query, impr: curr, growth: growth, pos: pos, clicks: clicks };
+      }).filter(function(r){ return r.query && r.impr > 0; });
+
+    } catch(e) {
+      showDebug('Parse error in ' + fileObj.name + ': ' + e.message);
+      return [];
+    }
   }
 
-  function extractRows(text, filename){
-    const data=parseCSV(text);
-    if(!data.length) return [];
-    const header=Object.keys(data[0]);
-    const queryCol=header.find(h=>h==='top queries'||h==='query'||h==='queries');
-    if(!queryCol) return [];
-    const imprCols=header.filter(h=>h.includes('impression'));
-    const clickCols=header.filter(h=>h.includes('click'));
-    const posCols=header.filter(h=>h.includes('position'));
-    if(!imprCols.length||!posCols.length) return [];
-    const imprCurr=imprCols.find(h=>!h.includes('diff')&&!h.includes('prev')&&!h.includes('change'))||imprCols[0];
-    const imprDiff=imprCols.find(h=>h.includes('diff')||h.includes('change'));
-    const imprPrev=imprCols.find(h=>h.includes('prev'));
-    const posCol=posCols.find(h=>!h.includes('diff')&&!h.includes('prev'))||posCols[0];
-    const clickCol=clickCols.find(h=>!h.includes('diff')&&!h.includes('prev'))||clickCols[0]||null;
-    return data.map(r=>{
-      const curr=parseFloat(r[imprCurr])||0;
-      let growth=0;
-      if(imprDiff&&r[imprDiff]!==undefined){const diff=parseFloat(r[imprDiff])||0;const prev=curr-diff;growth=prev>0?(diff/prev)*100:(curr>0?100:0);}
-      else if(imprPrev){const prev=parseFloat(r[imprPrev])||0;growth=prev>0?((curr-prev)/prev)*100:(curr>0?100:0);}
-      return{query:r[queryCol],impr:curr,growth,pos:parseFloat(r[posCol])||0,clicks:clickCol?(parseFloat(r[clickCol])||0):0,source:filename};
-    }).filter(r=>r.query&&r.impr>0);
+  function findCol(headers, candidates) {
+    for(var i = 0; i < candidates.length; i++){
+      var idx = headers.findIndex(function(h){ return h.includes(candidates[i]); });
+      if(idx >= 0) return idx;
+    }
+    return -1;
   }
 
-  function processAllCSVs(){
-    let allRows=[];
-    let errors=[];
-    loadedFiles.forEach(f=>{
-      const extracted=extractRows(f.text, f.name);
-      if(!extracted.length) errors.push(f.name);
-      else allRows=allRows.concat(extracted);
+  function toNum(v) {
+    if(v === undefined || v === null || v === '') return 0;
+    var n = parseFloat(String(v).replace(',','.'));
+    return isNaN(n) ? 0 : n;
+  }
+
+  /* ── process all loaded files ── */
+  function processAll() {
+    var combined = [];
+    var failed = [];
+    loadedFiles.forEach(function(f){
+      var rows = parseFile(f);
+      if(!rows.length) failed.push(f.name);
+      else combined = combined.concat(rows);
     });
 
-    if(errors.length&&!allRows.length){
-      showError('Could not parse: '+errors.join(', ')+'. Make sure they are GSC Performance exports with comparison mode enabled.');
+    if(!combined.length){
+      showError('Could not read data from the uploaded files. See the debug info below and make sure you export from the Queries tab in GSC with comparison mode enabled.');
+      document.getElementById('debug-box').style.display = 'block';
       return;
     }
-    if(errors.length) showError('Warning: could not parse '+errors.join(', ')+' — continuing with valid files.');
+    if(failed.length) showError('Warning: could not parse ' + failed.join(', ') + ' — continuing with valid files.');
 
-    // Merge duplicate queries: aggregate impressions, average position, sum clicks, average growth
-    const map={};
-    allRows.forEach(r=>{
-      const k=r.query.toLowerCase();
-      if(!map[k]){map[k]={query:r.query,impr:0,growthSum:0,growthCount:0,posSum:0,posCount:0,clicks:0};}
-      map[k].impr+=r.impr;
-      map[k].growthSum+=r.growth;
-      map[k].growthCount++;
-      map[k].posSum+=r.pos;
-      map[k].posCount++;
-      map[k].clicks+=r.clicks;
+    // merge duplicates
+    var map = {};
+    combined.forEach(function(r){
+      var k = r.query.toLowerCase();
+      if(!map[k]) map[k] = { query: r.query, impr: 0, gSum: 0, gN: 0, pSum: 0, pN: 0, clicks: 0 };
+      map[k].impr   += r.impr;
+      map[k].gSum   += r.growth;  map[k].gN++;
+      map[k].pSum   += r.pos;     map[k].pN++;
+      map[k].clicks += r.clicks;
     });
 
-    rows=Object.values(map).map(r=>({
-      query:r.query,
-      impr:r.impr,
-      growth:r.growthSum/r.growthCount,
-      pos:r.posSum/r.posCount,
-      clicks:r.clicks
-    })).filter(r=>r.growth>=50&&r.pos>10&&r.pos<100)
-      .sort((a,b)=>b.growth-a.growth).slice(0,40);
+    allRows = Object.values(map).map(function(r){
+      return { query: r.query, impr: r.impr, growth: r.gSum/r.gN, pos: r.pSum/r.pN, clicks: r.clicks };
+    }).filter(function(r){ return r.growth >= 50 && r.pos > 10 && r.pos < 100; })
+      .sort(function(a,b){ return b.growth - a.growth; })
+      .slice(0, 40);
 
-    if(!rows.length){showError('No queries matched (impressions +50%, position 11–100). Try a broader date range or verify you exported with comparison mode enabled.');return;}
+    if(!allRows.length){
+      showError('No queries matched the criteria (impressions +50%, position 11–100). Try exporting with a longer date range, or make sure you enabled date comparison in GSC.');
+      document.getElementById('debug-box').style.display = 'block';
+      return;
+    }
+
+    hideDebug();
     renderPreview();
   }
 
-  function renderPreview(){
+  /* ── preview table ── */
+  function renderPreview() {
     setStep(2);
-    document.getElementById('stat-pills').innerHTML=
-      `<div class="stat-pill">Queries: <strong>${rows.length}</strong></div>`+
-      `<div class="stat-pill">Avg. growth: <strong>+${Math.round(rows.reduce((s,r)=>s+r.growth,0)/rows.length)}%</strong></div>`;
-    document.getElementById('preview-tbody').innerHTML=rows.slice(0,15).map(r=>`
-      <tr>
-        <td class="q-cell">${esc(r.query)}</td>
-        <td>${r.impr.toLocaleString()}</td>
-        <td><span class="trend-up">↑ +${Math.round(r.growth)}%</span></td>
-        <td><span class="pos-badge ${r.pos<=20?'pos-close':'pos-far'}">${r.pos.toFixed(1)}</span></td>
-        <td>${r.clicks.toLocaleString()}</td>
-      </tr>`).join('')+(rows.length>15?`<tr><td colspan="5" style="text-align:center;color:var(--t3);font-size:12px;padding:10px">…and ${rows.length-15} more included in the analysis</td></tr>`:'');
-    document.getElementById('preview-section').style.display='block';
-    document.getElementById('action-row').style.display='flex';
-    document.getElementById('upload-zone').style.display='none';
+    document.getElementById('stat-pills').innerHTML =
+      '<div class="stat-pill">Queries: <strong>' + allRows.length + '</strong></div>' +
+      '<div class="stat-pill">Avg. growth: <strong>+' + Math.round(allRows.reduce(function(s,r){ return s+r.growth; },0)/allRows.length) + '%</strong></div>';
+
+    document.getElementById('preview-tbody').innerHTML = allRows.slice(0,15).map(function(r){
+      return '<tr><td class="q-cell">' + esc(r.query) + '</td><td>' + Math.round(r.impr).toLocaleString() +
+        '</td><td><span class="trend-up">↑ +' + Math.round(r.growth) + '%</span></td>' +
+        '<td><span class="pos-badge ' + (r.pos<=20?'pos-close':'pos-far') + '">' + r.pos.toFixed(1) + '</span></td>' +
+        '<td>' + Math.round(r.clicks).toLocaleString() + '</td></tr>';
+    }).join('') + (allRows.length > 15 ? '<tr><td colspan="5" style="text-align:center;color:var(--t3);font-size:12px;padding:10px">…and ' + (allRows.length-15) + ' more included in the analysis</td></tr>' : '');
+
+    document.getElementById('preview-section').style.display = 'block';
+    document.getElementById('action-row').style.display = 'flex';
+    document.getElementById('upload-zone').style.display = 'none';
+    document.getElementById('file-list').style.display = 'none';
   }
 
-  window.runAnalysis=async function(){
+  /* ── AI analysis ── */
+  window.runAnalysis = async function(){
     setStep(3);
-    document.getElementById('analyze-btn').disabled=true;
-    document.getElementById('preview-section').style.display='none';
-    document.getElementById('action-row').style.display='none';
-    document.getElementById('loading-state').style.display='block';
+    document.getElementById('analyze-btn').disabled = true;
+    document.getElementById('preview-section').style.display = 'none';
+    document.getElementById('action-row').style.display = 'none';
+    document.getElementById('loading-state').style.display = 'block';
 
-    const queryData=rows.map(r=>`Query: "${r.query}" | Impressions: ${r.impr} | Growth: +${Math.round(r.growth)}% | Avg. Position: ${r.pos.toFixed(1)} | Clicks: ${r.clicks}`).join('\n');
-    const prompt=`You are an expert SEO strategist. I have Google Search Console data comparing the last 28 days vs the previous 28 days.\n\nThe queries below are trending UP in impressions but my site ranks BELOW position 10. Rising demand not yet captured.\n\nData:\n---\n${queryData}\n---\n\nProvide a prioritized content action plan:\n\n1. **Pages to Update Immediately** — Which existing pages to update? What specific content to add? Group related queries.\n\n2. **New Pages to Create** — Which queries need a dedicated new page? Suggest a title, primary keyword, and key content sections.\n\n3. **Priority Order** — Rank all recommendations by traffic potential and urgency.\n\n4. **Quick Wins This Week** — 3 queries to act on immediately for the fastest results.\n\nBe specific. Use the actual query data. Format with clear headers and bullet points.`;
+    var queryData = allRows.map(function(r){
+      return 'Query: "' + r.query + '" | Impressions: ' + Math.round(r.impr) + ' | Growth: +' + Math.round(r.growth) + '% | Avg. Position: ' + r.pos.toFixed(1) + ' | Clicks: ' + Math.round(r.clicks);
+    }).join('\n');
 
-    try{
-      const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-      const data=await resp.json();
-      if(!resp.ok)throw new Error(data.error?.message||'API error');
-      const text=data.content?.map(b=>b.text||'').join('')||'';
-      if(!text)throw new Error('Empty response');
-      document.getElementById('loading-state').style.display='none';
-      document.getElementById('report-body').innerHTML=mdToHtml(text);
-      document.getElementById('report-section').style.display='block';
-      document.getElementById('report-section').scrollIntoView({behavior:'smooth',block:'start'});
+    var prompt = 'You are an expert SEO strategist. I have Google Search Console data comparing the last 28 days vs the previous 28 days.\n\nThe queries below are trending UP in impressions but my site ranks BELOW position 10. Rising demand not yet captured.\n\nData:\n---\n' + queryData + '\n---\n\nProvide a prioritized content action plan:\n\n1. **Pages to Update Immediately** — Which existing pages to update? What specific content to add? Group related queries.\n\n2. **New Pages to Create** — Which queries need a dedicated new page? Suggest a title, primary keyword, and key content sections.\n\n3. **Priority Order** — Rank all recommendations by traffic potential and urgency.\n\n4. **Quick Wins This Week** — 3 queries to act on immediately for the fastest results.\n\nBe specific. Use the actual query data. Format with clear headers and bullet points.';
+
+    try {
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+      });
+      var data = await resp.json();
+      if(!resp.ok) throw new Error(data.error && data.error.message ? data.error.message : 'API error');
+      var text = (data.content || []).map(function(b){ return b.text || ''; }).join('');
+      if(!text) throw new Error('Empty response');
+      document.getElementById('loading-state').style.display = 'none';
+      document.getElementById('report-body').innerHTML = mdToHtml(text);
+      document.getElementById('report-section').style.display = 'block';
+      document.getElementById('report-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
       setStep(4);
-    }catch(err){
-      document.getElementById('loading-state').style.display='none';
-      showError('Analysis failed: '+err.message+'. Please try again.');
-      document.getElementById('preview-section').style.display='block';
-      document.getElementById('action-row').style.display='flex';
-      document.getElementById('analyze-btn').disabled=false;
+    } catch(err) {
+      document.getElementById('loading-state').style.display = 'none';
+      showError('Analysis failed: ' + err.message + '. Please try again.');
+      document.getElementById('preview-section').style.display = 'block';
+      document.getElementById('action-row').style.display = 'flex';
+      document.getElementById('analyze-btn').disabled = false;
       setStep(2);
     }
   };
 
+  /* ── markdown renderer ── */
   function mdToHtml(md){
     return md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>')
       .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>')
       .replace(/^---$/gm,'<hr>').replace(/^[-*] (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
-      .replace(/(<li>[\s\S]*?<\/li>)+/g,m=>'<ul>'+m+'</ul>').replace(/\n{2,}/g,'</p><p>').replace(/<p><\/p>/g,'');
+      .replace(/(<li>[\s\S]*?<\/li>)+/g,function(m){ return '<ul>'+m+'</ul>'; })
+      .replace(/\n{2,}/g,'</p><p>').replace(/<p><\/p>/g,'');
   }
 
-  window.copyReport=function(){
-    navigator.clipboard.writeText(document.getElementById('report-body').innerText).then(()=>{
-      const btn=document.querySelector('.report-top .btn-outline');const orig=btn.textContent;
-      btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent=orig,2000);
+  window.copyReport = function(){
+    navigator.clipboard.writeText(document.getElementById('report-body').innerText).then(function(){
+      var btn = document.querySelector('.report-top .btn-outline');
+      var orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      setTimeout(function(){ btn.textContent = orig; }, 2000);
     });
   };
 
-  window.resetTool=function(){
-    rows=[];loadedFiles=[];
-    ['preview-section','action-row','loading-state','report-section'].forEach(id=>document.getElementById(id).style.display='none');
-    document.getElementById('upload-zone').style.display='';
-    document.getElementById('csv-input').value='';
-    document.getElementById('file-list').innerHTML='';
-    document.getElementById('analyze-btn').disabled=false;
-    showError('');setStep(1);
-    window.scrollTo({top:0,behavior:'smooth'});
+  window.resetTool = function(){
+    allRows = []; loadedFiles = [];
+    ['preview-section','action-row','loading-state','report-section'].forEach(function(id){ document.getElementById(id).style.display='none'; });
+    document.getElementById('upload-zone').style.display = '';
+    document.getElementById('file-list').style.display = '';
+    document.getElementById('file-list').innerHTML = '';
+    document.getElementById('file-input').value = '';
+    document.getElementById('analyze-btn').disabled = false;
+    showError(''); hideDebug(); setStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  function showError(msg){const el=document.getElementById('error-msg');el.textContent=msg;el.style.display=msg?'block':'none';}
-  function setStep(n){for(let i=1;i<=4;i++){const el=document.getElementById('step'+i);el.classList.remove('active','done');if(i<n)el.classList.add('done');else if(i===n)el.classList.add('active');}}
-  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function showError(msg){ var el=document.getElementById('error-msg'); el.textContent=msg; el.style.display=msg?'block':'none'; }
+  function showDebug(msg){ var el=document.getElementById('debug-box'); el.textContent=(el.textContent?el.textContent+'\n\n':'')+msg; }
+  function hideDebug(){ var el=document.getElementById('debug-box'); el.textContent=''; el.style.display='none'; }
+  function setStep(n){ for(var i=1;i<=4;i++){ var el=document.getElementById('step'+i); el.classList.remove('active','done'); if(i<n)el.classList.add('done'); else if(i===n)el.classList.add('active'); } }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 })();
 </script>
 </body>
