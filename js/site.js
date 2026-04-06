@@ -35,6 +35,7 @@
     if (b) b.remove();
     if (analytics) lshLoadAnalytics();
   }
+  window.lshSetConsent = lshSetConsent;
 
   function lshLoadAnalytics() {
     // Replace G-XXXXXXXX with your GA4 measurement ID when ready
