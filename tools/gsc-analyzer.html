@@ -6,7 +6,15 @@
 <meta name="description" content="Upload your Google Search Console CSV or Excel file and get an AI-powered content strategy for rising queries."/>
 <link rel="canonical" href="https://learnseohub.com/tools/gsc-analyzer"/>
 <link rel="stylesheet" href="../css/style.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- XLSX library with multiple CDN fallbacks -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+  // Fallback to alternative CDN if primary fails
+  if (typeof XLSX === 'undefined') {
+    console.warn('Primary CDN failed, loading from fallback...');
+    document.write('<script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"><\/script>');
+  }
+</script>
 </head>
 <body>
 <script src="../js/site.js"></script>
