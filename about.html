@@ -191,66 +191,227 @@
         <input type="hidden" name="subject" value="New LearnSEO Hub Inquiry"/>
         <input type="hidden" name="from_name" value="LearnSEO Hub Contact Form"/>
         <input type="hidden" name="redirect" value="false"/>
-        <input type="checkbox" name="botcheck" style="display:none"/>
+        <input type="hidden" id="formTimestamp" name="timestamp" value=""/>
+        
+        <!-- Enhanced honeypot traps -->
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"/>
+        <input type="text" name="website" style="position:absolute;left:-9999px;width:1px;height:1px;" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+        <input type="email" name="confirm_email" style="position:absolute;left:-9999px;width:1px;height:1px;" tabindex="-1" autocomplete="off" aria-hidden="true"/>
 
         <div class="cf-group">
-          <label class="cf-label">Your Name</label>
-          <input type="text" name="name" class="cf-input" placeholder="John Smith" required/>
+          <label class="cf-label" for="contact-name">Your Name</label>
+          <input type="text" id="contact-name" name="name" class="cf-input" placeholder="John Smith" required minlength="2" maxlength="100" pattern="[A-Za-zÀ-ž\s'-]+" title="Please enter a valid name (letters, spaces, hyphens, and apostrophes only)"/>
         </div>
         <div class="cf-group">
-          <label class="cf-label">Email Address</label>
-          <input type="email" name="email" class="cf-input" placeholder="you@company.com" required/>
+          <label class="cf-label" for="contact-email">Email Address</label>
+          <input type="email" id="contact-email" name="email" class="cf-input" placeholder="you@company.com" required maxlength="254" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address"/>
         </div>
         <div class="cf-group">
-          <label class="cf-label">Service Interested In</label>
-          <select name="service" class="cf-input">
+          <label class="cf-label" for="contact-service">Service Interested In</label>
+          <select id="contact-service" name="service" class="cf-input" required>
             <option value="">Select a service...</option>
-            <option>SEO Audit — Starter ($49)</option>
-            <option>Content Brief ($79)</option>
-            <option>Brief + Article ($149)</option>
-            <option>Full SEO Audit — Professional ($149)</option>
-            <option>Copywriter Feedback ($30)</option>
-            <option>Custom / Other</option>
+            <option value="seo-audit-starter">SEO Audit — Starter ($49)</option>
+            <option value="content-brief">Content Brief ($79)</option>
+            <option value="brief-article">Brief + Article ($149)</option>
+            <option value="seo-audit-pro">Full SEO Audit — Professional ($149)</option>
+            <option value="copywriter-feedback">Copywriter Feedback ($30)</option>
+            <option value="custom">Custom / Other</option>
           </select>
         </div>
         <div class="cf-group">
-          <label class="cf-label">Your Website + Message</label>
-          <textarea name="message" class="cf-textarea" placeholder="Tell us about your website, goals, and what you need help with..." required></textarea>
+          <label class="cf-label" for="contact-message">Your Website + Message</label>
+          <textarea id="contact-message" name="message" class="cf-textarea" placeholder="Tell us about your website, goals, and what you need help with..." required minlength="20" maxlength="2000"></textarea>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px;">Minimum 20 characters · <span id="charCount">0</span>/2000</div>
         </div>
         <div id="formResult" style="display:none;padding:12px 16px;border-radius:10px;margin-bottom:12px;font-size:14px;font-weight:600;"></div>
         <button type="submit" id="formBtn" class="cf-btn">Send Message →</button>
       </form>
       <script>
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-          e.preventDefault();
-          const btn = document.getElementById('formBtn');
-          const result = document.getElementById('formResult');
-          btn.textContent = 'Sending...';
-          btn.disabled = true;
-          try {
-            const res = await fetch('https://api.web3forms.com/submit', {
-              method: 'POST',
-              body: new FormData(this)
+        (function() {
+          // Initialize form security
+          const form = document.getElementById('contactForm');
+          const messageField = document.getElementById('contact-message');
+          const charCount = document.getElementById('charCount');
+          const timestampField = document.getElementById('formTimestamp');
+          let formLoadTime = Date.now();
+          
+          // Set timestamp
+          timestampField.value = formLoadTime;
+          
+          // Character counter
+          if (messageField && charCount) {
+            messageField.addEventListener('input', function() {
+              charCount.textContent = this.value.length;
+              if (this.value.length > 2000) {
+                this.value = this.value.substring(0, 2000);
+              }
             });
-            const data = await res.json();
-            if (data.success) {
-              result.style.display = 'block';
-              result.style.background = 'rgba(5,150,105,.1)';
-              result.style.color = '#059669';
-              result.textContent = '✓ Message sent! Dina will reply within 24 hours.';
-              this.reset();
-            } else {
-              throw new Error(data.message);
-            }
-          } catch(err) {
-            result.style.display = 'block';
-            result.style.background = 'rgba(239,68,68,.1)';
-            result.style.color = '#ef4444';
-            result.textContent = '✗ Something went wrong. Please email palamarciuc.dina2@gmail.com directly.';
           }
-          btn.textContent = 'Send Message →';
-          btn.disabled = false;
-        });
+          
+          // Rate limiting - store in localStorage
+          function checkRateLimit() {
+            const now = Date.now();
+            const lastSubmit = localStorage.getItem('lsh_last_form_submit');
+            
+            if (lastSubmit) {
+              const timeSince = now - parseInt(lastSubmit);
+              const cooldownPeriod = 60000; // 1 minute
+              
+              if (timeSince < cooldownPeriod) {
+                const remainingSeconds = Math.ceil((cooldownPeriod - timeSince) / 1000);
+                return { allowed: false, remainingSeconds };
+              }
+            }
+            return { allowed: true };
+          }
+          
+          // Sanitize input to prevent XSS
+          function sanitizeInput(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+          }
+          
+          // Validate form inputs
+          function validateForm(formData) {
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const message = formData.get('message');
+            const service = formData.get('service');
+            
+            // Check honeypots
+            if (formData.get('website') || formData.get('confirm_email')) {
+              console.log('Bot detected via honeypot');
+              return { valid: false, error: 'Spam detected.' };
+            }
+            
+            // Check submission speed (must be at least 3 seconds)
+            const submissionTime = Date.now() - formLoadTime;
+            if (submissionTime < 3000) {
+              console.log('Submission too fast:', submissionTime + 'ms');
+              return { valid: false, error: 'Please take your time filling the form.' };
+            }
+            
+            // Validate name
+            if (!name || name.length < 2 || name.length > 100) {
+              return { valid: false, error: 'Please enter a valid name (2-100 characters).' };
+            }
+            
+            // Validate email
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!email || !emailRegex.test(email)) {
+              return { valid: false, error: 'Please enter a valid email address.' };
+            }
+            
+            // Validate service selection
+            if (!service) {
+              return { valid: false, error: 'Please select a service.' };
+            }
+            
+            // Validate message
+            if (!message || message.length < 20 || message.length > 2000) {
+              return { valid: false, error: 'Message must be between 20 and 2000 characters.' };
+            }
+            
+            // Check for suspicious patterns (excessive links, scripts)
+            const linkCount = (message.match(/https?:\/\//gi) || []).length;
+            if (linkCount > 5) {
+              return { valid: false, error: 'Too many links in message. Please limit to 5 or fewer.' };
+            }
+            
+            if (message.toLowerCase().includes('<script') || message.toLowerCase().includes('javascript:')) {
+              return { valid: false, error: 'Invalid content detected.' };
+            }
+            
+            return { valid: true };
+          }
+          
+          // Form submission handler
+          form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('formBtn');
+            const result = document.getElementById('formResult');
+            
+            // Check rate limit
+            const rateLimitCheck = checkRateLimit();
+            if (!rateLimitCheck.allowed) {
+              result.style.display = 'block';
+              result.style.background = 'rgba(245,158,11,.1)';
+              result.style.color = '#d97706';
+              result.textContent = `⚠ Please wait ${rateLimitCheck.remainingSeconds} seconds before submitting again.`;
+              return;
+            }
+            
+            // Validate form
+            const formData = new FormData(this);
+            const validation = validateForm(formData);
+            
+            if (!validation.valid) {
+              result.style.display = 'block';
+              result.style.background = 'rgba(239,68,68,.1)';
+              result.style.color = '#ef4444';
+              result.textContent = '✗ ' + validation.error;
+              return;
+            }
+            
+            // Show loading state
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            result.style.display = 'none';
+            
+            try {
+              const res = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json'
+                },
+                body: formData
+              });
+              
+              const data = await res.json();
+              
+              if (data.success) {
+                // Store submission time for rate limiting
+                localStorage.setItem('lsh_last_form_submit', Date.now().toString());
+                
+                result.style.display = 'block';
+                result.style.background = 'rgba(5,150,105,.1)';
+                result.style.color = '#059669';
+                result.style.border = '1px solid #10b981';
+                result.textContent = '✓ Message sent successfully! Dina will reply within 24 hours.';
+                
+                // Reset form and counters
+                this.reset();
+                if (charCount) charCount.textContent = '0';
+                formLoadTime = Date.now();
+                timestampField.value = formLoadTime;
+                
+                // Scroll to success message
+                result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              } else {
+                throw new Error(data.message || 'Submission failed');
+              }
+            } catch(err) {
+              console.error('Form submission error:', err);
+              result.style.display = 'block';
+              result.style.background = 'rgba(239,68,68,.1)';
+              result.style.color = '#ef4444';
+              result.style.border = '1px solid #ef4444';
+              result.textContent = '✗ Something went wrong. Please try again or email palamarciuc.dina2@gmail.com directly.';
+            } finally {
+              btn.textContent = 'Send Message →';
+              btn.disabled = false;
+            }
+          });
+          
+          // Prevent form resubmission on page refresh
+          window.addEventListener('beforeunload', function() {
+            if (form.querySelector('input[name="name"]').value) {
+              return 'You have unsaved changes. Are you sure you want to leave?';
+            }
+          });
+        })();
       </script>
     </div>
     <div class="contact-info">
