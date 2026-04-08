@@ -376,6 +376,12 @@ function showStatus(el, type, message) {
 
 <script>
 (function(){
+  // Check if XLSX library loaded
+  console.log('Script started. XLSX available:', typeof XLSX !== 'undefined');
+  if (typeof XLSX === 'undefined') {
+    console.error('XLSX library failed to load from CDN');
+  }
+  
   var allRows = [];
   var loadedFiles = [];
   var pending = 0;
@@ -388,19 +394,45 @@ function showStatus(el, type, message) {
   document.getElementById('file-input').addEventListener('change', function(e){ if(e.target.files.length) handleFiles(e.target.files); });
 
   function handleFiles(fileList) {
+    console.log('handleFiles called with', fileList.length, 'files');
     showError('');
+    hideDebug();
+    
+    // Check if XLSX library is loaded
+    if (typeof XLSX === 'undefined') {
+      showError('Excel library not loaded. Please refresh the page and try again.');
+      console.error('XLSX library is not available');
+      return;
+    }
+    
     var files = Array.from(fileList).filter(function(f){
       return f.name.match(/\.(csv|xlsx|xls)$/i);
     });
-    if(!files.length){ showError('Please upload CSV or Excel (.xlsx) files exported from Google Search Console.'); return; }
+    console.log('Filtered files:', files.map(function(f){ return f.name; }));
+    
+    if(!files.length){ 
+      showError('Please upload CSV or Excel (.xlsx) files exported from Google Search Console.'); 
+      return; 
+    }
+    
+    // Show file list immediately
+    document.getElementById('file-list').style.display = 'block';
+    document.getElementById('upload-zone').style.display = 'none';
+    
     pending = files.length;
     files.forEach(function(f){
       var reader = new FileReader();
       reader.onload = function(e){
+        console.log('File loaded:', f.name, 'size:', e.target.result.byteLength, 'bytes');
         loadedFiles.push({ name: f.name, data: e.target.result });
         renderFileList();
         pending--;
+        console.log('Pending files:', pending);
         if(pending === 0) processAll();
+      };
+      reader.onerror = function(e){
+        console.error('Error reading file:', f.name, e);
+        showError('Error reading file: ' + f.name);
       };
       reader.readAsArrayBuffer(f);
     });
@@ -419,11 +451,26 @@ function showStatus(el, type, message) {
   };
 
   function parseFile(fileObj) {
+    console.log('parseFile called for:', fileObj.name);
     try {
+      if (typeof XLSX === 'undefined') {
+        console.error('XLSX library not available in parseFile');
+        showDebug('Excel library not loaded. Please refresh the page.');
+        return [];
+      }
+      
+      console.log('Reading workbook...');
       var wb = XLSX.read(fileObj.data, { type: 'array' });
+      console.log('Workbook sheets:', wb.SheetNames);
+      
       var ws = wb.Sheets[wb.SheetNames[0]];
       var aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-      if(aoa.length < 2) return [];
+      console.log('Rows in sheet:', aoa.length);
+      
+      if(aoa.length < 2) {
+        console.warn('Sheet has less than 2 rows');
+        return [];
+      }
 
       var headerRowIdx = 0;
       for(var i = 0; i < Math.min(5, aoa.length); i++){
@@ -471,7 +518,8 @@ function showStatus(el, type, message) {
       }).filter(function(r){ return r.query && r.impr > 0; });
 
     } catch(e) {
-      showDebug('Parse error in ' + fileObj.name + ': ' + e.message);
+      console.error('Parse error in', fileObj.name, ':', e);
+      showDebug('Parse error in ' + fileObj.name + ': ' + e.message + '\n' + e.stack);
       return [];
     }
   }
@@ -491,13 +539,18 @@ function showStatus(el, type, message) {
   }
 
   function processAll() {
+    console.log('processAll called with', loadedFiles.length, 'files');
     var combined = [];
     var failed = [];
     loadedFiles.forEach(function(f){
+      console.log('Processing file:', f.name);
       var rows = parseFile(f);
+      console.log('Parsed rows:', rows.length);
       if(!rows.length) failed.push(f.name);
       else combined = combined.concat(rows);
     });
+
+    console.log('Combined rows:', combined.length, 'Failed files:', failed);
 
     if(!combined.length){
       showError('Could not read data from the uploaded files. See the debug info below and make sure you export from the Queries tab in GSC with comparison mode enabled.');
