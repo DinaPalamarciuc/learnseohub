@@ -5,57 +5,11 @@
 <title>GSC Trend Analyzer — LearnSEO Hub</title>
 <meta name="description" content="Upload your Google Search Console CSV or Excel file and get an AI-powered content strategy for rising queries."/>
 <link rel="canonical" href="https://learnseohub.com/tools/gsc-analyzer"/>
-<meta property="og:title" content="GSC Trend Analyzer — LearnSEO Hub"/>
-<meta property="og:description" content="Upload your Google Search Console CSV or Excel file and get an AI-powered content strategy for rising queries."/>
-<meta property="og:type" content="website"/>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='8' fill='url(%23g)'/%3E%3Ccircle cx='17' cy='17' r='8' stroke='%23fff' stroke-width='2.5' fill='none'/%3E%3Cline x1='23' y1='23' x2='30' y2='30' stroke='%23fff' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M12 20 L15 14 L18 17 L22 11' stroke='%2334d399' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"/>
 <link rel="stylesheet" href="../css/style.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-<nav class="navbar">
-<div class="wrap" style="display:flex;align-items:center;justify-content:space-between">
-<a href="../" class="logo"><svg width="28" height="28" viewBox="0 0 40 40"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs><rect width="40" height="40" rx="8" fill="url(#lg)"/><circle cx="17" cy="17" r="8" stroke="#fff" stroke-width="2.5" fill="none"/><line x1="23" y1="23" x2="30" y2="30" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M12 20 L15 14 L18 17 L22 11" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>LearnSEO <span style="color:var(--accent)">Hub</span></a>
-<div class="nav-links">
-<a class="nav-link" href="../blog">Blog</a>
-<a class="nav-link on" href="../tools">Tools</a>
-<a class="nav-link" href="../downloads">Downloads</a>
-<a class="nav-link" href="../guides">Guides</a>
-<div class="nav-dd">
-<div class="nav-link">Resources ▾</div>
-<div class="nav-dd-menu">
-<a class="nav-dd-item" href="../glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253</svg>SEO Glossary</a>
-<a class="nav-dd-item" href="../prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M7.9 20A9 9 0 1 0 4 16.1L2 22Z</svg>AI Prompts</a>
-<a class="nav-dd-item" href="../compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Tool Comparison</a>
-<a class="nav-dd-item" href="../news"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>News &amp; Trends</a>
-<a class="nav-dd-item" href="../career"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Career Paths</a>
-<a class="nav-dd-item" href="../faq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>FAQ</a>
-</div>
-</div>
-<a class="nav-link" href="../about">About</a>
-</div>
-<div class="nav-right">
-<button class="theme-btn" onclick="toggleTheme()" id="themeBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
-<button class="nav-hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-</div>
-</div>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-<a href="../">Home</a>
-<a href="../blog">Blog</a>
-<a href="../tools">Tools</a>
-<a href="../downloads">Downloads</a>
-<a href="../guides">Guides</a>
-<div class="mm-group">Resources</div>
-<a href="../glossary">SEO Glossary</a>
-<a href="../prompts">AI Prompts</a>
-<a href="../compare">Tool Comparison</a>
-<a href="../news">News & Trends</a>
-<a href="../career">Career Paths</a>
-<a href="../faq">FAQ</a>
-<div class="mm-group">More</div>
-<a href="../about">About</a>
-</div>
+<script src="../js/site.js"></script>
 
 <div class="main"><div class="wrap">
 <a href="../tools" style="text-decoration:none;color:var(--accent);font-size:13px;font-weight:600">← All Tools</a>
@@ -147,7 +101,6 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 .error-msg { display: none; padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; color: #dc2626; font-size: 13px; font-weight: 500; margin: 12px 0; }
 [data-theme="dark"] .error-msg { background: #3b0f0f; border-color: #7f1d1d; color: #fca5a5; }
 
-/* Debug box */
 .debug-box { display: none; padding: 12px 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; font-size: 11px; color: var(--t3); margin: 12px 0; font-family: monospace; white-space: pre-wrap; word-break: break-all; }
 
 .howto { margin-top: 40px; padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; }
@@ -156,13 +109,86 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 .howto-item { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: var(--t2); line-height: 1.6; }
 .howto-n { width: 22px; height: 22px; border-radius: 50%; background: var(--t1); color: var(--bg); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
 .howto-item strong { color: var(--t1); }
+
+/* API Key Configuration */
+.api-config { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin: 24px 0; }
+.api-config h4 { font-size: 15px; font-weight: 700; color: var(--t1); margin-bottom: 16px; }
+.api-provider-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.api-tab { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg2); color: var(--t2); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.api-tab:hover { border-color: var(--accent); }
+.api-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+.api-form-group { margin-bottom: 16px; }
+.api-form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--t2); margin-bottom: 6px; }
+.api-form-group input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg2); color: var(--t1); font-family: monospace; font-size: 13px; }
+.api-form-group input:focus { outline: none; border-color: var(--accent); }
+.api-status { padding: 10px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; margin-top: 12px; }
+.api-status.success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+.api-status.error { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+[data-theme="dark"] .api-status.success { background: #064e3b; color: #6ee7b7; }
+[data-theme="dark"] .api-status.error { background: #7f1d1d; color: #fca5a5; }
+.api-info { font-size: 12px; color: var(--t3); line-height: 1.6; margin-top: 8px; }
+.api-info a { color: var(--accent); text-decoration: none; }
+.api-info a:hover { text-decoration: underline; }
+.provider-panel { display: none; }
+.provider-panel.active { display: block; }
 </style>
+
+<!-- API Key Configuration -->
+<div class="api-config">
+  <h4>🔑 AI Provider Configuration</h4>
+  <p style="font-size:13px;color:var(--t2);margin-bottom:16px;">Choose your AI provider and enter your API key. Keys are stored locally in your browser and never sent to our servers.</p>
+  
+  <div class="api-provider-tabs">
+    <button class="api-tab active" onclick="switchProvider('gemini')">Google Gemini (Free)</button>
+    <button class="api-tab" onclick="switchProvider('claude')">Anthropic Claude</button>
+    <button class="api-tab" onclick="switchProvider('openai')">OpenAI GPT</button>
+  </div>
+  
+  <!-- Gemini Panel -->
+  <div id="gemini-panel" class="provider-panel active">
+    <div class="api-form-group">
+      <label for="gemini-key">Gemini API Key</label>
+      <input type="password" id="gemini-key" placeholder="Enter your Gemini API key" />
+      <div class="api-info">
+        💡 Get a free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> (no credit card required)
+      </div>
+    </div>
+    <button class="btn" onclick="saveApiKey('gemini')">Save & Test Connection</button>
+    <div id="gemini-status" class="api-status" style="display:none;"></div>
+  </div>
+  
+  <!-- Claude Panel -->
+  <div id="claude-panel" class="provider-panel">
+    <div class="api-form-group">
+      <label for="claude-key">Claude API Key</label>
+      <input type="password" id="claude-key" placeholder="sk-ant-..." />
+      <div class="api-info">
+        💡 Get your API key at <a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a> ($5 free credit for new accounts)
+      </div>
+    </div>
+    <button class="btn" onclick="saveApiKey('claude')">Save & Test Connection</button>
+    <div id="claude-status" class="api-status" style="display:none;"></div>
+  </div>
+  
+  <!-- OpenAI Panel -->
+  <div id="openai-panel" class="provider-panel">
+    <div class="api-form-group">
+      <label for="openai-key">OpenAI API Key</label>
+      <input type="password" id="openai-key" placeholder="sk-..." />
+      <div class="api-info">
+        💡 Get your API key at <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a>
+      </div>
+    </div>
+    <button class="btn" onclick="saveApiKey('openai')">Save & Test Connection</button>
+    <div id="openai-status" class="api-status" style="display:none;"></div>
+  </div>
+</div>
 
 <!-- Steps -->
 <div class="steps-bar">
-  <div class="step-item active" id="step1"><div class="step-num">1</div><div class="step-label">Export from GSC</div></div>
+  <div class="step-item active" id="step1"><div class="step-num">1</div><div class="step-label">Configure AI</div></div>
   <div class="step-sep"></div>
-  <div class="step-item" id="step2"><div class="step-num">2</div><div class="step-label">Upload &amp; Filter</div></div>
+  <div class="step-item" id="step2"><div class="step-num">2</div><div class="step-label">Upload GSC Data</div></div>
   <div class="step-sep"></div>
   <div class="step-item" id="step3"><div class="step-num">3</div><div class="step-label">AI Analysis</div></div>
   <div class="step-sep"></div>
@@ -208,7 +234,7 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 <!-- Loading -->
 <div class="loading-state" id="loading-state">
   <div class="spinner"></div>
-  <p><strong>Analyzing your queries…</strong>Claude is building a prioritized content strategy. This takes 15–30 seconds.</p>
+  <p><strong>Analyzing your queries…</strong><span id="loading-provider">AI</span> is building a prioritized content strategy. This takes 15–30 seconds.</p>
 </div>
 
 <!-- Report -->
@@ -230,36 +256,153 @@ tbody td { padding: 9px 14px; color: var(--t2); }
     <div class="howto-item"><div class="howto-n">1</div><div>Open <strong>Google Search Console</strong> → <strong>Performance</strong> → <strong>Search results</strong></div></div>
     <div class="howto-item"><div class="howto-n">2</div><div>Click <strong>Date: Last 28 days</strong> → switch to <strong>Compare</strong> tab → select <strong>Last 28 days vs previous 28 days</strong> → Apply</div></div>
     <div class="howto-item"><div class="howto-n">3</div><div>Scroll to the <strong>Queries</strong> table → sort by <strong>Impressions: Difference</strong> (highest first)</div></div>
-    <div class="howto-item"><div class="howto-n">4</div><div>Click <strong>Export</strong> → choose <strong>Excel</strong> (recomandat) sau <strong>CSV</strong></div></div>
+    <div class="howto-item"><div class="howto-n">4</div><div>Click <strong>Export</strong> → choose <strong>Excel</strong> (recommended) or <strong>CSV</strong></div></div>
     <div class="howto-item"><div class="howto-n">5</div><div>Upload above. The tool filters for queries with <strong>impressions +50%</strong> and <strong>position below 10</strong>.</div></div>
   </div>
 </div>
 
 </div></div>
 
-<footer class="ft">
-<div class="wrap">
-<div class="ft-grid">
-<div class="ft-col"><h4>Learn</h4><a href="../blog">Blog</a><a href="../guides">Guides</a><a href="../downloads">Downloads</a><a href="../glossary">Glossary</a></div>
-<div class="ft-col"><h4>Tools</h4><a href="../tools/serp-previewer">SERP Previewer</a><a href="../tools/schema-generator">Schema Generator</a><a href="../tools/geo-score">GEO Score</a><a href="../tools/content-workflow">Content Workflow</a><a href="../tools/crawl-checker">Crawl Checker</a><a href="../tools/gsc-analyzer">GSC Trend Analyzer</a></div>
-<div class="ft-col"><h4>Resources</h4><a href="../downloads">Downloads</a><a href="../prompts">AI Prompts</a><a href="../compare">Tool Comparison</a><a href="../about">About</a></div>
-</div>
-<div class="ft-bottom"><span>© 2026 LearnSEO Hub. Free & open-source.</span><span style="font-size:11px;color:var(--t3)">Built for the AI Search Era</span></div>
-</div>
-</footer>
-
+<div id="site-footer"></div>
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('lsh-theme',t)}
-(function(){const t=localStorage.getItem('lsh-theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
-window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
+// API Configuration Management
+let currentProvider = 'gemini';
+const API_KEYS_STORAGE = 'lsh_gsc_api_keys';
+
+function switchProvider(provider) {
+  currentProvider = provider;
+  document.querySelectorAll('.api-tab').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.provider-panel').forEach(panel => panel.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById(provider + '-panel').classList.add('active');
+  
+  // Load saved key if exists
+  const keys = getSavedKeys();
+  if (keys[provider]) {
+    document.getElementById(provider + '-key').value = keys[provider];
+  }
+}
+
+function getSavedKeys() {
+  try {
+    return JSON.parse(localStorage.getItem(API_KEYS_STORAGE) || '{}');
+  } catch(e) {
+    return {};
+  }
+}
+
+function saveApiKey(provider) {
+  const keyInput = document.getElementById(provider + '-key');
+  const statusEl = document.getElementById(provider + '-status');
+  const key = keyInput.value.trim();
+  
+  if (!key) {
+    showStatus(statusEl, 'error', 'Please enter an API key');
+    return;
+  }
+  
+  // Save to localStorage
+  const keys = getSavedKeys();
+  keys[provider] = key;
+  localStorage.setItem(API_KEYS_STORAGE, JSON.stringify(keys));
+  
+  // Test connection
+  testConnection(provider, key, statusEl);
+}
+
+async function testConnection(provider, key, statusEl) {
+  showStatus(statusEl, 'info', 'Testing connection...');
+  
+  try {
+    if (provider === 'gemini') {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: 'Hi' }] }]
+        })
+      });
+      
+      if (response.ok) {
+        showStatus(statusEl, 'success', '✓ Connected! Your API key is valid and ready to use.');
+        setStep(2);
+      } else {
+        const data = await response.json();
+        showStatus(statusEl, 'error', '✗ Invalid API key: ' + (data.error?.message || 'Unknown error'));
+      }
+    } else if (provider === 'claude') {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-3-5-sonnet-20241022',
+          max_tokens: 10,
+          messages: [{ role: 'user', content: 'Hi' }]
+        })
+      });
+      
+      if (response.ok) {
+        showStatus(statusEl, 'success', '✓ Connected! Your API key is valid and ready to use.');
+        setStep(2);
+      } else {
+        const data = await response.json();
+        showStatus(statusEl, 'error', '✗ Invalid API key: ' + (data.error?.message || 'Unknown error'));
+      }
+    } else if (provider === 'openai') {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: 'Hi' }],
+          max_tokens: 5
+        })
+      });
+      
+      if (response.ok) {
+        showStatus(statusEl, 'success', '✓ Connected! Your API key is valid and ready to use.');
+        setStep(2);
+      } else {
+        const data = await response.json();
+        showStatus(statusEl, 'error', '✗ Invalid API key: ' + (data.error?.message || 'Unknown error'));
+      }
+    }
+  } catch (err) {
+    showStatus(statusEl, 'error', '✗ Connection failed: ' + err.message);
+  }
+}
+
+function showStatus(el, type, message) {
+  el.textContent = message;
+  el.className = 'api-status ' + type;
+  el.style.display = 'block';
+}
+
+// Load saved provider and keys on page load
+(function() {
+  const keys = getSavedKeys();
+  if (keys.gemini) {
+    document.getElementById('gemini-key').value = keys.gemini;
+    testConnection('gemini', keys.gemini, document.getElementById('gemini-status'));
+  }
+  if (keys.claude) document.getElementById('claude-key').value = keys.claude;
+  if (keys.openai) document.getElementById('openai-key').value = keys.openai;
+})();
 </script>
 
 <script>
 (function(){
   var allRows = [];
-  var loadedFiles = []; // {name, data: ArrayBuffer}
+  var loadedFiles = [];
   var pending = 0;
 
   /* ── drag & drop + file input ── */
@@ -300,17 +443,13 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
     if(!loadedFiles.length) document.getElementById('file-input').value = '';
   };
 
-  /* ── parse one file with SheetJS ── */
   function parseFile(fileObj) {
     try {
       var wb = XLSX.read(fileObj.data, { type: 'array' });
-      // use first sheet
       var ws = wb.Sheets[wb.SheetNames[0]];
-      // convert to array of arrays
       var aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
       if(aoa.length < 2) return [];
 
-      // find header row (first row with >2 non-empty cells)
       var headerRowIdx = 0;
       for(var i = 0; i < Math.min(5, aoa.length); i++){
         var nonEmpty = aoa[i].filter(function(c){ return String(c).trim() !== ''; }).length;
@@ -318,22 +457,18 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
       }
 
       var headers = aoa[headerRowIdx].map(function(h){ return String(h).trim().toLowerCase(); });
+      showDebug('File: ' + fileObj.name + '\\nHeaders found: ' + headers.join(' | '));
 
-      // show debug info
-      showDebug('File: ' + fileObj.name + '\nHeaders found: ' + headers.join(' | '));
-
-      // find columns — GSC exports vary by language, use fuzzy matching
       var queryCol   = findCol(headers, ['top queries','query','queries','interogare','запрос','mot clé','suchanfrage']);
       var imprCols   = headers.map(function(h,i){ return h.includes('impression') || h.includes('impresii') || h.includes('показ') ? i : -1; }).filter(function(i){ return i>=0; });
       var clickCols  = headers.map(function(h,i){ return h.includes('click') || h.includes('clic') || h.includes('клик') ? i : -1; }).filter(function(i){ return i>=0; });
       var posCols    = headers.map(function(h,i){ return h.includes('position') || h.includes('pozitie') || h.includes('pozit') || h.includes('позиц') ? i : -1; }).filter(function(i){ return i>=0; });
 
       if(queryCol === -1 || !imprCols.length || !posCols.length){
-        showDebug('File: ' + fileObj.name + '\nHeaders: ' + headers.join(' | ') + '\nCould not find required columns.');
+        showDebug('File: ' + fileObj.name + '\\nHeaders: ' + headers.join(' | ') + '\\nCould not find required columns.');
         return [];
       }
 
-      // pick current vs diff/prev impression columns
       var imprCurr = imprCols.find(function(i){ var h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change') && !h.includes('var'); });
       if(imprCurr === undefined) imprCurr = imprCols[0];
       var imprDiff = imprCols.find(function(i){ var h=headers[i]; return h.includes('diff') || h.includes('change') || h.includes('var'); });
@@ -380,7 +515,6 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
     return isNaN(n) ? 0 : n;
   }
 
-  /* ── process all loaded files ── */
   function processAll() {
     var combined = [];
     var failed = [];
@@ -397,7 +531,6 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
     }
     if(failed.length) showError('Warning: could not parse ' + failed.join(', ') + ' — continuing with valid files.');
 
-    // merge duplicates
     var map = {};
     combined.forEach(function(r){
       var k = r.query.toLowerCase();
@@ -424,9 +557,8 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
     renderPreview();
   }
 
-  /* ── preview table ── */
   function renderPreview() {
-    setStep(2);
+    setStep(3);
     document.getElementById('stat-pills').innerHTML =
       '<div class="stat-pill">Queries: <strong>' + allRows.length + '</strong></div>' +
       '<div class="stat-pill">Avg. growth: <strong>+' + Math.round(allRows.reduce(function(s,r){ return s+r.growth; },0)/allRows.length) + '%</strong></div>';
@@ -444,53 +576,106 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
     document.getElementById('file-list').style.display = 'none';
   }
 
-  /* ── AI analysis ── */
   window.runAnalysis = async function(){
-    setStep(3);
+    // Check if API key is configured
+    const keys = getSavedKeys();
+    const key = keys[currentProvider];
+    
+    if (!key) {
+      showError(`Please configure your ${currentProvider.toUpperCase()} API key first in the configuration section above.`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    setStep(4);
     document.getElementById('analyze-btn').disabled = true;
     document.getElementById('preview-section').style.display = 'none';
     document.getElementById('action-row').style.display = 'none';
     document.getElementById('loading-state').style.display = 'block';
+    document.getElementById('loading-provider').textContent = currentProvider.charAt(0).toUpperCase() + currentProvider.slice(1);
 
     var queryData = allRows.map(function(r){
       return 'Query: "' + r.query + '" | Impressions: ' + Math.round(r.impr) + ' | Growth: +' + Math.round(r.growth) + '% | Avg. Position: ' + r.pos.toFixed(1) + ' | Clicks: ' + Math.round(r.clicks);
-    }).join('\n');
+    }).join('\\n');
 
-    var prompt = 'You are an expert SEO strategist. I have Google Search Console data comparing the last 28 days vs the previous 28 days.\n\nThe queries below are trending UP in impressions but my site ranks BELOW position 10. Rising demand not yet captured.\n\nData:\n---\n' + queryData + '\n---\n\nProvide a prioritized content action plan:\n\n1. **Pages to Update Immediately** — Which existing pages to update? What specific content to add? Group related queries.\n\n2. **New Pages to Create** — Which queries need a dedicated new page? Suggest a title, primary keyword, and key content sections.\n\n3. **Priority Order** — Rank all recommendations by traffic potential and urgency.\n\n4. **Quick Wins This Week** — 3 queries to act on immediately for the fastest results.\n\nBe specific. Use the actual query data. Format with clear headers and bullet points.';
+    var prompt = 'You are an expert SEO strategist. I have Google Search Console data comparing the last 28 days vs the previous 28 days.\\n\\nThe queries below are trending UP in impressions but my site ranks BELOW position 10. Rising demand not yet captured.\\n\\nData:\\n---\\n' + queryData + '\\n---\\n\\nProvide a prioritized content action plan:\\n\\n1. **Pages to Update Immediately** — Which existing pages to update? What specific content to add? Group related queries.\\n\\n2. **New Pages to Create** — Which queries need a dedicated new page? Suggest a title, primary keyword, and key content sections.\\n\\n3. **Priority Order** — Rank all recommendations by traffic potential and urgency.\\n\\n4. **Quick Wins This Week** — 3 queries to act on immediately for the fastest results.\\n\\nBe specific. Use the actual query data. Format with clear headers and bullet points.';
 
     try {
-      var resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
-      });
-      var data = await resp.json();
-      if(!resp.ok) throw new Error(data.error && data.error.message ? data.error.message : 'API error');
-      var text = (data.content || []).map(function(b){ return b.text || ''; }).join('');
+      let response, data, text;
+      
+      if (currentProvider === 'gemini') {
+        response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 2048
+            }
+          })
+        });
+        data = await response.json();
+        if(!response.ok) throw new Error(data.error?.message || 'API error');
+        text = data.candidates[0]?.content?.parts[0]?.text;
+      } else if (currentProvider === 'claude') {
+        response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': key,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-3-5-sonnet-20241022',
+            max_tokens: 2048,
+            messages: [{ role: 'user', content: prompt }]
+          })
+        });
+        data = await response.json();
+        if(!response.ok) throw new Error(data.error?.message || 'API error');
+        text = data.content[0]?.text;
+      } else if (currentProvider === 'openai') {
+        response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${key}`
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 2048,
+            temperature: 0.7
+          })
+        });
+        data = await response.json();
+        if(!response.ok) throw new Error(data.error?.message || 'API error');
+        text = data.choices[0]?.message?.content;
+      }
+
       if(!text) throw new Error('Empty response');
       document.getElementById('loading-state').style.display = 'none';
       document.getElementById('report-body').innerHTML = mdToHtml(text);
       document.getElementById('report-section').style.display = 'block';
       document.getElementById('report-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setStep(4);
     } catch(err) {
       document.getElementById('loading-state').style.display = 'none';
-      showError('Analysis failed: ' + err.message + '. Please try again.');
+      showError('Analysis failed: ' + err.message + '. Please check your API key and try again.');
       document.getElementById('preview-section').style.display = 'block';
       document.getElementById('action-row').style.display = 'flex';
       document.getElementById('analyze-btn').disabled = false;
-      setStep(2);
+      setStep(3);
     }
   };
 
-  /* ── markdown renderer ── */
   function mdToHtml(md){
     return md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
       .replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>')
-      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>')
-      .replace(/^---$/gm,'<hr>').replace(/^[-*] (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
-      .replace(/(<li>[\s\S]*?<\/li>)+/g,function(m){ return '<ul>'+m+'</ul>'; })
-      .replace(/\n{2,}/g,'</p><p>').replace(/<p><\/p>/g,'');
+      .replace(/\\*\\*(.+?)\\*\\*/g,'<strong>$1</strong>').replace(/\\*(.+?)\\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>')
+      .replace(/^---$/gm,'<hr>').replace(/^[-*] (.+)$/gm,'<li>$1</li>').replace(/^\\d+\\. (.+)$/gm,'<li>$1</li>')
+      .replace(/(<li>[\\s\\S]*?<\\/li>)+/g,function(m){ return '<ul>'+m+'</ul>'; })
+      .replace(/\\n{2,}/g,'</p><p>').replace(/<p><\\/p>/g,'');
   }
 
   window.copyReport = function(){
@@ -510,12 +695,12 @@ window.addEventListener('scroll',()=>{document.getElementById('btt').classList.t
     document.getElementById('file-list').innerHTML = '';
     document.getElementById('file-input').value = '';
     document.getElementById('analyze-btn').disabled = false;
-    showError(''); hideDebug(); setStep(1);
+    showError(''); hideDebug(); setStep(2);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   function showError(msg){ var el=document.getElementById('error-msg'); el.textContent=msg; el.style.display=msg?'block':'none'; }
-  function showDebug(msg){ var el=document.getElementById('debug-box'); el.textContent=(el.textContent?el.textContent+'\n\n':'')+msg; }
+  function showDebug(msg){ var el=document.getElementById('debug-box'); el.textContent=(el.textContent?el.textContent+'\\n\\n':'')+msg; }
   function hideDebug(){ var el=document.getElementById('debug-box'); el.textContent=''; el.style.display='none'; }
   function setStep(n){ for(var i=1;i<=4;i++){ var el=document.getElementById('step'+i); el.classList.remove('active','done'); if(i<n)el.classList.add('done'); else if(i===n)el.classList.add('active'); } }
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
