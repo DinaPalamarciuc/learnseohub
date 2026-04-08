@@ -59,16 +59,61 @@
     var banner = document.createElement('div');
     banner.id = 'lsh-cookie-banner';
     banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--card);border-top:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 -4px 24px rgba(0,0,0,.1);';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-label', 'Cookie Consent');
+    banner.setAttribute('aria-live', 'polite');
+    
     var r = root('');
-    banner.innerHTML = '<p style="font-size:13px;color:var(--t2);line-height:1.6;margin:0;flex:1;min-width:240px;">'
-      + '🍪 We use cookies to improve your experience and analyze site usage. Essential cookies are always active. '
+    
+    // Create message paragraph
+    var message = document.createElement('p');
+    message.style.cssText = 'font-size:13px;color:var(--t2);line-height:1.6;margin:0;flex:1;min-width:240px;';
+    message.innerHTML = '🍪 We use cookies to improve your experience and analyze site usage. Essential cookies are always active. '
       + '<a href="' + r + 'cookies" style="color:var(--accent);font-weight:700;">Cookie Policy</a> · '
-      + '<a href="' + r + 'privacy" style="color:var(--accent);font-weight:700;">Privacy Policy</a>'
-      + '</p>'
-      + '<div style="display:flex;gap:8px;flex-shrink:0;">'
-      + '<button onclick="lshSetConsent(false)" style="padding:9px 20px;background:transparent;color:var(--t2);border:1px solid var(--border);border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;">Essential Only</button>'
-      + '<button onclick="lshSetConsent(true)" style="padding:9px 20px;background:var(--t1);color:var(--bg);border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;">Accept All</button>'
-      + '</div>';
+      + '<a href="' + r + 'privacy" style="color:var(--accent);font-weight:700;">Privacy Policy</a>';
+    
+    // Create button container
+    var buttonContainer = document.createElement('div');
+    buttonContainer.style.cssText = 'display:flex;gap:8px;flex-shrink:0;';
+    
+    // Create Essential Only button
+    var essentialBtn = document.createElement('button');
+    essentialBtn.textContent = 'Essential Only';
+    essentialBtn.style.cssText = 'padding:9px 20px;background:transparent;color:var(--t2);border:1px solid var(--border);border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:background 0.2s,color 0.2s,border-color 0.2s;';
+    essentialBtn.setAttribute('aria-label', 'Accept essential cookies only');
+    essentialBtn.addEventListener('click', function() { window.lshSetConsent(false); });
+    essentialBtn.addEventListener('mouseenter', function() {
+      this.style.background = 'var(--card)';
+      this.style.borderColor = 'var(--t2)';
+    });
+    essentialBtn.addEventListener('mouseleave', function() {
+      this.style.background = 'transparent';
+      this.style.borderColor = 'var(--border)';
+    });
+    
+    // Create Accept All button
+    var acceptBtn = document.createElement('button');
+    acceptBtn.textContent = 'Accept All';
+    acceptBtn.style.cssText = 'padding:9px 20px;background:var(--t1);color:var(--bg);border:none;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;transition:transform 0.2s,box-shadow 0.2s;';
+    acceptBtn.setAttribute('aria-label', 'Accept all cookies');
+    acceptBtn.addEventListener('click', function() { window.lshSetConsent(true); });
+    acceptBtn.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-1px)';
+      this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+    });
+    acceptBtn.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
+      this.style.boxShadow = 'none';
+    });
+    
+    // Append buttons to container
+    buttonContainer.appendChild(essentialBtn);
+    buttonContainer.appendChild(acceptBtn);
+    
+    // Append elements to banner
+    banner.appendChild(message);
+    banner.appendChild(buttonContainer);
+    
     document.body.appendChild(banner);
   }
 
