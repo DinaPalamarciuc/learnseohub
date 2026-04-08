@@ -303,12 +303,7 @@ function saveApiKey(provider) {
     return;
   }
   
-  // Save to localStorage
-  const keys = getSavedKeys();
-  keys[provider] = key;
-  localStorage.setItem(API_KEYS_STORAGE, JSON.stringify(keys));
-  
-  // Test connection
+  // Test connection first, only save if valid
   testConnection(provider, key, statusEl);
 }
 
@@ -328,13 +323,36 @@ async function testConnection(provider, key, statusEl) {
     const data = await response.json();
     
     if (response.ok) {
+      // Save to localStorage only after successful validation
+      const keys = getSavedKeys();
+      keys[provider] = key;
+      localStorage.setItem(API_KEYS_STORAGE, JSON.stringify(keys));
+      
       showStatus(statusEl, 'success', '✓ Connected! Your API key is valid and ready to use.');
-      setStep(2);
+      
+      // Advance to next step - use global setStep if available
+      if (typeof window.setGlobalStep === 'function') {
+        window.setGlobalStep(2);
+      } else {
+        // Fallback: manually update step UI
+        updateStepUI(2);
+      }
     } else {
       showStatus(statusEl, 'error', '✗ Invalid API key: ' + (data.error || 'Unknown error'));
     }
   } catch (err) {
     showStatus(statusEl, 'error', '✗ Connection failed: ' + err.message + '. Please try again.');
+  }
+}
+
+function updateStepUI(stepNumber) {
+  for(var i=1; i<=4; i++) {
+    var el = document.getElementById('step' + i);
+    if (el) {
+      el.classList.remove('active', 'done');
+      if (i < stepNumber) el.classList.add('done');
+      else if (i === stepNumber) el.classList.add('active');
+    }
   }
 }
 
@@ -634,6 +652,8 @@ function showStatus(el, type, message) {
   function showDebug(msg){ var el=document.getElementById('debug-box'); el.textContent=(el.textContent?el.textContent+'\\n\\n':'')+msg; }
   function hideDebug(){ var el=document.getElementById('debug-box'); el.textContent=''; el.style.display='none'; }
   function setStep(n){ for(var i=1;i<=4;i++){ var el=document.getElementById('step'+i); el.classList.remove('active','done'); if(i<n)el.classList.add('done'); else if(i===n)el.classList.add('active'); } }
+  // Expose setStep globally for API key testing
+  window.setGlobalStep = setStep;
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 })();
 </script>
