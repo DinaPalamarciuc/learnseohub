@@ -375,11 +375,20 @@ function showStatus(el, type, message) {
 </script>
 
 <script>
-(function(){
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, initializing GSC Analyzer...');
+  
   // Check if XLSX library loaded
-  console.log('Script started. XLSX available:', typeof XLSX !== 'undefined');
+  console.log('XLSX available:', typeof XLSX !== 'undefined');
   if (typeof XLSX === 'undefined') {
     console.error('XLSX library failed to load from CDN');
+    var errorEl = document.getElementById('error-msg');
+    if (errorEl) {
+      errorEl.textContent = 'Excel library failed to load. Please refresh the page or check your internet connection.';
+      errorEl.style.display = 'block';
+    }
+    return; // Stop execution if XLSX not loaded
   }
   
   var allRows = [];
@@ -388,10 +397,31 @@ function showStatus(el, type, message) {
 
   /* ── drag & drop + file input ── */
   var zone = document.getElementById('upload-zone');
+  var fileInput = document.getElementById('file-input');
+  
+  if (!zone) {
+    console.error('upload-zone element not found in DOM');
+    return;
+  }
+  if (!fileInput) {
+    console.error('file-input element not found in DOM');
+    return;
+  }
+  
+  console.log('Event listeners being attached...');
   zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
   zone.addEventListener('dragleave', function(){ zone.classList.remove('drag-over'); });
-  zone.addEventListener('drop', function(e){ e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
-  document.getElementById('file-input').addEventListener('change', function(e){ if(e.target.files.length) handleFiles(e.target.files); });
+  zone.addEventListener('drop', function(e){ 
+    console.log('Drop event triggered');
+    e.preventDefault(); 
+    zone.classList.remove('drag-over'); 
+    handleFiles(e.dataTransfer.files); 
+  });
+  fileInput.addEventListener('change', function(e){ 
+    console.log('File input change event triggered, files:', e.target.files.length);
+    if(e.target.files.length) handleFiles(e.target.files); 
+  });
+  console.log('Event listeners attached successfully');
 
   function handleFiles(fileList) {
     console.log('handleFiles called with', fileList.length, 'files');
@@ -708,7 +738,9 @@ function showStatus(el, type, message) {
   // Expose setStep globally for API key testing
   window.setGlobalStep = setStep;
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-})();
+  
+  console.log('GSC Analyzer initialized successfully');
+}); // End DOMContentLoaded
 </script>
 </body>
 </html>
