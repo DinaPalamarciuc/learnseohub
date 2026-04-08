@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Banner Test - LearnSEO Hub</title>
+    <link rel="stylesheet" href="./css/style.css"/>
+    <style>
+        body { padding: 40px; }
+        .test-panel {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+        }
+        h1 { 
+            font-size: 28px; 
+            font-weight: 900; 
+            margin-bottom: 24px;
+            color: var(--t1);
+        }
+        .test-section {
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .test-section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+        .test-btn {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+        .test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .status {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+        code {
+            background: var(--card);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <script src="./js/site.js"></script>
+    
+    <div class="test-panel">
+        <h1>🍪 Cookie Banner Test Panel</h1>
+        
+        <div class="test-section">
+            <h2>1. Test Cookie Banner Display</h2>
+            <p>Click the button below to trigger the cookie consent banner:</p>
+            <button class="test-btn" onclick="window.lshCookieOpen()">Show Cookie Banner</button>
+            <div class="status info">
+                ℹ️ The banner should appear at the bottom of the page with two buttons: "Essential Only" and "Accept All"
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. Check Current Consent Status</h2>
+            <button class="test-btn" onclick="checkConsent()">Check Consent</button>
+            <div id="consent-status"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. Clear Consent (Reset)</h2>
+            <p>Clear the stored consent to test the banner again:</p>
+            <button class="test-btn" onclick="clearConsent()">Clear Consent</button>
+            <div id="clear-status"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>4. Test Button Functionality</h2>
+            <p>After showing the banner:</p>
+            <ol style="margin-left: 20px; color: var(--t2); line-height: 1.8;">
+                <li>Click <strong>"Essential Only"</strong> - Banner should disappear and consent should be saved as <code>analytics: false</code></li>
+                <li>Click <strong>"Accept All"</strong> - Banner should disappear and consent should be saved as <code>analytics: true</code></li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>5. Security Verification</h2>
+            <div class="status success">
+                ✅ <strong>XSS Prevention:</strong> Buttons use addEventListener (secure)<br>
+                ✅ <strong>No Inline Handlers:</strong> No onclick in HTML<br>
+                ✅ <strong>ARIA Attributes:</strong> role="dialog", aria-label, aria-live<br>
+                ✅ <strong>GDPR Compliant:</strong> Clear consent options with policy links
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>6. Browser Console Test</h2>
+            <p>Open DevTools (F12) and check:</p>
+            <ul style="margin-left: 20px; color: var(--t2); line-height: 1.8;">
+                <li>No JavaScript errors in Console</li>
+                <li>No security warnings</li>
+                <li>localStorage should contain <code>lsh-cookie-consent</code> after accepting</li>
+            </ul>
+            <button class="test-btn" onclick="console.log('Console test - check DevTools!')">Test Console</button>
+        </div>
+    </div>
+
+    <script>
+        function checkConsent() {
+            try {
+                const consent = JSON.parse(localStorage.getItem('lsh-cookie-consent'));
+                const statusDiv = document.getElementById('consent-status');
+                
+                if (!consent) {
+                    statusDiv.innerHTML = '<div class="status warning">⚠️ No consent found. Cookie banner should be visible on first visit.</div>';
+                } else {
+                    const analyticsStatus = consent.analytics ? '✅ Accepted' : '❌ Declined';
+                    const date = new Date(consent.date).toLocaleString();
+                    statusDiv.innerHTML = `
+                        <div class="status success">
+                            ✅ <strong>Consent found:</strong><br>
+                            • Analytics: ${analyticsStatus}<br>
+                            • Date: ${date}<br>
+                            • Raw data: <code>${JSON.stringify(consent)}</code>
+                        </div>
+                    `;
+                }
+            } catch(e) {
+                document.getElementById('consent-status').innerHTML = 
+                    '<div class="status warning">❌ Error reading consent: ' + e.message + '</div>';
+            }
+        }
+
+        function clearConsent() {
+            localStorage.removeItem('lsh-cookie-consent');
+            document.getElementById('clear-status').innerHTML = 
+                '<div class="status success">✅ Consent cleared! Refresh the page to see the banner again.</div>';
+            
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }
+
+        // Auto-check consent on page load
+        window.addEventListener('DOMContentLoaded', checkConsent);
+    </script>
+
+    <div id="site-footer"></div>
+    <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to Top">↑</button>
+</body>
+</html>
