@@ -166,34 +166,135 @@
 <div class="subscribe-box">
   <h3>Stay Ahead — Get Monthly SEO Updates</h3>
   <p>New algorithm updates, AI search developments, and actionable recommendations delivered once a month. No spam.</p>
-  <form id="newsForm" class="sub-form" onsubmit="subNews(event)">
+  <form id="newsForm" class="sub-form">
     <input type="hidden" name="access_key" value="d2a42b3a-babb-443b-8b89-54585fdb71f7"/>
     <input type="hidden" name="subject" value="New LearnSEO Hub Subscriber"/>
     <input type="hidden" name="from_name" value="LearnSEO Hub Newsletter"/>
-    <input type="email" name="email" class="sub-input" placeholder="your@email.com" required/>
+    <input type="hidden" id="newsTimestamp" name="timestamp" value=""/>
+    
+    <!-- Enhanced honeypot traps -->
+    <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off"/>
+    <input type="text" name="website" style="position:absolute;left:-9999px;width:1px;height:1px;" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+    
+    <input type="email" id="newsletter-email" name="email" class="sub-input" placeholder="your@email.com" required maxlength="254" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address" aria-label="Email address for newsletter"/>
     <button type="submit" class="sub-btn">Subscribe Free</button>
   </form>
   <div id="newsMsg" style="display:none;margin-top:12px;font-size:14px;font-weight:700;color:var(--em)"></div>
   <script>
-  async function subNews(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.textContent = '...';
-    btn.disabled = true;
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {method:'POST', body: new FormData(e.target)});
-      const d = await res.json();
-      if (d.success) {
-        document.getElementById('newsForm').style.display = 'none';
-        const msg = document.getElementById('newsMsg');
-        msg.style.display = 'block';
-        msg.textContent = '✓ You're subscribed! You'll receive the next SEO update.';
+  (function() {
+    const form = document.getElementById('newsForm');
+    const timestampField = document.getElementById('newsTimestamp');
+    const msg = document.getElementById('newsMsg');
+    let formLoadTime = Date.now();
+    
+    // Set timestamp
+    if (timestampField) timestampField.value = formLoadTime;
+    
+    // Rate limiting check
+    function checkRateLimit() {
+      const now = Date.now();
+      const lastSubmit = localStorage.getItem('lsh_newsletter_submit');
+      
+      if (lastSubmit) {
+        const timeSince = now - parseInt(lastSubmit);
+        const cooldownPeriod = 300000; // 5 minutes for newsletter
+        
+        if (timeSince < cooldownPeriod) {
+          const remainingMinutes = Math.ceil((cooldownPeriod - timeSince) / 60000);
+          return { allowed: false, remainingMinutes };
+        }
       }
-    } catch(err) {
-      btn.textContent = 'Subscribe Free';
-      btn.disabled = false;
+      return { allowed: true };
     }
-  }
+    
+    // Form validation
+    function validateNewsletter(formData) {
+      const email = formData.get('email');
+      
+      // Check honeypots
+      if (formData.get('website') || formData.get('botcheck')) {
+        console.log('Bot detected via honeypot');
+        return { valid: false, error: 'Spam detected.' };
+      }
+      
+      // Check submission speed (minimum 2 seconds)
+      const submissionTime = Date.now() - formLoadTime;
+      if (submissionTime < 2000) {
+        return { valid: false, error: 'Please wait a moment before subscribing.' };
+      }
+      
+      // Validate email
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!email || !emailRegex.test(email)) {
+        return { valid: false, error: 'Please enter a valid email address.' };
+      }
+      
+      return { valid: true };
+    }
+    
+    // Form submission handler
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const btn = this.querySelector('button');
+      const originalText = btn.textContent;
+      
+      // Check rate limit
+      const rateLimitCheck = checkRateLimit();
+      if (!rateLimitCheck.allowed) {
+        msg.style.display = 'block';
+        msg.style.color = '#f59e0b';
+        msg.textContent = `⚠ Please wait ${rateLimitCheck.remainingMinutes} minute(s) before subscribing again.`;
+        return;
+      }
+      
+      // Validate form
+      const formData = new FormData(this);
+      const validation = validateNewsletter(formData);
+      
+      if (!validation.valid) {
+        msg.style.display = 'block';
+        msg.style.color = '#ef4444';
+        msg.textContent = '✗ ' + validation.error;
+        return;
+      }
+      
+      // Show loading state
+      btn.textContent = 'Subscribing...';
+      btn.disabled = true;
+      msg.style.display = 'none';
+      
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
+        });
+        
+        const data = await res.json();
+        
+        if (data.success) {
+          // Store submission time
+          localStorage.setItem('lsh_newsletter_submit', Date.now().toString());
+          
+          // Hide form and show success
+          form.style.display = 'none';
+          msg.style.display = 'block';
+          msg.style.color = '#059669';
+          msg.textContent = '✓ You\'re subscribed! You\'ll receive the next SEO update.';
+        } else {
+          throw new Error(data.message || 'Subscription failed');
+        }
+      } catch(err) {
+        console.error('Newsletter subscription error:', err);
+        msg.style.display = 'block';
+        msg.style.color = '#ef4444';
+        msg.textContent = '✗ Something went wrong. Please try again later.';
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+  })();
   </script>
 </div>
 
