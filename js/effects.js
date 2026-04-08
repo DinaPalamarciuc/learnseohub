@@ -45,12 +45,34 @@
   function initCardHover() {
     var style = document.createElement('style');
     style.textContent =
-      '.cd,.tool-card,.blog-card,.feature-card{' +
+      '.cd,.tool-card,.blog-card,.feature-card,.ts-item,.start-step{' +
         'transition:transform .2s ease,box-shadow .2s ease}' +
-      '.cd:hover,.tool-card:hover,.blog-card:hover,.feature-card:hover{' +
+      '.cd:hover,.tool-card:hover,.blog-card:hover,.feature-card:hover,.ts-item:hover,.start-step:hover{' +
         'transform:translateY(-4px);' +
         'box-shadow:0 16px 40px rgba(0,0,0,.16)}';
     document.head.appendChild(style);
+  }
+
+  /* ── 2.5. MAGNETIC HOVER — cardurile se "magnetizează" spre cursor ─── */
+  function initMagneticHover() {
+    var cards = document.querySelectorAll('.cd, .ts-item, .blog-card, .start-step');
+    
+    cards.forEach(function(card) {
+      card.addEventListener('mousemove', function(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+        
+        // Magnetic effect: 5% movement towards cursor (subtle!)
+        card.style.transform = 'translate3d(' + (x * 0.05) + 'px, ' + (y * 0.05 - 6) + 'px, 0)';
+        card.style.transition = 'transform 0.1s ease-out, box-shadow 0.3s ease';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+      });
+    });
   }
 
   /* ── 3. PAGE TRANSITIONS — fade smooth ─────────────────────── */
@@ -84,6 +106,7 @@
   function boot() {
     initScrollReveal();
     initCardHover();
+    initMagneticHover(); // 🆕 Magnetic hover effect
     initPageTransitions();
   }
 
