@@ -6,266 +6,812 @@
 <meta name="description" content="Upload your Google Search Console CSV or Excel file and get an AI-powered content strategy for rising queries."/>
 <link rel="canonical" href="https://learnseohub.com/tools/gsc-analyzer"/>
 <link rel="stylesheet" href="../css/style.css"/>
-<!-- XLSX library with multiple CDN fallbacks -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script>
-  // Fallback to alternative CDN if primary fails
-  if (typeof XLSX === 'undefined') {
-    console.warn('Primary CDN failed, loading from fallback...');
-    document.write('<script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"><\/script>');
-  }
-</script>
+<style>
+/* ═══ GLASSMORPHISM DESIGN SYSTEM ═══ */
+:root {
+  --glass-bg: rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.15);
+  --glass-blur: blur(24px);
+  --glow-blue: rgba(0,102,255,0.3);
+  --glow-violet: rgba(139,92,246,0.25);
+  --glow-mint: rgba(0,184,124,0.25);
+  --step-active: #0066FF;
+  --step-done: #00B87C;
+}
+
+/* ── ANIMATED GRADIENT BACKGROUND ── */
+.main::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 800px 600px at 10% 20%, rgba(0,102,255,0.06), transparent 60%),
+    radial-gradient(ellipse 600px 500px at 90% 80%, rgba(139,92,246,0.05), transparent 60%),
+    radial-gradient(ellipse 400px 400px at 50% 50%, rgba(0,184,124,0.03), transparent 60%);
+  animation: bgPulse 12s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes bgPulse {
+  0%   { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* ── STEPS BAR ── */
+.steps-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0 0 32px;
+  overflow-x: auto;
+  padding: 20px 0 4px;
+  scrollbar-width: none;
+}
+.steps-bar::-webkit-scrollbar { display: none; }
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+.step-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
+  font-size: 13px; font-weight: 800;
+  color: var(--t3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(10px);
+}
+.step-label {
+  font-size: 13px; font-weight: 600;
+  color: var(--t3);
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+.step-item.active {
+  background: rgba(0,102,255,0.08);
+  border: 1px solid rgba(0,102,255,0.2);
+}
+.step-item.active .step-num {
+  background: var(--step-active);
+  border-color: var(--step-active);
+  color: white;
+  box-shadow: 0 0 20px rgba(0,102,255,0.5);
+  animation: stepPulse 2s ease-in-out infinite;
+}
+.step-item.active .step-label { color: var(--step-active); font-weight: 700; }
+.step-item.done .step-num {
+  background: var(--step-done);
+  border-color: var(--step-done);
+  color: white;
+  box-shadow: 0 0 14px rgba(0,184,124,0.4);
+}
+.step-item.done .step-label { color: var(--step-done); }
+@keyframes stepPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,102,255,0.5); }
+  50%       { box-shadow: 0 0 35px rgba(0,102,255,0.8), 0 0 60px rgba(0,102,255,0.3); }
+}
+.step-sep {
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, var(--border), transparent);
+  flex-shrink: 0;
+}
+.step-item.done + .step-sep {
+  background: linear-gradient(90deg, var(--step-done), rgba(0,184,124,0.3));
+}
+
+/* ── GLASS PANELS ── */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+}
+.glass-panel:hover {
+  border-color: rgba(255,255,255,0.25);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.05);
+  transform: translateY(-1px);
+}
+
+/* ── PROVIDER TABS ── */
+.provider-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.provider-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--t2);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(8px);
+}
+.provider-tab:hover {
+  border-color: var(--accent);
+  color: var(--t1);
+  transform: translateY(-2px);
+}
+.provider-tab.active {
+  background: rgba(0,102,255,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(0,102,255,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.provider-tab .badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0,184,124,0.15);
+  color: var(--em);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.provider-panel { display: none; }
+.provider-panel.active { display: block; }
+
+/* ── API KEY INPUT ── */
+.key-input-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+.key-input {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--t1);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+.key-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
+}
+[data-theme="dark"] .key-input { background: rgba(255,255,255,0.06); }
+
+/* ── STATUS BADGES ── */
+.api-status {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+  animation: slideIn 0.3s ease;
+}
+.api-status.show { display: flex; }
+.api-status.success { background: rgba(0,184,124,0.1); border: 1px solid rgba(0,184,124,0.3); color: var(--em); }
+.api-status.error   { background: rgba(239,68,68,0.1);  border: 1px solid rgba(239,68,68,0.3);  color: #ef4444; }
+.api-status.loading { background: rgba(0,102,255,0.1);  border: 1px solid rgba(0,102,255,0.3);  color: var(--accent); }
+@keyframes slideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── UPLOAD ZONE ── */
+.upload-zone {
+  border: 2px dashed var(--glass-border);
+  border-radius: 20px;
+  padding: 56px 24px;
+  text-align: center;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+.upload-zone::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,102,255,0.06) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--accent);
+  box-shadow: 0 0 40px rgba(0,102,255,0.15), inset 0 0 60px rgba(0,102,255,0.04);
+}
+.upload-zone:hover::after, .upload-zone.drag-over::after { opacity: 1; }
+
+.upload-icon {
+  width: 64px; height: 64px;
+  margin: 0 auto 20px;
+  background: rgba(0,102,255,0.08);
+  border: 1px solid rgba(0,102,255,0.2);
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.upload-zone:hover .upload-icon {
+  transform: translateY(-4px) scale(1.05);
+  background: rgba(0,102,255,0.12);
+  box-shadow: 0 12px 30px rgba(0,102,255,0.2);
+}
+
+.fmt-pills { display: flex; justify-content: center; gap: 8px; margin: 16px 0 20px; }
+.fmt-pill {
+  font-size: 11px; font-weight: 700;
+  padding: 4px 12px; border-radius: 6px;
+  backdrop-filter: blur(8px);
+}
+.fmt-xlsx { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.2); }
+.fmt-csv  { background: rgba(59,130,246,0.12); color: #2563eb; border: 1px solid rgba(59,130,246,0.2); }
+[data-theme="dark"] .fmt-xlsx { color: #4ade80; }
+[data-theme="dark"] .fmt-csv  { color: #60a5fa; }
+
+/* ── FILE TAGS ── */
+.file-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+.file-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,102,255,0.08);
+  border: 1px solid rgba(0,102,255,0.2);
+  border-radius: 30px;
+  padding: 6px 14px;
+  font-size: 12px; font-weight: 600;
+  color: var(--accent);
+  animation: tagIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes tagIn { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+.file-tag .rm {
+  cursor: pointer;
+  color: rgba(0,102,255,0.5);
+  font-size: 16px;
+  transition: color 0.2s;
+  line-height: 1;
+}
+.file-tag .rm:hover { color: #ef4444; }
+
+/* ── DATA TABLE ── */
+.table-glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--t3);
+  background: rgba(0,0,0,0.06);
+  border-bottom: 1px solid var(--glass-border);
+  white-space: nowrap;
+}
+.data-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.15s; }
+.data-table tbody tr:last-child { border-bottom: none; }
+.data-table tbody tr:hover { background: rgba(0,102,255,0.04); }
+.data-table tbody td { padding: 10px 16px; color: var(--t2); }
+.q-cell { font-weight: 600; color: var(--t1); max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.trend-up {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700; font-size: 12px;
+  color: #16a34a;
+  background: rgba(34,197,94,0.1);
+  padding: 2px 8px; border-radius: 6px;
+  border: 1px solid rgba(34,197,94,0.2);
+}
+.pos-close {
+  background: rgba(245,158,11,0.1);
+  border: 1px solid rgba(245,158,11,0.25);
+  color: #d97706;
+  padding: 2px 8px; border-radius: 6px;
+  font-size: 11px; font-weight: 700;
+}
+.pos-far {
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.25);
+  color: #2563eb;
+  padding: 2px 8px; border-radius: 6px;
+  font-size: 11px; font-weight: 700;
+}
+
+/* ── STAT PILLS ── */
+.stat-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.stat-card {
+  flex: 1; min-width: 120px;
+  padding: 14px 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  text-align: center;
+}
+.stat-val { font-size: 22px; font-weight: 900; color: var(--t1); }
+.stat-lbl { font-size: 11px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+
+/* ── LOADING ANIMATION ── */
+.loading-state { display: none; text-align: center; padding: 80px 24px; }
+.ai-loader {
+  width: 60px; height: 60px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+.ai-loader::before, .ai-loader::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  animation: loaderSpin 1.5s linear infinite;
+}
+.ai-loader::before {
+  inset: 0;
+  border-top-color: var(--accent);
+  border-right-color: var(--accent);
+  animation-duration: 1s;
+}
+.ai-loader::after {
+  inset: 8px;
+  border-bottom-color: var(--em);
+  border-left-color: var(--em);
+  animation-direction: reverse;
+  animation-duration: 0.7s;
+}
+@keyframes loaderSpin { to { transform: rotate(360deg); } }
+
+.loading-dots span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: dotBounce 1.4s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; margin: 0 4px; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%            { transform: translateY(-10px); opacity: 1; }
+}
+
+/* ── REPORT SECTION ── */
+.report-section { display: none; margin-top: 32px; }
+.report-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(0,102,255,0.08), rgba(139,92,246,0.06));
+  border: 1px solid rgba(0,102,255,0.15);
+  border-radius: 16px;
+}
+.report-title { font-size: 18px; font-weight: 800; color: var(--t1); }
+.report-meta { font-size: 12px; color: var(--t3); margin-top: 2px; }
+.report-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.report-body {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 40px;
+  line-height: 1.8;
+  color: var(--t2);
+}
+.report-body h1 { font-size: 18px; font-weight: 800; color: var(--t1); margin: 0 0 14px; }
+.report-body h2 {
+  font-size: 15px; font-weight: 700; color: var(--t1);
+  margin: 28px 0 10px;
+  padding: 10px 0 10px 14px;
+  border-left: 3px solid var(--accent);
+}
+.report-body h3 { font-size: 14px; font-weight: 700; color: var(--t1); margin: 18px 0 8px; }
+.report-body ul, .report-body ol { padding-left: 22px; margin: 8px 0; }
+.report-body li { margin-bottom: 6px; font-size: 14px; }
+.report-body strong { color: var(--t1); }
+.report-body hr { border: none; border-top: 1px solid var(--glass-border); margin: 24px 0; }
+
+/* ── ERROR & DEBUG ── */
+.error-msg {
+  display: none;
+  padding: 14px 18px;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 12px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 12px 0;
+  animation: slideIn 0.3s ease;
+}
+[data-theme="dark"] .error-msg { background: rgba(239,68,68,0.12); color: #fca5a5; }
+
+/* ── HOW-TO GUIDE ── */
+.howto {
+  margin-top: 48px;
+  padding: 28px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+}
+.howto-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 13px;
+  color: var(--t2);
+  line-height: 1.65;
+}
+.howto-step:last-child { border-bottom: none; }
+.howto-n {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--vi));
+  color: white;
+  font-size: 11px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── ACTION ROW ── */
+.action-row {
+  display: none;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 24px;
+  padding: 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+}
+.btn-analyze {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--accent), var(--vi));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 30px rgba(0,102,255,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.btn-analyze::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-analyze:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0,102,255,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+}
+.btn-analyze:hover::after { opacity: 1; }
+.btn-analyze:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-reset {
+  padding: 12px 20px;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--t2);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── COPY BUTTON ── */
+.btn-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-bg);
+  color: var(--t2);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+.btn-copy:hover { border-color: var(--accent); color: var(--accent); }
+.btn-copy.copied { border-color: var(--em); color: var(--em); background: rgba(0,184,124,0.08); }
+
+/* ── INFO BOX ── */
+.info-box {
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px;
+  background: rgba(0,102,255,0.06);
+  border: 1px solid rgba(0,102,255,0.15);
+  border-radius: 12px;
+  font-size: 13px; color: var(--t2); line-height: 1.6;
+  margin-bottom: 20px;
+}
+.info-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── PREVIEW SECTION ── */
+.preview-section { display: none; margin-top: 8px; }
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* File input hidden */
+#file-input { display: none; }
+</style>
 </head>
 <body>
 <script src="../js/site.js"></script>
 
 <div class="main"><div class="wrap">
-<a href="../tools" style="text-decoration:none;color:var(--accent);font-size:13px;font-weight:600">← All Tools</a>
+<a href="../tools" style="text-decoration:none;color:var(--accent);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;margin-bottom:8px">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+  All Tools
+</a>
 
 <div class="sh">
   <h2>GSC Trend Analyzer</h2>
-  <p>Upload your Google Search Console export and get an AI-powered content strategy — pinpointing which rising queries to act on before your competitors notice.</p>
+  <p>Upload your Google Search Console export → get an AI-powered content strategy for your fastest-growing queries</p>
 </div>
 
-<style>
-.upload-zone {
-  border: 2px dashed var(--border);
-  border-radius: 16px;
-  padding: 48px 24px;
-  text-align: center;
-  background: var(--bg2);
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-  margin: 24px 0;
-}
-.upload-zone:hover, .upload-zone.drag-over { border-color: var(--accent); background: var(--card); }
-.upload-zone h3 { font-size: 16px; font-weight: 700; color: var(--t1); margin: 12px 0 6px; }
-.upload-zone p { font-size: 13px; color: var(--t3); margin-bottom: 16px; line-height: 1.6; }
-.fmt-pills { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
-.fmt-pill { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 5px; }
-.fmt-xlsx { background: #dcfce7; color: #166534; }
-.fmt-csv  { background: #dbeafe; color: #1e40af; }
-[data-theme="dark"] .fmt-xlsx { background: #14532d; color: #86efac; }
-[data-theme="dark"] .fmt-csv  { background: #1e3a5f; color: #93c5fd; }
-#file-input { display: none; }
-
-.steps-bar { display: flex; align-items: center; gap: 0; margin: 0 0 24px; overflow-x: auto; padding-bottom: 4px; }
-.step-item { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--t3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.step-label { font-size: 12px; font-weight: 600; color: var(--t3); white-space: nowrap; }
-.step-item.active .step-num { background: var(--t1); color: var(--bg); border-color: var(--t1); }
-.step-item.active .step-label { color: var(--t1); }
-.step-item.done .step-num { background: #22c55e; color: white; border-color: #22c55e; }
-.step-item.done .step-label { color: #22c55e; }
-.step-sep { width: 28px; height: 1px; background: var(--border); flex-shrink: 0; }
-
-.file-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; }
-.file-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--t2); }
-.file-tag .rm { cursor: pointer; color: var(--t3); font-size: 14px; line-height: 1; }
-.file-tag .rm:hover { color: #ef4444; }
-
-.preview-section { display: none; margin-top: 8px; }
-.preview-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-.preview-meta h3 { font-size: 15px; font-weight: 700; color: var(--t1); }
-.stat-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-.stat-pill { font-size: 11px; font-weight: 600; color: var(--t2); background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; }
-
-.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--card); }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th { padding: 10px 14px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--t3); background: var(--bg2); border-bottom: 1px solid var(--border); white-space: nowrap; }
-tbody tr { border-bottom: 1px solid var(--border); }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--bg2); }
-tbody td { padding: 9px 14px; color: var(--t2); }
-.q-cell { font-weight: 600; color: var(--t1); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.trend-up { color: #16a34a; font-weight: 700; font-size: 12px; }
-.pos-badge { display: inline-block; padding: 1px 7px; border-radius: 5px; font-size: 11px; font-weight: 700; }
-.pos-close { background: #fef9c3; color: #854d0e; }
-.pos-far   { background: #e0f2fe; color: #075985; }
-[data-theme="dark"] .pos-close { background: #422006; color: #fde68a; }
-[data-theme="dark"] .pos-far   { background: #0c2a3f; color: #7dd3fc; }
-
-.action-row { display: none; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 20px; }
-
-.loading-state { display: none; text-align: center; padding: 56px 24px; }
-.spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 16px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-state p { font-size: 13px; color: var(--t2); line-height: 1.7; }
-.loading-state strong { display: block; font-size: 15px; color: var(--t1); margin-bottom: 4px; }
-
-.report-section { display: none; margin-top: 32px; }
-.report-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-.report-top h3 { font-size: 17px; font-weight: 700; color: var(--t1); }
-.report-body { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 32px; font-size: 14px; line-height: 1.8; color: var(--t2); }
-.report-body h1 { font-size: 17px; font-weight: 700; color: var(--t1); margin: 0 0 10px; }
-.report-body h2 { font-size: 15px; font-weight: 700; color: var(--t1); margin: 24px 0 10px; }
-.report-body h3 { font-size: 14px; font-weight: 700; color: var(--t1); margin: 16px 0 8px; }
-.report-body ul, .report-body ol { padding-left: 20px; margin: 8px 0; }
-.report-body li { margin-bottom: 4px; }
-.report-body strong { color: var(--t1); }
-.report-body hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-.report-body code { font-family: monospace; font-size: 12px; background: var(--bg2); padding: 1px 5px; border-radius: 4px; }
-
-.error-msg { display: none; padding: 12px 16px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; color: #dc2626; font-size: 13px; font-weight: 500; margin: 12px 0; }
-[data-theme="dark"] .error-msg { background: #3b0f0f; border-color: #7f1d1d; color: #fca5a5; }
-
-.debug-box { display: none; padding: 12px 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; font-size: 11px; color: var(--t3); margin: 12px 0; font-family: monospace; white-space: pre-wrap; word-break: break-all; }
-
-.howto { margin-top: 40px; padding: 24px; background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; }
-.howto h4 { font-size: 14px; font-weight: 700; color: var(--t1); margin-bottom: 16px; }
-.howto-list { display: flex; flex-direction: column; gap: 10px; }
-.howto-item { display: flex; gap: 12px; align-items: flex-start; font-size: 13px; color: var(--t2); line-height: 1.6; }
-.howto-n { width: 22px; height: 22px; border-radius: 50%; background: var(--t1); color: var(--bg); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
-.howto-item strong { color: var(--t1); }
-
-/* API Key Configuration */
-.api-config { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin: 24px 0; }
-.api-config h4 { font-size: 15px; font-weight: 700; color: var(--t1); margin-bottom: 16px; }
-.api-provider-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-.api-tab { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg2); color: var(--t2); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.api-tab:hover { border-color: var(--accent); }
-.api-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
-.api-form-group { margin-bottom: 16px; }
-.api-form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--t2); margin-bottom: 6px; }
-.api-form-group input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg2); color: var(--t1); font-family: monospace; font-size: 13px; }
-.api-form-group input:focus { outline: none; border-color: var(--accent); }
-.api-status { padding: 10px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; margin-top: 12px; }
-.api-status.success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
-.api-status.error { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
-[data-theme="dark"] .api-status.success { background: #064e3b; color: #6ee7b7; }
-[data-theme="dark"] .api-status.error { background: #7f1d1d; color: #fca5a5; }
-.api-info { font-size: 12px; color: var(--t3); line-height: 1.6; margin-top: 8px; }
-.api-info a { color: var(--accent); text-decoration: none; }
-.api-info a:hover { text-decoration: underline; }
-.provider-panel { display: none; }
-.provider-panel.active { display: block; }
-</style>
-
-<!-- API Key Configuration -->
-<div class="api-config">
-  <h4>🔑 AI Provider Configuration</h4>
-  <p style="font-size:13px;color:var(--t2);margin-bottom:16px;">Choose your AI provider and enter your API key. Keys are stored locally in your browser and never sent to our servers.</p>
-  
-  <div class="api-provider-tabs">
-    <button class="api-tab active" onclick="switchProvider('gemini')">Google Gemini (Free)</button>
-    <button class="api-tab" onclick="switchProvider('claude')">Anthropic Claude</button>
-    <button class="api-tab" onclick="switchProvider('openai')">OpenAI GPT</button>
-  </div>
-  
-  <!-- Gemini Panel -->
-  <div id="gemini-panel" class="provider-panel active">
-    <div class="api-form-group">
-      <label for="gemini-key">Gemini API Key</label>
-      <input type="password" id="gemini-key" placeholder="Enter your Gemini API key" />
-      <div class="api-info">
-        💡 Get a free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> (no credit card required)
-      </div>
-    </div>
-    <button class="btn" onclick="saveApiKey('gemini')">Save & Test Connection</button>
-    <div id="gemini-status" class="api-status" style="display:none;"></div>
-  </div>
-  
-  <!-- Claude Panel -->
-  <div id="claude-panel" class="provider-panel">
-    <div class="api-form-group">
-      <label for="claude-key">Claude API Key</label>
-      <input type="password" id="claude-key" placeholder="sk-ant-..." />
-      <div class="api-info">
-        💡 Get your API key at <a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a> ($5 free credit for new accounts)
-      </div>
-    </div>
-    <button class="btn" onclick="saveApiKey('claude')">Save & Test Connection</button>
-    <div id="claude-status" class="api-status" style="display:none;"></div>
-  </div>
-  
-  <!-- OpenAI Panel -->
-  <div id="openai-panel" class="provider-panel">
-    <div class="api-form-group">
-      <label for="openai-key">OpenAI API Key</label>
-      <input type="password" id="openai-key" placeholder="sk-..." />
-      <div class="api-info">
-        💡 Get your API key at <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a>
-      </div>
-    </div>
-    <button class="btn" onclick="saveApiKey('openai')">Save & Test Connection</button>
-    <div id="openai-status" class="api-status" style="display:none;"></div>
-  </div>
-</div>
-
-<!-- Steps -->
+<!-- ══ STEPS BAR ══ -->
 <div class="steps-bar">
-  <div class="step-item active" id="step1"><div class="step-num">1</div><div class="step-label">Configure AI</div></div>
+  <div class="step-item active" id="step1">
+    <div class="step-num">1</div>
+    <div class="step-label">Configure AI</div>
+  </div>
   <div class="step-sep"></div>
-  <div class="step-item" id="step2"><div class="step-num">2</div><div class="step-label">Upload GSC Data</div></div>
+  <div class="step-item" id="step2">
+    <div class="step-num">2</div>
+    <div class="step-label">Upload GSC Data</div>
+  </div>
   <div class="step-sep"></div>
-  <div class="step-item" id="step3"><div class="step-num">3</div><div class="step-label">AI Analysis</div></div>
+  <div class="step-item" id="step3">
+    <div class="step-num">3</div>
+    <div class="step-label">Preview Queries</div>
+  </div>
   <div class="step-sep"></div>
-  <div class="step-item" id="step4"><div class="step-num">4</div><div class="step-label">Content Strategy</div></div>
+  <div class="step-item" id="step4">
+    <div class="step-num">4</div>
+    <div class="step-label">AI Strategy</div>
+  </div>
 </div>
 
-<!-- Upload -->
+<!-- ══ STEP 1: API CONFIGURATION ══ -->
+<div class="glass-panel" id="config-panel" style="margin-bottom:24px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+    <div>
+      <h3 style="font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px">🔑 Configure Your AI Provider</h3>
+      <p style="font-size:13px;color:var(--t3)">Your API key stays in your browser — never sent to our servers</p>
+    </div>
+    <div id="config-status" style="font-size:12px;color:var(--t3)">No key saved yet</div>
+  </div>
+
+  <div class="provider-tabs" id="providerTabs">
+    <button class="provider-tab active" data-provider="gemini" onclick="switchProvider(this,'gemini')">
+      <span>🌐</span> Google Gemini <span class="badge">FREE</span>
+    </button>
+    <button class="provider-tab" data-provider="claude" onclick="switchProvider(this,'claude')">
+      <span>🤖</span> Claude
+    </button>
+    <button class="provider-tab" data-provider="openai" onclick="switchProvider(this,'openai')">
+      <span>⚡</span> OpenAI GPT
+    </button>
+  </div>
+
+  <!-- Gemini -->
+  <div class="provider-panel active" id="panel-gemini">
+    <div class="info-box">
+      <div class="info-icon">💡</div>
+      <div>Get a <strong>free</strong> Gemini API key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">aistudio.google.com</a> — no credit card required. 1,500 requests/day free.</div>
+    </div>
+    <label style="font-size:12px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.06em">Gemini API Key</label>
+    <div class="key-input-wrap">
+      <input type="password" class="key-input" id="key-gemini" placeholder="AIzaSy..." autocomplete="off" spellcheck="false"/>
+      <button class="btn btn-a btn-sm" onclick="testAndSaveKey('gemini')" id="btn-gemini">Test & Save</button>
+    </div>
+    <div class="api-status" id="status-gemini"></div>
+  </div>
+
+  <!-- Claude -->
+  <div class="provider-panel" id="panel-claude">
+    <div class="info-box">
+      <div class="info-icon">💡</div>
+      <div>Get a Claude API key at <a href="https://console.anthropic.com/" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">console.anthropic.com</a> — $5 free credit for new accounts.</div>
+    </div>
+    <label style="font-size:12px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.06em">Anthropic API Key</label>
+    <div class="key-input-wrap">
+      <input type="password" class="key-input" id="key-claude" placeholder="sk-ant-..." autocomplete="off" spellcheck="false"/>
+      <button class="btn btn-a btn-sm" onclick="testAndSaveKey('claude')" id="btn-claude">Test & Save</button>
+    </div>
+    <div class="api-status" id="status-claude"></div>
+  </div>
+
+  <!-- OpenAI -->
+  <div class="provider-panel" id="panel-openai">
+    <div class="info-box">
+      <div class="info-icon">💡</div>
+      <div>Get an OpenAI API key at <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">platform.openai.com</a> — requires a payment method.</div>
+    </div>
+    <label style="font-size:12px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:0.06em">OpenAI API Key</label>
+    <div class="key-input-wrap">
+      <input type="password" class="key-input" id="key-openai" placeholder="sk-..." autocomplete="off" spellcheck="false"/>
+      <button class="btn btn-a btn-sm" onclick="testAndSaveKey('openai')" id="btn-openai">Test & Save</button>
+    </div>
+    <div class="api-status" id="status-openai"></div>
+  </div>
+</div>
+
+<!-- ══ STEP 2: UPLOAD ══ -->
 <div class="upload-zone" id="upload-zone">
-  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-  <h3>Drop your GSC files here</h3>
-  <p>You can upload multiple files at once — data will be merged automatically.</p>
+  <input type="file" id="file-input" accept=".csv,.xlsx,.xls" multiple>
+  <div class="upload-icon">📊</div>
+  <h3 style="font-size:18px;font-weight:800;color:var(--t1);margin:0 0 8px">Drop your GSC export here</h3>
+  <p style="font-size:14px;color:var(--t3);margin:0 0 16px;line-height:1.6">Upload one or more files — data is merged automatically.<br/>No data leaves your browser until you click "Analyze".</p>
   <div class="fmt-pills">
     <span class="fmt-pill fmt-xlsx">✓ Excel (.xlsx)</span>
     <span class="fmt-pill fmt-csv">✓ CSV (.csv)</span>
   </div>
-  <button class="btn" onclick="document.getElementById('file-input').click()">Choose files</button>
-  <input type="file" id="file-input" accept=".csv,.xlsx,.xls" multiple>
+  <button class="btn btn-a" onclick="document.getElementById('file-input').click()" style="position:relative;z-index:1">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    Browse Files
+  </button>
 </div>
 
+<!-- Error message -->
 <div class="error-msg" id="error-msg"></div>
-<div class="debug-box" id="debug-box"></div>
-<div class="file-list" id="file-list"></div>
 
-<!-- Preview -->
+<!-- File tags -->
+<div class="file-tags" id="file-tags" style="display:none"></div>
+
+<!-- Preview section -->
 <div class="preview-section" id="preview-section">
-  <div class="preview-meta">
-    <h3>Trending queries found</h3>
-    <div class="stat-pills" id="stat-pills"></div>
+  <div class="preview-header">
+    <h3 style="font-size:16px;font-weight:800;color:var(--t1)">📈 Trending Queries Found</h3>
+    <div style="font-size:12px;color:var(--t3)">Filtered: impressions ↑50%+ · position 11-100</div>
   </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Query</th><th>Impressions</th><th>Growth</th><th>Avg. Position</th><th>Clicks</th></tr></thead>
+  <div class="stat-grid" id="stat-grid"></div>
+  <div class="table-glass">
+    <table class="data-table">
+      <thead><tr>
+        <th>Query</th><th>Impressions</th><th>Growth</th><th>Position</th><th>Clicks</th>
+      </tr></thead>
       <tbody id="preview-tbody"></tbody>
     </table>
   </div>
 </div>
 
+<!-- Action row -->
 <div class="action-row" id="action-row">
-  <button class="btn" id="analyze-btn" onclick="runAnalysis()">Analyze with AI →</button>
-  <button class="btn-outline" onclick="resetTool()">↺ Start over</button>
+  <button class="btn-analyze" id="analyze-btn" onclick="runAnalysis()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Analyze with AI
+  </button>
+  <button class="btn-reset" onclick="resetTool()">↺ Start over</button>
+  <div style="font-size:12px;color:var(--t3);margin-left:auto">
+    Using: <strong id="current-provider-label" style="color:var(--accent)">Gemini</strong>
+  </div>
 </div>
 
-<!-- Loading -->
+<!-- Loading state -->
 <div class="loading-state" id="loading-state">
-  <div class="spinner"></div>
-  <p><strong>Analyzing your queries…</strong><span id="loading-provider">AI</span> is building a prioritized content strategy. This takes 15–30 seconds.</p>
+  <div class="ai-loader"></div>
+  <div style="font-size:16px;font-weight:800;color:var(--t1);margin-bottom:8px">Analyzing your queries…</div>
+  <div style="font-size:13px;color:var(--t3);line-height:1.7;margin-bottom:16px">
+    AI is building a prioritized content strategy.<br/>This takes 15–30 seconds.
+  </div>
+  <div class="loading-dots"><span></span><span></span><span></span></div>
 </div>
 
-<!-- Report -->
+<!-- Report section -->
 <div class="report-section" id="report-section">
-  <div class="report-top">
-    <h3>📊 Your Content Strategy Report</h3>
-    <button class="btn-outline" onclick="copyReport()">Copy report</button>
+  <div class="report-header">
+    <div>
+      <div class="report-title">📊 Your Content Strategy Report</div>
+      <div class="report-meta" id="report-meta">Generated just now</div>
+    </div>
+    <div class="report-actions">
+      <button class="btn-copy" id="btn-copy" onclick="copyReport()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy Report
+      </button>
+      <button class="btn-reset" onclick="resetTool()">↺ New Analysis</button>
+    </div>
   </div>
   <div class="report-body" id="report-body"></div>
-  <div style="margin-top:16px">
-    <button class="btn-outline" onclick="resetTool()">↺ Analyze a new file</button>
-  </div>
 </div>
 
-<!-- How to export -->
-<div class="howto">
-  <h4>📥 How to export from Google Search Console</h4>
-  <div class="howto-list">
-    <div class="howto-item"><div class="howto-n">1</div><div>Open <strong>Google Search Console</strong> → <strong>Performance</strong> → <strong>Search results</strong></div></div>
-    <div class="howto-item"><div class="howto-n">2</div><div>Click <strong>Date: Last 28 days</strong> → switch to <strong>Compare</strong> tab → select <strong>Last 28 days vs previous 28 days</strong> → Apply</div></div>
-    <div class="howto-item"><div class="howto-n">3</div><div>Scroll to the <strong>Queries</strong> table → sort by <strong>Impressions: Difference</strong> (highest first)</div></div>
-    <div class="howto-item"><div class="howto-n">4</div><div>Click <strong>Export</strong> → choose <strong>Excel</strong> (recommended) or <strong>CSV</strong></div></div>
-    <div class="howto-item"><div class="howto-n">5</div><div>Upload above. The tool filters for queries with <strong>impressions +50%</strong> and <strong>position below 10</strong>.</div></div>
+<!-- ══ HOW TO EXPORT ══ -->
+<div class="howto" id="howto-section">
+  <h4 style="font-size:15px;font-weight:800;color:var(--t1);margin-bottom:20px;display:flex;align-items:center;gap:8px">
+    <span style="font-size:20px">📥</span> How to export from Google Search Console
+  </h4>
+  <div class="howto-step">
+    <div class="howto-n">1</div>
+    <div>Open <strong>Google Search Console</strong> → <strong>Performance</strong> → <strong>Search results</strong></div>
+  </div>
+  <div class="howto-step">
+    <div class="howto-n">2</div>
+    <div>Click the date range → switch to <strong>Compare</strong> → select <strong>"Last 28 days vs previous 28 days"</strong> → Apply</div>
+  </div>
+  <div class="howto-step">
+    <div class="howto-n">3</div>
+    <div>Scroll to the <strong>Queries</strong> table → sort by <strong>Impressions: Difference</strong> (↓ descending)</div>
+  </div>
+  <div class="howto-step">
+    <div class="howto-n">4</div>
+    <div>Click <strong>Export ↓</strong> → choose <strong>Excel</strong> (recommended) or CSV</div>
+  </div>
+  <div class="howto-step">
+    <div class="howto-n">5</div>
+    <div>Upload above. The tool keeps only queries with <strong>+50% impressions growth</strong> and <strong>position 11–100</strong> — the sweet spot for content action.</div>
   </div>
 </div>
 
@@ -275,480 +821,520 @@ tbody td { padding: 9px 14px; color: var(--t2); }
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-// API Configuration Management
+/* ════════════════════════════════════════════════
+   GSC ANALYZER — FULL REWRITE v3.0
+   ════════════════════════════════════════════════ */
+
+const STORAGE_KEY = 'lsh_gsc_keys_v3';
 let currentProvider = 'gemini';
-const API_KEYS_STORAGE = 'lsh_gsc_api_keys';
+let allRows = [];
+let loadedFiles = [];
 
-function switchProvider(provider) {
+/* ── STEP MANAGEMENT ── */
+function setStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('step' + i);
+    if (!el) continue;
+    el.classList.remove('active', 'done');
+    if (i < n) el.classList.add('done');
+    else if (i === n) el.classList.add('active');
+  }
+}
+
+/* ── PROVIDER SWITCHING ── */
+function switchProvider(btn, provider) {
   currentProvider = provider;
-  document.querySelectorAll('.api-tab').forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll('.provider-panel').forEach(panel => panel.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById(provider + '-panel').classList.add('active');
-  
-  // Load saved key if exists
-  const keys = getSavedKeys();
-  if (keys[provider]) {
-    document.getElementById(provider + '-key').value = keys[provider];
-  }
+  document.querySelectorAll('.provider-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.provider-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + provider).classList.add('active');
+
+  // Load saved key
+  const keys = loadKeys();
+  const keyEl = document.getElementById('key-' + provider);
+  if (keyEl && keys[provider]) keyEl.value = keys[provider];
+
+  // Update label
+  const labels = { gemini: 'Gemini', claude: 'Claude', openai: 'OpenAI GPT' };
+  const labelEl = document.getElementById('current-provider-label');
+  if (labelEl) labelEl.textContent = labels[provider] || provider;
 }
 
-function getSavedKeys() {
-  try {
-    return JSON.parse(localStorage.getItem(API_KEYS_STORAGE) || '{}');
-  } catch(e) {
-    return {};
-  }
+function loadKeys() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch(e) { return {}; }
 }
 
-function saveApiKey(provider) {
-  const keyInput = document.getElementById(provider + '-key');
-  const statusEl = document.getElementById(provider + '-status');
-  const key = keyInput.value.trim();
-  
+function saveKey(provider, key) {
+  const keys = loadKeys();
+  keys[provider] = key;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
+}
+
+/* ── API KEY TEST & SAVE ── */
+async function testAndSaveKey(provider) {
+  const keyEl = document.getElementById('key-' + provider);
+  const statusEl = document.getElementById('status-' + provider);
+  const btn = document.getElementById('btn-' + provider);
+  const key = keyEl ? keyEl.value.trim() : '';
+
   if (!key) {
-    showStatus(statusEl, 'error', 'Please enter an API key');
+    showStatus(statusEl, 'error', '⚠ Please enter your API key first.');
     return;
   }
-  
-  // Test connection first, only save if valid
-  testConnection(provider, key, statusEl);
+
+  showStatus(statusEl, 'loading', '⏳ Testing connection…');
+  if (btn) { btn.disabled = true; btn.textContent = 'Testing…'; }
+
+  try {
+    const text = await callProvider(provider, key, 'Reply with the word: OK', true);
+    if (text && text.length > 0) {
+      saveKey(provider, key);
+      showStatus(statusEl, 'success', '✓ Connected! Your API key is valid and ready to use.');
+      document.getElementById('config-status').textContent = `✓ ${provider.charAt(0).toUpperCase() + provider.slice(1)} configured`;
+      document.getElementById('config-status').style.color = 'var(--em)';
+      setStep(2);
+    } else {
+      throw new Error('Empty response from API');
+    }
+  } catch(err) {
+    showStatus(statusEl, 'error', '✗ ' + (err.message || 'Connection failed. Check your API key.'));
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Test & Save'; }
+  }
 }
 
-async function testConnection(provider, key, statusEl) {
-  showStatus(statusEl, 'info', 'Testing connection...');
-  
-  try {
-    const response = await fetch(`/api/${provider}`, {
+/* ── CORE AI CALLER — Direct API calls from browser ── */
+async function callProvider(provider, key, prompt, isTest = false) {
+  const maxTokens = isTest ? 20 : 2500;
+
+  if (provider === 'gemini') {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(key)}`;
+    const body = {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: maxTokens }
+    };
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        apiKey: key,
-        test: true
-      })
+      body: JSON.stringify(body)
     });
-    
-    const data = await response.json();
-    
-    if (response.ok) {
-      // Save to localStorage only after successful validation
-      const keys = getSavedKeys();
-      keys[provider] = key;
-      localStorage.setItem(API_KEYS_STORAGE, JSON.stringify(keys));
-      
-      showStatus(statusEl, 'success', '✓ Connected! Your API key is valid and ready to use.');
-      
-      // Advance to next step - use global setStep if available
-      if (typeof window.setGlobalStep === 'function') {
-        window.setGlobalStep(2);
-      } else {
-        // Fallback: manually update step UI
-        updateStepUI(2);
-      }
-    } else {
-      showStatus(statusEl, 'error', '✗ Invalid API key: ' + (data.error || 'Unknown error'));
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `Gemini error ${res.status}`);
     }
-  } catch (err) {
-    showStatus(statusEl, 'error', '✗ Connection failed: ' + err.message + '. Please try again.');
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
   }
-}
 
-function updateStepUI(stepNumber) {
-  for(var i=1; i<=4; i++) {
-    var el = document.getElementById('step' + i);
-    if (el) {
-      el.classList.remove('active', 'done');
-      if (i < stepNumber) el.classList.add('done');
-      else if (i === stepNumber) el.classList.add('active');
+  if (provider === 'claude') {
+    // Claude requires server-side proxy due to CORS — use /api/claude
+    const res = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey: key, prompt, test: isTest })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `Claude proxy error ${res.status}. Make sure /api/claude is deployed on Vercel.`);
     }
+    const data = await res.json();
+    return data.content?.[0]?.text || '';
   }
+
+  if (provider === 'openai') {
+    // OpenAI also requires proxy
+    const res = await fetch('/api/openai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey: key, prompt, test: isTest })
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `OpenAI proxy error ${res.status}. Make sure /api/openai is deployed on Vercel.`);
+    }
+    const data = await res.json();
+    return data.choices?.[0]?.message?.content || '';
+  }
+
+  throw new Error('Unknown provider: ' + provider);
 }
 
-function showStatus(el, type, message) {
-  el.textContent = message;
-  el.className = 'api-status ' + type;
-  el.style.display = 'block';
+function showStatus(el, type, msg) {
+  if (!el) return;
+  el.className = 'api-status show ' + type;
+  el.textContent = msg;
 }
 
-// Load saved provider and keys on page load
-(function() {
-  const keys = getSavedKeys();
-  if (keys.gemini) {
-    document.getElementById('gemini-key').value = keys.gemini;
-    testConnection('gemini', keys.gemini, document.getElementById('gemini-status'));
-  }
-  if (keys.claude) document.getElementById('claude-key').value = keys.claude;
-  if (keys.openai) document.getElementById('openai-key').value = keys.openai;
-})();
-</script>
-
-<script>
-// Wait for DOM to be fully loaded
+/* ── FILE HANDLING ── */
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM loaded, initializing GSC Analyzer...');
-  
-  // Check if XLSX library loaded
-  console.log('XLSX available:', typeof XLSX !== 'undefined');
+  // Verify XLSX library
   if (typeof XLSX === 'undefined') {
-    console.error('XLSX library failed to load from CDN');
-    var errorEl = document.getElementById('error-msg');
-    if (errorEl) {
-      errorEl.textContent = 'Excel library failed to load. Please refresh the page or check your internet connection.';
-      errorEl.style.display = 'block';
-    }
-    return; // Stop execution if XLSX not loaded
-  }
-  
-  var allRows = [];
-  var loadedFiles = [];
-  var pending = 0;
-
-  /* ── drag & drop + file input ── */
-  var zone = document.getElementById('upload-zone');
-  var fileInput = document.getElementById('file-input');
-  
-  if (!zone) {
-    console.error('upload-zone element not found in DOM');
+    console.error('XLSX library not loaded');
+    showError('Excel library failed to load. Please refresh the page.');
     return;
   }
-  if (!fileInput) {
-    console.error('file-input element not found in DOM');
+
+  const zone = document.getElementById('upload-zone');
+  const fileInput = document.getElementById('file-input');
+
+  if (!zone || !fileInput) { console.error('DOM elements missing'); return; }
+
+  // Drag & drop
+  zone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    zone.classList.add('drag-over');
+  });
+  zone.addEventListener('dragleave', function(e) {
+    if (!zone.contains(e.relatedTarget)) zone.classList.remove('drag-over');
+  });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
+  });
+  fileInput.addEventListener('change', function(e) {
+    if (e.target.files.length) handleFiles(e.target.files);
+  });
+
+  // Load saved keys on init
+  const keys = loadKeys();
+  ['gemini', 'claude', 'openai'].forEach(p => {
+    const el = document.getElementById('key-' + p);
+    if (el && keys[p]) el.value = keys[p];
+  });
+  if (keys[currentProvider]) {
+    document.getElementById('config-status').textContent = `✓ ${currentProvider.charAt(0).toUpperCase() + currentProvider.slice(1)} configured`;
+    document.getElementById('config-status').style.color = 'var(--em)';
+    setStep(2);
+  }
+});
+
+function handleFiles(fileList) {
+  showError('');
+  const files = Array.from(fileList).filter(f => /\.(csv|xlsx|xls)$/i.test(f.name));
+  if (!files.length) {
+    showError('Please upload CSV or Excel (.xlsx) files exported from Google Search Console.');
     return;
   }
-  
-  console.log('Event listeners being attached...');
-  zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
-  zone.addEventListener('dragleave', function(){ zone.classList.remove('drag-over'); });
-  zone.addEventListener('drop', function(e){ 
-    console.log('Drop event triggered');
-    e.preventDefault(); 
-    zone.classList.remove('drag-over'); 
-    handleFiles(e.dataTransfer.files); 
+
+  let pending = files.length;
+  files.forEach(f => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      loadedFiles.push({ name: f.name, data: e.target.result });
+      renderFileTags();
+      if (--pending === 0) processAll();
+    };
+    reader.onerror = function() {
+      showError('Could not read file: ' + f.name);
+    };
+    reader.readAsArrayBuffer(f);
   });
-  fileInput.addEventListener('change', function(e){ 
-    console.log('File input change event triggered, files:', e.target.files.length);
-    if(e.target.files.length) handleFiles(e.target.files); 
-  });
-  console.log('Event listeners attached successfully');
+}
 
-  function handleFiles(fileList) {
-    console.log('handleFiles called with', fileList.length, 'files');
-    showError('');
-    hideDebug();
-    
-    // Check if XLSX library is loaded
-    if (typeof XLSX === 'undefined') {
-      showError('Excel library not loaded. Please refresh the page and try again.');
-      console.error('XLSX library is not available');
-      return;
-    }
-    
-    var files = Array.from(fileList).filter(function(f){
-      return f.name.match(/\.(csv|xlsx|xls)$/i);
-    });
-    console.log('Filtered files:', files.map(function(f){ return f.name; }));
-    
-    if(!files.length){ 
-      showError('Please upload CSV or Excel (.xlsx) files exported from Google Search Console.'); 
-      return; 
-    }
-    
-    // Show file list immediately
-    document.getElementById('file-list').style.display = 'block';
-    document.getElementById('upload-zone').style.display = 'none';
-    
-    pending = files.length;
-    files.forEach(function(f){
-      var reader = new FileReader();
-      reader.onload = function(e){
-        console.log('File loaded:', f.name, 'size:', e.target.result.byteLength, 'bytes');
-        loadedFiles.push({ name: f.name, data: e.target.result });
-        renderFileList();
-        pending--;
-        console.log('Pending files:', pending);
-        if(pending === 0) processAll();
-      };
-      reader.onerror = function(e){
-        console.error('Error reading file:', f.name, e);
-        showError('Error reading file: ' + f.name);
-      };
-      reader.readAsArrayBuffer(f);
-    });
-  }
+function renderFileTags() {
+  const container = document.getElementById('file-tags');
+  container.style.display = 'flex';
+  container.innerHTML = loadedFiles.map((f, i) =>
+    `<span class="file-tag">📄 ${esc(f.name)} <span class="rm" onclick="removeFile(${i})">×</span></span>`
+  ).join('');
+}
 
-  function renderFileList(){
-    document.getElementById('file-list').innerHTML = loadedFiles.map(function(f,i){
-      return '<span class="file-tag">📄 ' + esc(f.name) + ' <span class="rm" onclick="removeFile(' + i + ')">×</span></span>';
-    }).join('');
-  }
-
-  window.removeFile = function(i){
-    loadedFiles.splice(i,1);
-    renderFileList();
-    if(!loadedFiles.length) document.getElementById('file-input').value = '';
-  };
-
-  function parseFile(fileObj) {
-    console.log('parseFile called for:', fileObj.name);
-    try {
-      if (typeof XLSX === 'undefined') {
-        console.error('XLSX library not available in parseFile');
-        showDebug('Excel library not loaded. Please refresh the page.');
-        return [];
-      }
-      
-      console.log('Reading workbook...');
-      var wb = XLSX.read(fileObj.data, { type: 'array' });
-      console.log('Workbook sheets:', wb.SheetNames);
-      
-      var ws = wb.Sheets[wb.SheetNames[0]];
-      var aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-      console.log('Rows in sheet:', aoa.length);
-      
-      if(aoa.length < 2) {
-        console.warn('Sheet has less than 2 rows');
-        return [];
-      }
-
-      var headerRowIdx = 0;
-      for(var i = 0; i < Math.min(5, aoa.length); i++){
-        var nonEmpty = aoa[i].filter(function(c){ return String(c).trim() !== ''; }).length;
-        if(nonEmpty >= 3){ headerRowIdx = i; break; }
-      }
-
-      var headers = aoa[headerRowIdx].map(function(h){ return String(h).trim().toLowerCase(); });
-      showDebug('File: ' + fileObj.name + '\\nHeaders found: ' + headers.join(' | '));
-
-      var queryCol   = findCol(headers, ['top queries','query','queries','interogare','запрос','mot clé','suchanfrage']);
-      var imprCols   = headers.map(function(h,i){ return h.includes('impression') || h.includes('impresii') || h.includes('показ') ? i : -1; }).filter(function(i){ return i>=0; });
-      var clickCols  = headers.map(function(h,i){ return h.includes('click') || h.includes('clic') || h.includes('клик') ? i : -1; }).filter(function(i){ return i>=0; });
-      var posCols    = headers.map(function(h,i){ return h.includes('position') || h.includes('pozitie') || h.includes('pozit') || h.includes('позиц') ? i : -1; }).filter(function(i){ return i>=0; });
-
-      if(queryCol === -1 || !imprCols.length || !posCols.length){
-        showDebug('File: ' + fileObj.name + '\\nHeaders: ' + headers.join(' | ') + '\\nCould not find required columns.');
-        return [];
-      }
-
-      var imprCurr = imprCols.find(function(i){ var h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change') && !h.includes('var'); });
-      if(imprCurr === undefined) imprCurr = imprCols[0];
-      var imprDiff = imprCols.find(function(i){ var h=headers[i]; return h.includes('diff') || h.includes('change') || h.includes('var'); });
-      var imprPrev = imprCols.find(function(i){ var h=headers[i]; return h.includes('prev') || h.includes('prec'); });
-      var posCol   = posCols.find(function(i){ var h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change'); });
-      if(posCol === undefined) posCol = posCols[0];
-      var clickCol = clickCols.find(function(i){ var h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change'); });
-
-      var dataRows = aoa.slice(headerRowIdx + 1);
-      return dataRows.map(function(row){
-        var query  = String(row[queryCol] || '').trim();
-        var curr   = toNum(row[imprCurr]);
-        var pos    = toNum(row[posCol]);
-        var clicks = clickCol !== undefined ? toNum(row[clickCol]) : 0;
-        var growth = 0;
-        if(imprDiff !== undefined && row[imprDiff] !== '') {
-          var diff = toNum(row[imprDiff]);
-          var prev = curr - diff;
-          growth = prev > 0 ? (diff / prev) * 100 : (curr > 0 ? 100 : 0);
-        } else if(imprPrev !== undefined) {
-          var prev2 = toNum(row[imprPrev]);
-          growth = prev2 > 0 ? ((curr - prev2) / prev2) * 100 : (curr > 0 ? 100 : 0);
-        }
-        return { query: query, impr: curr, growth: growth, pos: pos, clicks: clicks };
-      }).filter(function(r){ return r.query && r.impr > 0; });
-
-    } catch(e) {
-      console.error('Parse error in', fileObj.name, ':', e);
-      showDebug('Parse error in ' + fileObj.name + ': ' + e.message + '\n' + e.stack);
-      return [];
-    }
-  }
-
-  function findCol(headers, candidates) {
-    for(var i = 0; i < candidates.length; i++){
-      var idx = headers.findIndex(function(h){ return h.includes(candidates[i]); });
-      if(idx >= 0) return idx;
-    }
-    return -1;
-  }
-
-  function toNum(v) {
-    if(v === undefined || v === null || v === '') return 0;
-    var n = parseFloat(String(v).replace(',','.'));
-    return isNaN(n) ? 0 : n;
-  }
-
-  function processAll() {
-    console.log('processAll called with', loadedFiles.length, 'files');
-    var combined = [];
-    var failed = [];
-    loadedFiles.forEach(function(f){
-      console.log('Processing file:', f.name);
-      var rows = parseFile(f);
-      console.log('Parsed rows:', rows.length);
-      if(!rows.length) failed.push(f.name);
-      else combined = combined.concat(rows);
-    });
-
-    console.log('Combined rows:', combined.length, 'Failed files:', failed);
-
-    if(!combined.length){
-      showError('Could not read data from the uploaded files. See the debug info below and make sure you export from the Queries tab in GSC with comparison mode enabled.');
-      document.getElementById('debug-box').style.display = 'block';
-      return;
-    }
-    if(failed.length) showError('Warning: could not parse ' + failed.join(', ') + ' — continuing with valid files.');
-
-    var map = {};
-    combined.forEach(function(r){
-      var k = r.query.toLowerCase();
-      if(!map[k]) map[k] = { query: r.query, impr: 0, gSum: 0, gN: 0, pSum: 0, pN: 0, clicks: 0 };
-      map[k].impr   += r.impr;
-      map[k].gSum   += r.growth;  map[k].gN++;
-      map[k].pSum   += r.pos;     map[k].pN++;
-      map[k].clicks += r.clicks;
-    });
-
-    allRows = Object.values(map).map(function(r){
-      return { query: r.query, impr: r.impr, growth: r.gSum/r.gN, pos: r.pSum/r.pN, clicks: r.clicks };
-    }).filter(function(r){ return r.growth >= 50 && r.pos > 10 && r.pos < 100; })
-      .sort(function(a,b){ return b.growth - a.growth; })
-      .slice(0, 40);
-
-    if(!allRows.length){
-      showError('No queries matched the criteria (impressions +50%, position 11–100). Try exporting with a longer date range, or make sure you enabled date comparison in GSC.');
-      document.getElementById('debug-box').style.display = 'block';
-      return;
-    }
-
-    hideDebug();
-    renderPreview();
-  }
-
-  function renderPreview() {
-    setStep(3);
-    document.getElementById('stat-pills').innerHTML =
-      '<div class="stat-pill">Queries: <strong>' + allRows.length + '</strong></div>' +
-      '<div class="stat-pill">Avg. growth: <strong>+' + Math.round(allRows.reduce(function(s,r){ return s+r.growth; },0)/allRows.length) + '%</strong></div>';
-
-    document.getElementById('preview-tbody').innerHTML = allRows.slice(0,15).map(function(r){
-      return '<tr><td class="q-cell">' + esc(r.query) + '</td><td>' + Math.round(r.impr).toLocaleString() +
-        '</td><td><span class="trend-up">↑ +' + Math.round(r.growth) + '%</span></td>' +
-        '<td><span class="pos-badge ' + (r.pos<=20?'pos-close':'pos-far') + '">' + r.pos.toFixed(1) + '</span></td>' +
-        '<td>' + Math.round(r.clicks).toLocaleString() + '</td></tr>';
-    }).join('') + (allRows.length > 15 ? '<tr><td colspan="5" style="text-align:center;color:var(--t3);font-size:12px;padding:10px">…and ' + (allRows.length-15) + ' more included in the analysis</td></tr>' : '');
-
-    document.getElementById('preview-section').style.display = 'block';
-    document.getElementById('action-row').style.display = 'flex';
-    document.getElementById('upload-zone').style.display = 'none';
-    document.getElementById('file-list').style.display = 'none';
-  }
-
-  window.runAnalysis = async function(){
-    // Check if API key is configured
-    const keys = getSavedKeys();
-    const key = keys[currentProvider];
-    
-    if (!key) {
-      showError(`Please configure your ${currentProvider.toUpperCase()} API key first in the configuration section above.`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    setStep(4);
-    document.getElementById('analyze-btn').disabled = true;
+window.removeFile = function(i) {
+  loadedFiles.splice(i, 1);
+  if (!loadedFiles.length) {
+    document.getElementById('file-tags').style.display = 'none';
     document.getElementById('preview-section').style.display = 'none';
     document.getElementById('action-row').style.display = 'none';
-    document.getElementById('loading-state').style.display = 'block';
-    document.getElementById('loading-provider').textContent = currentProvider.charAt(0).toUpperCase() + currentProvider.slice(1);
+    document.getElementById('file-input').value = '';
+    return;
+  }
+  renderFileTags();
+  processAll();
+};
 
-    var queryData = allRows.map(function(r){
-      return 'Query: "' + r.query + '" | Impressions: ' + Math.round(r.impr) + ' | Growth: +' + Math.round(r.growth) + '% | Avg. Position: ' + r.pos.toFixed(1) + ' | Clicks: ' + Math.round(r.clicks);
-    }).join('\\n');
+/* ── CSV/EXCEL PARSING ── */
+function findColIdx(headers, candidates) {
+  for (const c of candidates) {
+    const i = headers.findIndex(h => h.includes(c));
+    if (i >= 0) return i;
+  }
+  return -1;
+}
 
-    var prompt = 'You are an expert SEO strategist. I have Google Search Console data comparing the last 28 days vs the previous 28 days.\\n\\nThe queries below are trending UP in impressions but my site ranks BELOW position 10. Rising demand not yet captured.\\n\\nData:\\n---\\n' + queryData + '\\n---\\n\\nProvide a prioritized content action plan:\\n\\n1. **Pages to Update Immediately** — Which existing pages to update? What specific content to add? Group related queries.\\n\\n2. **New Pages to Create** — Which queries need a dedicated new page? Suggest a title, primary keyword, and key content sections.\\n\\n3. **Priority Order** — Rank all recommendations by traffic potential and urgency.\\n\\n4. **Quick Wins This Week** — 3 queries to act on immediately for the fastest results.\\n\\nBe specific. Use the actual query data. Format with clear headers and bullet points.';
+function toNum(v) {
+  if (v == null || v === '') return 0;
+  const n = parseFloat(String(v).replace(',', '.'));
+  return isNaN(n) ? 0 : n;
+}
 
-    try {
-      // Use serverless API proxy to avoid CORS issues
-      const response = await fetch(`/api/${currentProvider}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          apiKey: key,
-          prompt: prompt,
-          test: false
-        })
-      });
+function parseGSCFile(fileObj) {
+  try {
+    const wb = XLSX.read(fileObj.data, { type: 'array' });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const aoa = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+    if (aoa.length < 2) return [];
 
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'API request failed');
-      }
-
-      // Extract text based on provider response format
-      let text;
-      if (currentProvider === 'gemini') {
-        text = data.candidates[0]?.content?.parts[0]?.text;
-      } else if (currentProvider === 'claude') {
-        text = data.content[0]?.text;
-      } else if (currentProvider === 'openai') {
-        text = data.choices[0]?.message?.content;
-      }
-
-      if(!text) throw new Error('Empty response from AI provider');
-      document.getElementById('loading-state').style.display = 'none';
-      document.getElementById('report-body').innerHTML = mdToHtml(text);
-      document.getElementById('report-section').style.display = 'block';
-      document.getElementById('report-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch(err) {
-      document.getElementById('loading-state').style.display = 'none';
-      showError('Analysis failed: ' + err.message + '. Please check your API key and try again.');
-      document.getElementById('preview-section').style.display = 'block';
-      document.getElementById('action-row').style.display = 'flex';
-      document.getElementById('analyze-btn').disabled = false;
-      setStep(3);
+    // Find header row (first row with 3+ non-empty cells)
+    let hIdx = 0;
+    for (let i = 0; i < Math.min(5, aoa.length); i++) {
+      if (aoa[i].filter(c => String(c).trim()).length >= 3) { hIdx = i; break; }
     }
-  };
 
-  function mdToHtml(md){
-    return md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>')
-      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>')
-      .replace(/^---$/gm,'<hr>').replace(/^[-*] (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
-      .replace(/(<li>[\s\S]*?<\/li>)+/g,function(m){ return '<ul>'+m+'</ul>'; })
-      .replace(/\n{2,}/g,'</p><p>').replace(/<p><\/p>/g,'');
+    const headers = aoa[hIdx].map(h => String(h).trim().toLowerCase());
+
+    const qCol = findColIdx(headers, ['top queries','query','queries','interogare','запрос','mot clé','suchanfrage','terme']);
+    const imprCols = headers.map((h,i) => (h.includes('impression') || h.includes('impresii') || h.includes('показ')) ? i : -1).filter(i => i >= 0);
+    const clickCols = headers.map((h,i) => (h.includes('click') || h.includes('clic') || h.includes('клик')) ? i : -1).filter(i => i >= 0);
+    const posCols  = headers.map((h,i) => (h.includes('position') || h.includes('pozit') || h.includes('позиц') || h.includes('rang')) ? i : -1).filter(i => i >= 0);
+
+    if (qCol === -1 || !imprCols.length || !posCols.length) return [];
+
+    // Find current vs diff vs prev columns
+    const imprCurr = imprCols.find(i => { const h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change') && !h.includes('var'); }) ?? imprCols[0];
+    const imprDiff = imprCols.find(i => { const h=headers[i]; return h.includes('diff') || h.includes('change') || h.includes('var'); });
+    const imprPrev = imprCols.find(i => { const h=headers[i]; return h.includes('prev') || h.includes('prec') || h.includes('precedent'); });
+    const posCol   = posCols.find(i => { const h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change'); }) ?? posCols[0];
+    const clickCol = clickCols.find(i => { const h=headers[i]; return !h.includes('diff') && !h.includes('prev') && !h.includes('change'); });
+
+    return aoa.slice(hIdx + 1).map(row => {
+      const query = String(row[qCol] || '').trim();
+      const curr  = toNum(row[imprCurr]);
+      const pos   = toNum(row[posCol]);
+      const clicks = clickCol != null ? toNum(row[clickCol]) : 0;
+
+      let growth = 0;
+      if (imprDiff != null && row[imprDiff] !== '') {
+        const diff = toNum(row[imprDiff]);
+        const prev = curr - diff;
+        growth = prev > 0 ? (diff / prev) * 100 : (curr > 0 ? 100 : 0);
+      } else if (imprPrev != null) {
+        const prev = toNum(row[imprPrev]);
+        growth = prev > 0 ? ((curr - prev) / prev) * 100 : (curr > 0 ? 100 : 0);
+      }
+
+      return { query, impr: curr, growth, pos, clicks };
+    }).filter(r => r.query && r.impr > 0);
+  } catch(e) {
+    console.error('Parse error:', e);
+    return [];
+  }
+}
+
+function processAll() {
+  const combined = [];
+  const failed = [];
+
+  loadedFiles.forEach(f => {
+    const rows = parseGSCFile(f);
+    if (!rows.length) failed.push(f.name);
+    else combined.push(...rows);
+  });
+
+  if (!combined.length) {
+    showError('Could not read data from the uploaded files. Make sure you exported from the Queries tab in GSC with comparison mode enabled (Last 28 days vs Previous 28 days).');
+    return;
   }
 
-  window.copyReport = function(){
-    navigator.clipboard.writeText(document.getElementById('report-body').innerText).then(function(){
-      var btn = document.querySelector('.report-top .btn-outline');
-      var orig = btn.textContent;
-      btn.textContent = '✓ Copied!';
-      setTimeout(function(){ btn.textContent = orig; }, 2000);
-    });
-  };
+  // Merge duplicates
+  const map = {};
+  combined.forEach(r => {
+    const k = r.query.toLowerCase();
+    if (!map[k]) map[k] = { query: r.query, impr: 0, gSum: 0, gN: 0, pSum: 0, pN: 0, clicks: 0 };
+    map[k].impr += r.impr;
+    map[k].gSum += r.growth; map[k].gN++;
+    map[k].pSum += r.pos;    map[k].pN++;
+    map[k].clicks += r.clicks;
+  });
 
-  window.resetTool = function(){
-    allRows = []; loadedFiles = [];
-    ['preview-section','action-row','loading-state','report-section'].forEach(function(id){ document.getElementById(id).style.display='none'; });
-    document.getElementById('upload-zone').style.display = '';
-    document.getElementById('file-list').style.display = '';
-    document.getElementById('file-list').innerHTML = '';
-    document.getElementById('file-input').value = '';
-    document.getElementById('analyze-btn').disabled = false;
-    showError(''); hideDebug(); setStep(2);
+  // Filter & sort
+  allRows = Object.values(map)
+    .map(r => ({ query: r.query, impr: r.impr, growth: r.gSum/r.gN, pos: r.pSum/r.pN, clicks: r.clicks }))
+    .filter(r => r.growth >= 50 && r.pos > 10 && r.pos < 100)
+    .sort((a, b) => b.growth - a.growth)
+    .slice(0, 40);
+
+  if (!allRows.length) {
+    showError('No queries matched the criteria (impressions +50%, position 11–100). Try a longer date range or ensure comparison mode is enabled in GSC.');
+    return;
+  }
+
+  showError('');
+  renderPreview();
+  if (failed.length) showError('⚠ Could not read: ' + failed.join(', ') + ' — continuing with valid files.');
+}
+
+function renderPreview() {
+  setStep(3);
+  document.getElementById('upload-zone').style.display = 'none';
+  document.getElementById('howto-section').style.display = 'none';
+
+  // Stats
+  const avgGrowth = Math.round(allRows.reduce((s,r) => s+r.growth, 0) / allRows.length);
+  const avgPos    = (allRows.reduce((s,r) => s+r.pos, 0) / allRows.length).toFixed(1);
+  document.getElementById('stat-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${allRows.length}</div><div class="stat-lbl">Queries Found</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--em)">+${avgGrowth}%</div><div class="stat-lbl">Avg. Growth</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--am)">${avgPos}</div><div class="stat-lbl">Avg. Position</div></div>
+    <div class="stat-card"><div class="stat-val">${allRows.reduce((s,r)=>s+r.clicks,0).toLocaleString()}</div><div class="stat-lbl">Total Clicks</div></div>
+  `;
+
+  // Table (show top 15)
+  document.getElementById('preview-tbody').innerHTML = allRows.slice(0, 15).map(r => `
+    <tr>
+      <td class="q-cell" title="${esc(r.query)}">${esc(r.query)}</td>
+      <td>${Math.round(r.impr).toLocaleString()}</td>
+      <td><span class="trend-up">↑ +${Math.round(r.growth)}%</span></td>
+      <td><span class="${r.pos <= 20 ? 'pos-close' : 'pos-far'}">${r.pos.toFixed(1)}</span></td>
+      <td>${Math.round(r.clicks).toLocaleString()}</td>
+    </tr>
+  `).join('') + (allRows.length > 15 ? `
+    <tr><td colspan="5" style="text-align:center;color:var(--t3);font-size:12px;padding:12px">
+      … and ${allRows.length - 15} more queries included in the AI analysis
+    </td></tr>
+  ` : '');
+
+  document.getElementById('preview-section').style.display = 'block';
+  document.getElementById('action-row').style.display = 'flex';
+}
+
+/* ── AI ANALYSIS ── */
+window.runAnalysis = async function() {
+  const keys = loadKeys();
+  const key = keys[currentProvider];
+
+  if (!key) {
+    showError(`Please configure your ${currentProvider} API key first. Click "Test & Save" after entering your key.`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    return;
+  }
+  if (!allRows.length) {
+    showError('No data to analyze. Please upload a GSC file first.');
+    return;
+  }
 
-  function showError(msg){ var el=document.getElementById('error-msg'); el.textContent=msg; el.style.display=msg?'block':'none'; }
-  function showDebug(msg){ var el=document.getElementById('debug-box'); el.textContent=(el.textContent?el.textContent+'\\n\\n':'')+msg; }
-  function hideDebug(){ var el=document.getElementById('debug-box'); el.textContent=''; el.style.display='none'; }
-  function setStep(n){ for(var i=1;i<=4;i++){ var el=document.getElementById('step'+i); el.classList.remove('active','done'); if(i<n)el.classList.add('done'); else if(i===n)el.classList.add('active'); } }
-  // Expose setStep globally for API key testing
-  window.setGlobalStep = setStep;
-  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  
-  console.log('GSC Analyzer initialized successfully');
-}); // End DOMContentLoaded
+  setStep(4);
+  document.getElementById('analyze-btn').disabled = true;
+  document.getElementById('preview-section').style.display = 'none';
+  document.getElementById('action-row').style.display = 'none';
+  document.getElementById('loading-state').style.display = 'block';
+
+  const queryData = allRows.map(r =>
+    `- "${r.query}" | Impressions: ${Math.round(r.impr)} | Growth: +${Math.round(r.growth)}% | Position: ${r.pos.toFixed(1)} | Clicks: ${Math.round(r.clicks)}`
+  ).join('\n');
+
+  const prompt = `You are an expert SEO strategist. I have Google Search Console data showing queries trending UP in impressions but ranking BELOW position 10 (not yet captured traffic).
+
+RISING QUERIES DATA:
+${queryData}
+
+Create a prioritized content action plan with these 4 sections:
+
+## 1. Pages to Update Immediately
+For each update: which page, what to add, which queries to target, priority level (High/Medium).
+
+## 2. New Pages to Create  
+For each new page: suggested title, primary keyword, content sections to include, estimated traffic potential.
+
+## 3. Priority Order
+Rank all recommendations by expected traffic impact. Include effort estimate (Quick/Medium/Large).
+
+## 4. Quick Wins This Week
+Exactly 3 specific actions to take TODAY for fastest results. Be very specific with query names.
+
+Use clear headers, bullet points. Reference actual queries from the data. Be actionable and specific.`;
+
+  try {
+    const text = await callProvider(currentProvider, key, prompt, false);
+    if (!text || text.length < 50) throw new Error('Received an empty or too-short response. Please try again.');
+
+    document.getElementById('loading-state').style.display = 'none';
+    const now = new Date();
+    document.getElementById('report-meta').textContent =
+      `Generated ${now.toLocaleDateString()} at ${now.toHours?.() || now.toLocaleTimeString()} · ${allRows.length} queries analyzed · Provider: ${currentProvider}`;
+    document.getElementById('report-body').innerHTML = mdToHtml(text);
+    document.getElementById('report-section').style.display = 'block';
+    document.getElementById('report-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch(err) {
+    document.getElementById('loading-state').style.display = 'none';
+    showError('Analysis failed: ' + (err.message || 'Unknown error') + '. Please check your API key and try again.');
+    document.getElementById('preview-section').style.display = 'block';
+    document.getElementById('action-row').style.display = 'flex';
+    document.getElementById('analyze-btn').disabled = false;
+    setStep(3);
+  }
+};
+
+/* ── MARKDOWN → HTML ── */
+function mdToHtml(md) {
+  return md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/^## (.+)$/gm, '<h2>$2</h2>'.replace('$2', '$1'))
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/^---$/gm, '<hr>')
+    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>[\s\S]*?<\/li>)+/g, m => '<ul>' + m + '</ul>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/<p>\s*(<h[1-6]>)/g, '$1')
+    .replace(/(<\/h[1-6]>)\s*<\/p>/g, '$1')
+    .replace(/<p>\s*(<ul>)/g, '$1')
+    .replace(/(<\/ul>)\s*<\/p>/g, '$1')
+    .replace(/<p>\s*(<hr>)/g, '$1')
+    .replace(/<p>\s*<\/p>/g, '');
+}
+
+/* ── UTILS ── */
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+window.copyReport = function() {
+  const text = document.getElementById('report-body')?.innerText || '';
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy');
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 2500);
+  });
+};
+
+window.resetTool = function() {
+  allRows = [];
+  loadedFiles = [];
+  ['preview-section','action-row','loading-state','report-section'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  document.getElementById('upload-zone').style.display = '';
+  document.getElementById('howto-section').style.display = '';
+  const ft = document.getElementById('file-tags');
+  if (ft) { ft.style.display = 'none'; ft.innerHTML = ''; }
+  const fi = document.getElementById('file-input');
+  if (fi) fi.value = '';
+  showError('');
+  document.getElementById('analyze-btn').disabled = false;
+  setStep(2);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// Fix Date toHours (it doesn't exist — patch)
+Date.prototype.toHours = function() {
+  return this.getHours().toString().padStart(2,'0') + ':' + this.getMinutes().toString().padStart(2,'0');
+};
 </script>
 </body>
 </html>
