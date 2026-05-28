@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SEO Services, Audits & Content Briefs | LearnSEO Hub</title>
+<meta name="description" content="Explore SEO services for audits, content briefs, GEO optimization, and AI search visibility. Practical help for founders, content teams, and growing websites."/>
+<link rel="canonical" href="https://learnseohub.com/seo-services"/>
+<meta property="og:title" content="SEO Services, Audits & Content Briefs | LearnSEO Hub"/>
+<meta property="og:description" content="Practical SEO services for audits, content briefs, GEO optimization, and AI search visibility."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://learnseohub.com/seo-services"/>
+<meta property="og:image" content="https://learnseohub.com/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="SEO Services, Audits & Content Briefs | LearnSEO Hub"/>
+<meta name="twitter:description" content="Practical SEO help for audits, briefs, GEO optimization, and AI search growth."/>
+<meta name="twitter:image" content="https://learnseohub.com/og-image.png"/>
+<meta name="keywords" content="seo services, seo service, seo consultant, seo audit service, content brief service, ai seo consultant, geo seo services"/>
+<link rel="icon" type="image/svg+xml" href="./logo.svg"/>
+<link rel="stylesheet" href="./css/style.css"/>
+<style>
+  .svc-hero{padding:52px 0 26px;display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center}
+  .svc-badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+  .svc-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--em);display:inline-block}
+  .svc-hero h1{font-size:clamp(30px,5vw,48px);line-height:1.08;letter-spacing:-.04em;margin-bottom:14px}
+  .svc-hero p{font-size:15px;color:var(--t2);line-height:1.8;max-width:680px}
+  .svc-hero p strong{color:var(--t1)}
+  .svc-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+  .svc-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:800;text-decoration:none;border:1px solid transparent;transition:transform .2s,opacity .2s,border-color .2s}
+  .svc-btn:hover{transform:translateY(-2px)}
+  .svc-btn-primary{background:var(--t1);color:var(--bg)}
+  .svc-btn-primary:hover{color:var(--bg);opacity:.9}
+  .svc-btn-secondary{background:var(--card);color:var(--t1);border-color:var(--border)}
+  .svc-btn-secondary:hover{border-color:var(--accent);color:var(--t1)}
+  .svc-panel{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--accent) 6%,transparent));border:1px solid var(--border);border-radius:24px;padding:24px}
+  .svc-panel-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:12px}
+  .svc-proof-list{display:grid;gap:12px}
+  .svc-proof-item{padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:16px}
+  .svc-proof-item strong{display:block;font-size:14px;color:var(--t1);margin-bottom:4px}
+  .svc-proof-item span{display:block;font-size:12px;color:var(--t2);line-height:1.6}
+  .svc-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .svc-chip{padding:9px 12px;border-radius:999px;background:var(--bg2);border:1px solid var(--border);font-size:12px;font-weight:700;color:var(--t2)}
+  .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:24px 0 52px}
+  .svc-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;display:flex;flex-direction:column;transition:transform .2s,border-color .2s}
+  .svc-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .svc-card.featured{border-color:rgba(99,102,241,.3);background:linear-gradient(135deg,rgba(99,102,241,.05),transparent)}
+  .svc-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+  .svc-title{font-size:17px;font-weight:900;color:var(--t1);margin-bottom:6px}
+  .svc-sub{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:12px}
+  .svc-desc{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:14px}
+  .svc-price{font-size:18px;font-weight:900;color:var(--em);margin-bottom:14px}
+  .svc-includes{display:grid;gap:7px;margin-bottom:18px}
+  .svc-includes div{font-size:12px;color:var(--t2);line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+  .svc-includes div::before{content:'✓';color:var(--em);font-weight:900;flex-shrink:0}
+  .svc-card-cta{margin-top:auto}
+  .svc-section{margin:0 0 56px}
+  .svc-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .svc-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}
+  .svc-box h3{font-size:18px;font-weight:900;margin-bottom:10px}
+  .svc-box p{font-size:13px;color:var(--t2);line-height:1.75}
+  .svc-list{display:grid;gap:10px;margin-top:14px}
+  .svc-list div{padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;font-size:13px;color:var(--t2);line-height:1.65}
+  .svc-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .svc-step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px}
+  .svc-step-num{width:36px;height:36px;border-radius:12px;background:var(--accentG);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px}
+  .svc-step h3{font-size:15px;font-weight:900;margin-bottom:8px}
+  .svc-step p{font-size:13px;color:var(--t2);line-height:1.7}
+  .svc-faq{display:grid;gap:12px}
+  .svc-faq details{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0 18px}
+  .svc-faq summary{list-style:none;cursor:pointer;font-size:15px;font-weight:800;color:var(--t1);padding:18px 0}
+  .svc-faq summary::-webkit-details-marker{display:none}
+  .svc-faq details p{font-size:13px;color:var(--t2);line-height:1.75;padding:0 0 18px}
+  .svc-final{background:linear-gradient(135deg,var(--accentG),color-mix(in srgb,var(--vi) 9%,transparent));border:1px solid color-mix(in srgb,var(--accent) 14%,transparent);border-radius:24px;padding:34px;text-align:center}
+  .svc-final h2{font-size:28px;font-weight:900;letter-spacing:-.03em;margin-bottom:10px}
+  .svc-final p{font-size:14px;color:var(--t2);line-height:1.75;max-width:640px;margin:0 auto 18px}
+  .svc-related{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+  .svc-related a{display:block;padding:16px;border-radius:16px;background:var(--card);border:1px solid var(--border);text-decoration:none;transition:transform .2s,border-color .2s}
+  .svc-related a:hover{transform:translateY(-2px);border-color:var(--accent)}
+  .svc-related strong{display:block;font-size:14px;color:var(--t1);margin-bottom:4px}
+  .svc-related span{display:block;font-size:12px;color:var(--t2);line-height:1.6}
+  @media(max-width:900px){.svc-hero,.svc-two-col,.svc-steps,.svc-related{grid-template-columns:1fr}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://learnseohub.com/seo-services#service","name":"LearnSEO Hub SEO Services","url":"https://learnseohub.com/seo-services","description":"SEO services for audits, content briefs, GEO optimization, and AI search visibility.","provider":{"@type":"Organization","name":"LearnSEO Hub","url":"https://learnseohub.com/","logo":{"@type":"ImageObject","url":"https://learnseohub.com/logo.svg"}},"serviceType":["SEO Audit","Content Brief Service","GEO Optimization","AI SEO Consulting"],"areaServed":"Worldwide","offers":{"@type":"OfferCatalog","name":"SEO Services","itemListElement":[{"@type":"Offer","name":"SEO Audit - Starter","price":"49","priceCurrency":"USD","url":"https://learnseohub.com/about#contact"},{"@type":"Offer","name":"Content Brief","price":"79","priceCurrency":"USD","url":"https://learnseohub.com/about#contact"},{"@type":"Offer","name":"Content Brief + Article","price":"149","priceCurrency":"USD","url":"https://learnseohub.com/about#contact"},{"@type":"Offer","name":"Full SEO Audit - Professional","price":"149","priceCurrency":"USD","url":"https://learnseohub.com/about#contact"}]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://learnseohub.com/"},{"@type":"ListItem","position":2,"name":"SEO Services","item":"https://learnseohub.com/seo-services"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What SEO services does LearnSEO Hub offer?","acceptedAnswer":{"@type":"Answer","text":"LearnSEO Hub offers starter SEO audits, full SEO audits, SEO content briefs, brief plus article packages, and GEO-oriented optimization support for AI search visibility."}},{"@type":"Question","name":"Who are these SEO services for?","acceptedAnswer":{"@type":"Answer","text":"The services are designed for solo founders, small businesses, content teams, agencies, and growing websites that need practical SEO execution without unnecessary complexity."}},{"@type":"Question","name":"Do you support AI search and GEO optimization?","acceptedAnswer":{"@type":"Answer","text":"Yes. The services include support for AI search visibility, including GEO readiness, answer-first content structure, entity coverage, and citation-friendly content recommendations."}}]}]}</script>
+</head>
+<body>
+<script src="./js/site.js"></script>
+<div class="main"><div class="wrap">
+
+  <section class="svc-hero">
+    <div>
+      <div class="svc-badge"><span class="svc-badge-dot"></span>Professional SEO Services</div>
+      <h1>SEO services for audits, content briefs, and AI search growth</h1>
+      <p>If you want <strong>clear SEO help you can actually implement</strong>, this is where to start. LearnSEO Hub offers practical services for technical audits, content planning, GEO optimization, and faster organic growth without agency fluff.</p>
+      <div class="svc-cta-row">
+        <a class="svc-btn svc-btn-primary" href="./about#contact">Request SEO Help</a>
+        <a class="svc-btn svc-btn-secondary" href="./tools/seo-scorecard">Try the SEO Score Card</a>
+      </div>
+      <div class="svc-chips" aria-label="Service focus areas">
+        <span class="svc-chip">SEO audits</span>
+        <span class="svc-chip">Content briefs</span>
+        <span class="svc-chip">GEO optimization</span>
+        <span class="svc-chip">AI search visibility</span>
+        <span class="svc-chip">Small teams and founders</span>
+      </div>
+    </div>
+    <aside class="svc-panel" aria-label="Why clients choose these services">
+      <div class="svc-panel-title">What you get</div>
+      <div class="svc-proof-list">
+        <div class="svc-proof-item"><strong>Prioritized action plans</strong><span>Every recommendation is ordered by impact so you know what to fix first.</span></div>
+        <div class="svc-proof-item"><strong>Modern SEO, not 2019 SEO</strong><span>Recommendations reflect Google AI Search, GEO, E-E-A-T, and answer-first content structure.</span></div>
+        <div class="svc-proof-item"><strong>Execution support for lean teams</strong><span>Built for founders, marketers, and content teams who need clarity more than complexity.</span></div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="svc-section">
+    <div class="sh">
+      <h2>Choose the right service</h2>
+      <p>Start with a lightweight audit, move into content execution, or get a deeper roadmap for technical and AI-search improvements.</p>
+    </div>
+    <div class="svc-grid">
+      <article class="svc-card">
+        <div class="svc-icon" style="background:rgba(56,189,248,.1)">🔍</div>
+        <div class="svc-title">SEO Audit - Starter</div>
+        <div class="svc-sub">For founders and small businesses</div>
+        <div class="svc-desc">A focused audit for websites that need fast clarity. You get the biggest issues, the top quick wins, and plain-English next steps you can implement without a full agency retainer.</div>
+        <div class="svc-price">From $49</div>
+        <div class="svc-includes">
+          <div>10-point technical SEO review</div>
+          <div>On-page issues and missed opportunities</div>
+          <div>Top 5 quick wins with implementation guidance</div>
+          <div>Simple explanations for non-technical teams</div>
+        </div>
+        <div class="svc-card-cta"><a class="svc-btn svc-btn-primary" href="./about#contact">Request Starter Audit</a></div>
+      </article>
+
+      <article class="svc-card featured">
+        <div class="svc-icon" style="background:rgba(99,102,241,.1)">⚡</div>
+        <div class="svc-title">Content Brief + Article</div>
+        <div class="svc-sub">For writers, marketers, and content teams</div>
+        <div class="svc-desc">Need content that is ready for both classic search and AI discovery? This package combines keyword research, competitive gap analysis, and a publish-ready article built around search intent and structure.</div>
+        <div class="svc-price">From $79 for brief · From $149 with article</div>
+        <div class="svc-includes">
+          <div>Keyword targeting and search intent mapping</div>
+          <div>H1-H6 structure with entities and subtopics</div>
+          <div>Competitor gap analysis for stronger coverage</div>
+          <div>Optional finished article with FAQ and GEO-ready structure</div>
+        </div>
+        <div class="svc-card-cta"><a class="svc-btn svc-btn-primary" href="./about#contact">Request Brief or Article</a></div>
+      </article>
+
+      <article class="svc-card">
+        <div class="svc-icon" style="background:rgba(16,185,129,.1)">🏆</div>
+        <div class="svc-title">Full SEO Audit - Professional</div>
+        <div class="svc-sub">For growing sites, ecommerce, and agencies</div>
+        <div class="svc-desc">A deeper audit for teams that need a stronger roadmap across technical SEO, content quality, E-E-A-T, and AI search readiness. Ideal if you want a 90-day action plan instead of scattered advice.</div>
+        <div class="svc-price">From $149</div>
+        <div class="svc-includes">
+          <div>Technical, content, and indexation review</div>
+          <div>GEO readiness and citation opportunity analysis</div>
+          <div>E-E-A-T and trust signal gaps</div>
+          <div>90-day roadmap with priorities for implementation</div>
+        </div>
+        <div class="svc-card-cta"><a class="svc-btn svc-btn-primary" href="./about#contact">Request Full Audit</a></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="svc-section svc-two-col">
+    <div class="svc-box">
+      <h3>Who this is for</h3>
+      <p>These services are designed for people who want practical SEO progress, not vague strategy decks.</p>
+      <div class="svc-list">
+        <div><strong>Founders and small businesses:</strong> You want a clear SEO direction without committing to a large retainer.</div>
+        <div><strong>Content teams and copywriters:</strong> You need briefs, structure, and better alignment with search intent.</div>
+        <div><strong>Growing websites and agencies:</strong> You need deeper audits, implementation priorities, and white-label-friendly clarity.</div>
+      </div>
+    </div>
+    <div class="svc-box">
+      <h3>What makes this different</h3>
+      <p>LearnSEO Hub sits between free educational resources and expensive agency retainers. The focus is on useful recommendations that match how search works now.</p>
+      <div class="svc-list">
+        <div><strong>AI-search aware:</strong> recommendations consider Google AI Search, citation visibility, and answer-first formatting.</div>
+        <div><strong>Action-first:</strong> each service is built around what to do next, not just what is wrong.</div>
+        <div><strong>Lean-team friendly:</strong> advice is scoped for marketers and owners who actually need to execute it.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-section">
+    <div class="sh">
+      <h2>How the process works</h2>
+      <p>Simple process, fast clarity, and recommendations you can move on quickly.</p>
+    </div>
+    <div class="svc-steps">
+      <div class="svc-step">
+        <div class="svc-step-num">1</div>
+        <h3>Share your site and goal</h3>
+        <p>Tell us what page, market, or visibility issue you want to improve first.</p>
+      </div>
+      <div class="svc-step">
+        <div class="svc-step-num">2</div>
+        <h3>Audit or brief is prepared</h3>
+        <p>The work is scoped around the service you choose, with a focus on the highest-impact actions.</p>
+      </div>
+      <div class="svc-step">
+        <div class="svc-step-num">3</div>
+        <h3>Receive practical deliverables</h3>
+        <p>You get a clear report, brief, or article draft with concrete recommendations and structure.</p>
+      </div>
+      <div class="svc-step">
+        <div class="svc-step-num">4</div>
+        <h3>Implement with confidence</h3>
+        <p>Use the guidance yourself, hand it to a writer or developer, or continue with the next priority area.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-section">
+    <div class="sh">
+      <h2>Frequently asked questions</h2>
+      <p>Short answers to the questions most people ask before booking SEO help.</p>
+    </div>
+    <div class="svc-faq">
+      <details>
+        <summary>Do you only work on classic SEO?</summary>
+        <p>No. The recommendations also consider AI search visibility, GEO structure, answer-first formatting, and ways to improve citation readiness for modern search experiences.</p>
+      </details>
+      <details>
+        <summary>Can I start with a smaller service first?</summary>
+        <p>Yes. The starter audit is meant to be the entry point for websites that need quick clarity before investing in a larger audit or content package.</p>
+      </details>
+      <details>
+        <summary>Do I need a developer to use the recommendations?</summary>
+        <p>Not always. Many on-page, content, and structural improvements can be implemented by founders or marketers. When developer help is needed, the recommendations are written to be easy to hand off.</p>
+      </details>
+      <details>
+        <summary>Are these services suitable for agencies?</summary>
+        <p>Yes. The professional audit is suitable for agencies and growing teams that need deeper analysis, roadmap clarity, or white-label-style support.</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="svc-final">
+    <h2>Need practical SEO help, not vague advice?</h2>
+    <p>Start with the service that matches your current stage, or use the free tools first if you want a faster self-serve diagnosis before reaching out.</p>
+    <div class="svc-cta-row" style="justify-content:center">
+      <a class="svc-btn svc-btn-primary" href="./about#contact">Contact LearnSEO Hub</a>
+      <a class="svc-btn svc-btn-secondary" href="./tools">Explore Free Tools</a>
+    </div>
+    <div class="svc-related" aria-label="Related resources">
+      <a href="./what-is-seo">
+        <strong>What Is SEO?</strong>
+        <span>Beginner-friendly explanation for foundational search concepts.</span>
+      </a>
+      <a href="./tools/seo-scorecard">
+        <strong>AI SEO Score Card</strong>
+        <span>Run a quick self-check before requesting professional help.</span>
+      </a>
+      <a href="./about">
+        <strong>About LearnSEO Hub</strong>
+        <span>See the broader platform, tools, and service context.</span>
+      </a>
+    </div>
+  </section>
+
+</div></div>
+<div id="site-footer"></div>
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+</body>
+</html>
