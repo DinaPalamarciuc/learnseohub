@@ -4,7 +4,8 @@
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Robots.txt Builder &mdash; LearnSEO Hub</title>
 <meta name="description" content="Generate a clean robots.txt file with sitemap, admin blocking, and custom crawl directives for your site."/>
-<link rel="canonical" href="https://learnseohub.com/tools/robots-txt-builder"/>
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<link rel="canonical" href="https://www.learnseohub.com/tools/robots-txt-builder"/>
 <meta property="og:title" content="Robots.txt Builder &mdash; LearnSEO Hub"/>
 <meta property="og:description" content="Create copy-ready robots.txt directives for launches, migrations, and technical SEO cleanups."/>
 <meta property="og:type" content="website"/>
@@ -31,7 +32,7 @@
 <body>
 <script src="../js/site.js"></script>
 <div class="main"><div class="wrap">
-<a href="../tools" class="article-back">← All Tools</a>
+<a href="../tools" class="article-back">â† All Tools</a>
 <div class="sh"><h2>Robots.txt Builder</h2><p>Build a clean robots.txt file for launch checklists, migrations, and crawl control.</p></div>
 
 <div class="rt-grid">
@@ -39,11 +40,11 @@
 <div class="tool-panel">
 <h3>Site Setup</h3>
 <label for="rt-site">Site URL</label>
-<input id="rt-site" type="url" value="https://learnseohub.com" oninput="buildRobots()" placeholder="https://example.com"/>
+<input id="rt-site" type="url" value="https://www.learnseohub.com" oninput="buildRobots()" placeholder="https://example.com"/>
 <div class="rt-help">Used to generate the sitemap line. Keep the protocol included.</div>
 
 <label for="rt-sitemap">Sitemap URL</label>
-<input id="rt-sitemap" type="url" value="https://learnseohub.com/sitemap.xml" oninput="buildRobots()" placeholder="https://example.com/sitemap.xml"/>
+<input id="rt-sitemap" type="url" value="https://www.learnseohub.com/sitemap.xml" oninput="buildRobots()" placeholder="https://example.com/sitemap.xml"/>
 
 <label for="rt-agent">Primary user-agent</label>
 <select id="rt-agent" onchange="buildRobots()">
@@ -87,7 +88,7 @@ Robots.txt controls crawling, not indexing. If a URL is already known, you may s
 <h3>Preview Summary</h3>
 <div class="rt-preview-list">
 <div class="rt-preview-item"><strong>User-agent</strong><span id="rt-preview-agent">All bots (*)</span></div>
-<div class="rt-preview-item"><strong>Sitemap</strong><span id="rt-preview-sitemap">https://learnseohub.com/sitemap.xml</span></div>
+<div class="rt-preview-item"><strong>Sitemap</strong><span id="rt-preview-sitemap">https://www.learnseohub.com/sitemap.xml</span></div>
 <div class="rt-preview-item"><strong>Core blocks</strong><span id="rt-preview-blocks">/admin/, /cart/, /checkout/, /search</span></div>
 <div class="rt-preview-item"><strong>Custom allow rules</strong><span id="rt-preview-allows">None yet</span></div>
 <div class="rt-preview-item"><strong>Custom disallow rules</strong><span id="rt-preview-disallows">None yet</span></div>
@@ -97,7 +98,7 @@ Robots.txt controls crawling, not indexing. If a URL is already known, you may s
 </div>
 </div></div>
 <div id="site-footer"></div>
-<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">â†‘</button>
 <script>
 function cleanRuleList(value){
   return value.split(/\r?\n/).map(line=>line.trim()).filter(Boolean);

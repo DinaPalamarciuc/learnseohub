@@ -1,2 +1,2 @@
 This site uses the proposed llms.txt format.
-See: https://learnseohub.com/llms.txt
+See: https://www.learnseohub.com/llms.txt

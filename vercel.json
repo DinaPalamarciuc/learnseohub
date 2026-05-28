@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/services",
+      "destination": "/seo-services",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -1,4 +1,4 @@
-Sitemap: https://learnseohub.com/sitemap.xml
+Sitemap: https://www.learnseohub.com/sitemap.xml
 
 User-agent: Googlebot
 Disallow: /admin

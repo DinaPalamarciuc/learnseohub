@@ -4,7 +4,8 @@
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Redirect Rule Builder &mdash; LearnSEO Hub</title>
 <meta name="description" content="Generate 301 redirect rules for Apache, Nginx, or Vercel from a simple old-to-new URL mapping list."/>
-<link rel="canonical" href="https://learnseohub.com/tools/redirect-rule-builder"/>
+<meta name="robots" content="index,follow,max-image-preview:large"/>
+<link rel="canonical" href="https://www.learnseohub.com/tools/redirect-rule-builder"/>
 <meta property="og:title" content="Redirect Rule Builder &mdash; LearnSEO Hub"/>
 <meta property="og:description" content="Paste old and new URLs to create clean redirect rules for migrations, redesigns, and slug changes."/>
 <meta property="og:type" content="website"/>
@@ -26,7 +27,7 @@
 <body>
 <script src="../js/site.js"></script>
 <div class="main"><div class="wrap">
-<a href="../tools" class="article-back">← All Tools</a>
+<a href="../tools" class="article-back">â† All Tools</a>
 <div class="sh"><h2>Redirect Rule Builder</h2><p>Turn URL mappings into copy-ready 301 rules for Apache, Nginx, or Vercel.</p></div>
 
 <div class="rr-grid">
@@ -55,7 +56,7 @@
 <textarea id="rr-mappings" rows="14" oninput="buildRedirects()" placeholder="/old-page,/new-page&#10;https://example.com/blog/post-a,https://example.com/blog/post-b&#10;/category/seo,/guides/seo"></textarea>
 <div class="rr-help">Use one mapping per line in the format `old-url,new-url`. Absolute URLs are allowed and will be normalized into paths where possible.</div>
 <label for="rr-domain">Primary domain for normalization</label>
-<input id="rr-domain" type="url" value="https://learnseohub.com" oninput="buildRedirects()" placeholder="https://example.com"/>
+<input id="rr-domain" type="url" value="https://www.learnseohub.com" oninput="buildRedirects()" placeholder="https://example.com"/>
 <div class="rr-actions">
 <button class="btn btn-a btn-sm" onclick="copyRedirects()">Copy output</button>
 <button class="btn btn-outline btn-sm" onclick="loadRedirectExample()">Load migration example</button>
@@ -89,7 +90,7 @@ Keep the old URL list exact. Redirect chains, missing trailing slashes, and inco
 </div>
 </div></div>
 <div id="site-footer"></div>
-<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">â†‘</button>
 <script>
 function normalizeUrl(raw, baseDomain){
   const value = raw.trim();
@@ -184,10 +185,10 @@ function copyRedirects(){
 }
 
 function loadRedirectExample(){
-  document.getElementById('rr-domain').value = 'https://learnseohub.com';
+  document.getElementById('rr-domain').value = 'https://www.learnseohub.com';
   document.getElementById('rr-format').value = 'vercel';
   document.getElementById('rr-status').value = '301';
-  document.getElementById('rr-mappings').value = '/seo-basics,/blog/seo-fundamentals\n/blog/old-geo-guide,/blog/geo-guide\nhttps://learnseohub.com/tools/old-schema,https://learnseohub.com/tools/schema-generator';
+  document.getElementById('rr-mappings').value = '/seo-basics,/blog/seo-fundamentals\n/blog/old-geo-guide,/blog/geo-guide\nhttps://www.learnseohub.com/tools/old-schema,https://www.learnseohub.com/tools/schema-generator';
   buildRedirects();
 }
 
