@@ -539,7 +539,7 @@
       <div class="ft-col">
         <h4>Company</h4>
         <a href="${root('about')}">About</a>
-        <a href="${root('services')}">Services</a>
+        <a href="${root('seo-services')}">Services</a>
         <a href="${root('privacy')}">Privacy Policy</a>
         <a href="${root('cookies')}">Cookie Policy</a>
         <a href="${root('terms')}">Terms &amp; Conditions</a>
