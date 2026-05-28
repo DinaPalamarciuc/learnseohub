@@ -11,8 +11,25 @@
 <meta property="og:image" content="https://learnseohub.com/og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://learnseohub.com/og-image.png"/>
-<link rel="icon" type="image/svg+xml" href="/logo.svg"/>
-<link rel="stylesheet" href="/css/style.css"/>
+<script>
+(function () {
+  var isFile = window.location.protocol === "file:";
+  var assetPrefix = isFile ? "./" : "/";
+
+  var icon = document.createElement("link");
+  icon.rel = "icon";
+  icon.type = "image/svg+xml";
+  icon.href = assetPrefix + "logo.svg";
+  document.head.appendChild(icon);
+
+  var stylesheet = document.createElement("link");
+  stylesheet.rel = "stylesheet";
+  stylesheet.href = assetPrefix + "css/style.css";
+  document.head.appendChild(stylesheet);
+
+  window.__lsh404Prefix = assetPrefix;
+})();
+</script>
 <style>
 .nf-shell{max-width:1180px;margin:0 auto;padding:24px;position:relative;z-index:1}
 .nf-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:stretch;margin-top:12px}
@@ -61,7 +78,13 @@
 </style>
 </head>
 <body>
-<script src="/js/site.js"></script>
+<script>
+(function () {
+  var script = document.createElement("script");
+  script.src = (window.__lsh404Prefix || "/") + "js/site.js";
+  document.body.appendChild(script);
+})();
+</script>
 <main class="main">
   <div class="nf-shell">
     <section class="nf-hero" aria-labelledby="nf-title">
@@ -71,10 +94,10 @@
         <h1 class="nf-title" id="nf-title">This page drifted out of the index.</h1>
         <p class="nf-desc">The URL you opened does not point to a live page anymore, was typed incorrectly, or moved during a site update. The good news: the rest of LearnSEO Hub is still here and easier to navigate from below.</p>
         <div class="nf-actions">
-          <a class="nf-btn nf-btn-primary" href="/">Go to Homepage</a>
-          <a class="nf-btn nf-btn-secondary" href="/tools">Open Tools</a>
-          <a class="nf-btn nf-btn-secondary" href="/blog">Read Blog</a>
-          <button class="nf-btn nf-btn-secondary" type="button" onclick="history.length > 1 ? history.back() : location.href='/'">Go Back</button>
+          <a class="nf-btn nf-btn-primary" data-route="" href="/">Go to Homepage</a>
+          <a class="nf-btn nf-btn-secondary" data-route="tools" href="/tools">Open Tools</a>
+          <a class="nf-btn nf-btn-secondary" data-route="blog" href="/blog">Read Blog</a>
+          <button class="nf-btn nf-btn-secondary" type="button" onclick="history.length > 1 ? history.back() : location.href=(window.__lsh404Prefix || '/')">Go Back</button>
         </div>
       </div>
 
@@ -122,19 +145,19 @@
     <section class="nf-links section-spacing" aria-labelledby="nf-links-title">
       <h2 id="nf-links-title">Popular destinations</h2>
       <div class="nf-link-grid">
-        <a class="nf-link-card" href="/tools">
+        <a class="nf-link-card" data-route="tools" href="/tools">
           <strong>Interactive Tools</strong>
           <span>Open the SERP previewer, schema generator, SEO score card, crawl checker, and more.</span>
         </a>
-        <a class="nf-link-card" href="/blog">
+        <a class="nf-link-card" data-route="blog" href="/blog">
           <strong>SEO Blog</strong>
           <span>Read articles about Google AI Search, GEO, AEO, technical SEO, and current updates.</span>
         </a>
-        <a class="nf-link-card" href="/downloads">
+        <a class="nf-link-card" data-route="downloads" href="/downloads">
           <strong>Downloads & Templates</strong>
           <span>Grab checklists, content workflows, prompt packs, and practical SEO templates.</span>
         </a>
-        <a class="nf-link-card" href="/guides">
+        <a class="nf-link-card" data-route="guides" href="/guides">
           <strong>Guides</strong>
           <span>Follow structured educational resources when you want a more complete walkthrough.</span>
         </a>
@@ -146,20 +169,27 @@
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to Top">↑</button>
 <script>
 (function () {
+  var prefix = window.__lsh404Prefix || "/";
+  var isFile = window.location.protocol === "file:";
   var path = window.location.pathname || "/";
   var address = document.getElementById("nf-address");
   var pathEl = document.getElementById("nf-path");
   var suggestBox = document.getElementById("nf-suggest");
   var suggestCopy = document.getElementById("nf-suggest-copy");
 
+  document.querySelectorAll("[data-route]").forEach(function (link) {
+    var route = link.getAttribute("data-route");
+    link.href = prefix + route;
+  });
+
   if (address) address.textContent = "learnseohub.com" + path;
   if (pathEl) pathEl.textContent = path;
 
   var rules = [
-    { keywords: ["tool", "schema", "serp", "crawl", "redirect", "robots"], href: "/tools", label: "This looks tool-related. The tools hub is the best recovery point." },
-    { keywords: ["blog", "seo", "geo", "aeo", "google", "ai"], href: "/blog", label: "This looks content-related. The blog index is probably the page you wanted." },
-    { keywords: ["download", "template", "checklist", "prompt"], href: "/downloads", label: "This looks like a resource URL. The downloads page should get you close." },
-    { keywords: ["guide", "learn", "tutorial"], href: "/guides", label: "This looks educational. The guides page is the closest live section." }
+    { keywords: ["tool", "schema", "serp", "crawl", "redirect", "robots"], href: prefix + "tools", label: "This looks tool-related. The tools hub is the best recovery point." },
+    { keywords: ["blog", "seo", "geo", "aeo", "google", "ai"], href: prefix + "blog", label: "This looks content-related. The blog index is probably the page you wanted." },
+    { keywords: ["download", "template", "checklist", "prompt"], href: prefix + "downloads", label: "This looks like a resource URL. The downloads page should get you close." },
+    { keywords: ["guide", "learn", "tutorial"], href: prefix + "guides", label: "This looks educational. The guides page is the closest live section." }
   ];
 
   var lower = path.toLowerCase();
@@ -172,7 +202,7 @@
     suggestCopy.innerHTML = match.label + ' <a href="' + match.href + '">Open it now</a>.';
   } else if (suggestBox && suggestCopy) {
     suggestBox.classList.add("show");
-    suggestCopy.innerHTML = 'No close slug match was found, so the <a href="/">homepage</a> is the fastest place to continue.';
+    suggestCopy.innerHTML = 'No close slug match was found, so the <a href="' + prefix + '">homepage</a> is the fastest place to continue.';
   }
 })();
 </script>
