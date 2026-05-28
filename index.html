@@ -38,6 +38,31 @@
         .hp-prompt-copy { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .hp-prompt-copy:hover { background: #334155; color: #fff; }
 
+        .hp-update-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:22px; align-items:stretch; }
+        .hp-update-main, .hp-update-side, .hp-proof { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:24px; }
+        .hp-update-kicker { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin-bottom:10px; }
+        .hp-update-title { font-size:24px; font-weight:900; letter-spacing:-.03em; color:var(--t1); margin-bottom:10px; }
+        .hp-update-desc { font-size:14px; color:var(--t2); line-height:1.7; margin-bottom:18px; }
+        .hp-update-links { display:grid; gap:10px; }
+        .hp-update-link { display:block; padding:14px 16px; border-radius:14px; background:var(--bg2); border:1px solid var(--border); text-decoration:none; color:inherit; transition:transform .2s,border-color .2s; }
+        .hp-update-link:hover { transform:translateY(-2px); border-color:var(--accent); }
+        .hp-update-link strong { display:block; font-size:14px; color:var(--t1); margin-bottom:4px; }
+        .hp-update-link span { display:block; font-size:12px; color:var(--t2); line-height:1.5; }
+        .hp-update-list { display:grid; gap:12px; }
+        .hp-update-item { padding-bottom:12px; border-bottom:1px solid var(--border); }
+        .hp-update-item:last-child { padding-bottom:0; border-bottom:none; }
+        .hp-update-item strong { display:block; font-size:13px; color:var(--t1); margin-bottom:4px; }
+        .hp-update-item span { display:block; font-size:12px; color:var(--t2); line-height:1.5; }
+        .hp-proof-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:20px; }
+        .hp-proof-stat { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:18px; }
+        .hp-proof-stat strong { display:block; font-size:22px; font-weight:900; color:var(--t1); margin-bottom:6px; }
+        .hp-proof-stat span { display:block; font-size:12px; color:var(--t2); line-height:1.5; }
+        .hp-tool-feature { background:linear-gradient(135deg, var(--card), color-mix(in srgb, var(--accent) 6%, transparent)); border:1px solid var(--border); border-radius:22px; padding:26px; margin-bottom:24px; display:grid; grid-template-columns:1fr auto; gap:18px; align-items:center; }
+        .hp-tool-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); margin-bottom:8px; }
+        .hp-tool-title { font-size:24px; font-weight:900; letter-spacing:-.03em; color:var(--t1); margin-bottom:8px; }
+        .hp-tool-desc { font-size:14px; color:var(--t2); line-height:1.7; max-width:620px; }
+        .hp-tool-bullets { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+        .hp-tool-bullet { padding:8px 12px; border-radius:999px; background:var(--bg2); border:1px solid var(--border); font-size:12px; font-weight:700; color:var(--t2); }
         .hp-newsletter { background: linear-gradient(135deg, var(--accentG), color-mix(in srgb, var(--vi) 8%, transparent)); border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent); border-radius: 20px; padding: 40px; text-align: center; margin: 60px 0; }
         .hp-nl-title { font-size: 24px; font-weight: 900; color: var(--t1); margin-bottom: 8px; letter-spacing: -0.02em; }
         .hp-nl-desc { font-size: 15px; color: var(--t2); margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto; }
@@ -55,6 +80,7 @@
         .hp-faq-item[open] .hp-faq-q::after { transform: rotate(45deg); }
         .hp-faq-a { padding: 0 20px 20px 20px; font-size: 14px; color: var(--t2); line-height: 1.6; border-top: 1px solid transparent; }
         .hp-faq-item[open] .hp-faq-q { border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+        @media(max-width:900px){ .hp-update-grid,.hp-tool-feature{grid-template-columns:1fr;} .hp-proof-row{grid-template-columns:1fr;} }
     </style>
 
     <script type="application/ld+json">
@@ -67,7 +93,7 @@
           "url": "https://learnseohub.com/",
           "name": "LearnSEO Hub",
           "description": "Practical tools, guides, and templates for modern SEO, GEO, and Answer Engine Optimization.",
-          "publisher": { "@id": "https://learnseohub.com/#organization" },
+          "publisher": { "@id": "https://learnseohub.com/#organization" }
         },
         {
           "@type": "Organization",
@@ -119,20 +145,20 @@
 
         <section class="hero section-spacing" aria-labelledby="hero-title" style="margin-bottom: 0; padding-top: 0;">
             <div class="hero-content">
-                <div class="hero-badge"><span style="width:6px;height:6px;border-radius:50%;background:var(--em);animation:pulse 2s infinite"></span>Updated Feb 2026 · 100% Free</div>
-                <h1 id="hero-title">Your SEO Workbench<br/>for the <span>AI Search Era</span></h1>
+                <div class="hero-badge"><span style="width:6px;height:6px;border-radius:50%;background:var(--em);animation:pulse 2s infinite"></span>Updated May 2026 · Free SEO Tools & Resources</div>
+                <h1 id="hero-title">Practical SEO for <span>Google AI Search</span><br/>and Modern Organic Growth</h1>
                 
-                <p class="hero-desc">LearnSEO Hub is a practical platform providing <strong>tools</strong>, <strong>guides</strong>, and <strong>templates</strong> you can use right now. No fluff — just what works for modern SEO, Generative Engine Optimization (GEO), and Answer Engine Optimization (AEO).</p>
+                <p class="hero-desc">LearnSEO Hub helps SEO teams, founders, and content marketers improve visibility in classic Google results and AI-driven search. Use free tools, actionable guides, and downloadable templates built for GEO, AEO, technical SEO, and faster execution.</p>
                 
                 <div class="hero-features">
-                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>SERP Preview</div>
-                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Schema Generator</div>
-                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>40+ AI Prompts</div>
-                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Free Downloads</div>
+                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Google AI Search updates</div>
+                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Free tools with no login</div>
+                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Templates for faster execution</div>
+                    <div class="hero-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Guides for GEO and AEO</div>
                 </div>
                 <div class="hero-ctas">
-                    <a href="./tools" class="btn btn-a" style="text-decoration:none">Explore Tools →</a>
-                    <a href="./blog" class="btn btn-outline" style="text-decoration:none">Read Blog</a>
+                    <a href="./tools" class="btn btn-a" style="text-decoration:none">Start With Tools →</a>
+                    <a href="./blog" class="btn btn-outline" style="text-decoration:none">See May Updates</a>
                 </div>
             </div>
         </section>
@@ -147,18 +173,55 @@
             </div>
         </div>
 
+        <section class="section-spacing" aria-labelledby="updates-heading">
+            <div class="sh">
+                <h2 id="updates-heading">Updated for May 2026</h2>
+                <p>The latest Google Search shifts are already changing how SEO content gets discovered, cited, and revisited.</p>
+            </div>
+            <div class="hp-update-grid">
+                <div class="hp-update-main">
+                    <div class="hp-update-kicker">What changed</div>
+                    <div class="hp-update-title">Google AI Search became a stronger visibility layer, not just a SERP feature.</div>
+                    <div class="hp-update-desc">We updated LearnSEO Hub around the May 19 and May 27 Google announcements so you can adapt faster: AI Mode growth, Search agents, Preferred Sources, Highly Cited labels, and fresher internal content built for follow-up discovery.</div>
+                    <div class="hp-update-links">
+                        <a class="hp-update-link" href="./blog/google-search-io-2026">
+                            <strong>Google AI Mode after I/O 2026</strong>
+                            <span>What AI Mode, multimodal search, and Search agents change for SEO execution.</span>
+                        </a>
+                        <a class="hp-update-link" href="./blog/preferred-sources-ai-search">
+                            <strong>Preferred Sources in Google AI Search</strong>
+                            <span>How source preference, Highly Cited labels, and original reporting affect visibility.</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="hp-update-side">
+                    <div class="hp-update-kicker">What to prioritize first</div>
+                    <div class="hp-update-list">
+                        <div class="hp-update-item"><strong>Refresh answer-first pages</strong><span>Pages that win informational queries should lead with a direct answer and support the next question.</span></div>
+                        <div class="hp-update-item"><strong>Strengthen original assets</strong><span>Tables, screenshots, mini-studies, and first-hand examples are more useful in AI-driven discovery flows.</span></div>
+                        <div class="hp-update-item"><strong>Build source preference</strong><span>Trusted, memorable brands gain an advantage when users and search systems can recognize preferred sources.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="hp-proof-row">
+                <div class="hp-proof-stat"><strong>8+ tools</strong><span>Free utilities for SERP testing, schema, crawl checks, redirects, robots, and SEO scoring.</span></div>
+                <div class="hp-proof-stat"><strong>10+ guides</strong><span>Practical reading for GEO, AEO, technical SEO, E-E-A-T, and current Google Search shifts.</span></div>
+                <div class="hp-proof-stat"><strong>Updated monthly</strong><span>Homepage, news, and blog content now reflect May 2026 Google Search changes and AI visibility trends.</span></div>
+            </div>
+        </section>
+
         <section class="start-row section-spacing" aria-label="Getting Started Steps">
-            <a class="start-step" href="./blog" style="text-decoration:none;color:inherit">
+            <a class="start-step" href="./blog/google-search-io-2026" style="text-decoration:none;color:inherit">
                 <div class="start-num">1</div>
-                <div><div class="start-label">Read</div><div class="start-sub">Pick an article and learn the fundamentals</div></div>
+                <div><div class="start-label">Understand the shift</div><div class="start-sub">Read the latest Google AI Search updates and see what changed in May 2026.</div></div>
             </a>
-            <a class="start-step" href="./tools" style="text-decoration:none;color:inherit">
+            <a class="start-step" href="./tools/seo-scorecard" style="text-decoration:none;color:inherit">
                 <div class="start-num">2</div>
-                <div><div class="start-label">Practice</div><div class="start-sub">Use our interactive tools on your own site</div></div>
+                <div><div class="start-label">Audit your page</div><div class="start-sub">Run a fast scorecard or schema check to find the biggest visibility gaps first.</div></div>
             </a>
             <a class="start-step" href="./downloads" style="text-decoration:none;color:inherit">
                 <div class="start-num">3</div>
-                <div><div class="start-label">Apply</div><div class="start-sub">Download templates and execute your plan</div></div>
+                <div><div class="start-label">Execute faster</div><div class="start-sub">Download templates, checklists, and prompts so strategy turns into output this week.</div></div>
             </a>
         </section>
 
@@ -189,7 +252,23 @@ Review the following article draft. Provide a table identifying the top 3 direct
         <section class="section-spacing" aria-labelledby="tools-heading">
             <div class="sh">
                 <h2 id="tools-heading">Interactive Tools</h2>
-                <p>Use them right now — no account needed</p>
+                <p>Use them right now with no account needed, then move into templates and guides when you are ready.</p>
+            </div>
+
+            <div class="hp-tool-feature">
+                <div>
+                    <div class="hp-tool-label">Featured tool</div>
+                    <div class="hp-tool-title">Start with the SEO Score Card</div>
+                    <div class="hp-tool-desc">If you are not sure where to begin, use the score card first. It helps you spot structural SEO gaps quickly before you move into schema, redirects, robots, or content workflow improvements.</div>
+                    <div class="hp-tool-bullets">
+                        <span class="hp-tool-bullet">Fast priority scan</span>
+                        <span class="hp-tool-bullet">Good for content refreshes</span>
+                        <span class="hp-tool-bullet">Useful before AI Search updates</span>
+                    </div>
+                </div>
+                <div>
+                    <a href="./tools/seo-scorecard" class="btn btn-a" style="text-decoration:none">Open Score Card</a>
+                </div>
             </div>
             
             <div class="tools-strip">
@@ -283,11 +362,11 @@ Review the following article draft. Provide a table identifying the top 3 direct
         </section>
 
         <section class="hp-newsletter">
-            <h2 class="hp-nl-title">Stay Ahead of Algorithm Updates</h2>
-            <p class="hp-nl-desc">Get the latest SEO strategies, actionable AI prompts, and tool updates delivered straight to your inbox once a month. No spam.</p>
+            <h2 class="hp-nl-title">Get the Monthly Google & AI Search SEO Brief</h2>
+            <p class="hp-nl-desc">Receive the most important Google Search changes, AI visibility updates, and practical actions to take before rankings shift. One useful email a month.</p>
             <form class="hp-nl-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Newsletter logic would execute here!');">
                 <input type="email" class="hp-nl-input" placeholder="Enter your email address..." required aria-label="Email address for newsletter"/>
-                <button type="submit" class="hp-nl-btn">Subscribe Free</button>
+                <button type="submit" class="hp-nl-btn">Get the Brief</button>
             </form>
         </section>
 
