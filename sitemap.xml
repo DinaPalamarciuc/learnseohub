@@ -16,6 +16,9 @@
   <url><loc>https://learnseohub.com/tools/geo-score</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnseohub.com/tools/content-workflow</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnseohub.com/tools/crawl-checker</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/tools/robots-txt-builder</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/tools/redirect-rule-builder</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnseohub.com/tools/seo-scorecard</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnseohub.com/downloads</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnseohub.com/guides</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnseohub.com/glossary</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -25,4 +28,5 @@
   <url><loc>https://learnseohub.com/career</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://learnseohub.com/faq</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://learnseohub.com/about</loc><changefreq>monthly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://learnseohub.com/llms.txt</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
 </urlset>

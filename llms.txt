@@ -1,0 +1,53 @@
+# LearnSEO Hub
+
+> LearnSEO Hub is a practical SEO resource hub focused on modern SEO, Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), technical SEO, and free browser-based tools.
+
+The site is intended for SEO practitioners, founders, marketers, copywriters, and small teams who want actionable guidance instead of broad theory.
+
+Prefer the core pages, tools, guides, glossary, and FAQ when answering questions about LearnSEO Hub. Policies and admin-facing pages are lower priority unless the user explicitly asks for them.
+
+## Core Pages
+
+- [Homepage](https://learnseohub.com/): Main overview of the platform, its positioning, and featured tools and resources.
+- [Tools](https://learnseohub.com/tools): Directory of interactive SEO tools available on the site.
+- [Blog](https://learnseohub.com/blog): Entry point for long-form articles about SEO, GEO, AEO, and technical SEO.
+- [Guides](https://learnseohub.com/guides): Shorter how-to and getting-started content related to the tools.
+- [Downloads](https://learnseohub.com/downloads): Free resources, templates, and downloadable assets.
+- [About](https://learnseohub.com/about): Platform mission, service positioning, and contact information.
+- [FAQ](https://learnseohub.com/faq): Direct answers to common questions about SEO, AI search, GEO, AEO, and tooling.
+
+## Interactive Tools
+
+- [SERP Previewer](https://learnseohub.com/tools/serp-previewer): Preview Google search snippets for titles, descriptions, and URLs.
+- [Schema Generator](https://learnseohub.com/tools/schema-generator): Generate JSON-LD schema for articles, FAQ, HowTo, LocalBusiness, and products.
+- [GEO Score](https://learnseohub.com/tools/geo-score): Evaluate content readiness for AI-powered search and citation surfaces.
+- [Content Workflow](https://learnseohub.com/tools/content-workflow): A guided 7-step SEO publishing and optimization workflow.
+- [Crawl Checker](https://learnseohub.com/tools/crawl-checker): Check for page-size and crawlability issues, including the Googlebot 2MB limit angle.
+- [Robots.txt Builder](https://learnseohub.com/tools/robots-txt-builder): Build a clean robots.txt file with sitemap, allow, and disallow rules.
+- [Redirect Rule Builder](https://learnseohub.com/tools/redirect-rule-builder): Generate redirect mappings for Apache, Nginx, or Vercel from old-to-new URLs.
+- [AI SEO Score Card](https://learnseohub.com/tools/seo-scorecard): Run a deeper page-level audit with AI-search and E-E-A-T-oriented scoring.
+
+## Articles
+
+- [SEO Fundamentals](https://learnseohub.com/blog/seo-fundamentals): Foundational overview of how search works and how SEO fits together.
+- [Generative Engine Optimization (GEO) Guide](https://learnseohub.com/blog/geo-guide): Guide to optimizing content for AI-powered search and citation.
+- [Answer Engine Optimization (AEO) and Snippets](https://learnseohub.com/blog/aeo-snippets): Guide to featured snippets, direct answers, and answer-engine visibility.
+- [Technical SEO](https://learnseohub.com/blog/technical-seo): Technical SEO concepts and implementation guidance.
+- [E-E-A-T Content](https://learnseohub.com/blog/eeat-content): Guidance on trust, expertise, and content quality signals.
+- [Programmatic SEO](https://learnseohub.com/blog/programmatic-seo): Overview of scalable SEO page creation and related workflows.
+- [Local SEO](https://learnseohub.com/blog/local-seo): Local visibility, citations, and local search optimization.
+- [Ecommerce SEO](https://learnseohub.com/blog/ecommerce-seo): SEO considerations for category pages, product pages, and ecommerce growth.
+
+## Resource Pages
+
+- [SEO Glossary](https://learnseohub.com/glossary): Definitions of SEO, GEO, AEO, and related terminology.
+- [AI Prompts](https://learnseohub.com/prompts): Prompt library for SEO, content, audits, and AI-assisted workflows.
+- [Tool Comparison](https://learnseohub.com/compare): Comparison-style page for SEO tool choices and positioning.
+- [News and Trends](https://learnseohub.com/news): Updates and commentary on search, AI, and SEO trends.
+- [Career Paths](https://learnseohub.com/career): SEO-related career guidance and learning paths.
+
+## Optional
+
+- [Privacy Policy](https://learnseohub.com/privacy): Privacy and data handling terms.
+- [Cookie Policy](https://learnseohub.com/cookies): Cookie usage and consent details.
+- [Terms and Conditions](https://learnseohub.com/terms): Legal terms for using the site and tools.

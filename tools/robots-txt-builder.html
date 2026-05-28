@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Robots.txt Builder &mdash; LearnSEO Hub</title>
+<meta name="description" content="Generate a clean robots.txt file with sitemap, admin blocking, and custom crawl directives for your site."/>
+<link rel="canonical" href="https://learnseohub.com/tools/robots-txt-builder"/>
+<meta property="og:title" content="Robots.txt Builder &mdash; LearnSEO Hub"/>
+<meta property="og:description" content="Create copy-ready robots.txt directives for launches, migrations, and technical SEO cleanups."/>
+<meta property="og:type" content="website"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.rt-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:24px}
+.rt-stack{display:grid;gap:16px}
+.rt-help{font-size:12px;color:var(--t3);line-height:1.6;margin-top:6px}
+.rt-checks{display:grid;gap:10px;margin-top:10px}
+.rt-row{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+.rt-row input{width:auto;margin-top:2px}
+.rt-label{font-size:13px;font-weight:700;color:var(--t1)}
+.rt-sub{font-size:12px;color:var(--t3);line-height:1.5}
+.rt-output{min-height:420px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7}
+.rt-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.rt-tip{padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--accent) 7%,transparent);border:1px solid color-mix(in srgb,var(--accent) 16%,transparent);font-size:13px;color:var(--t2);line-height:1.7}
+.rt-preview-list{display:grid;gap:10px}
+.rt-preview-item{padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.05)}
+.rt-preview-item strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:4px}
+.rt-preview-item span{font-size:13px;color:var(--t1);word-break:break-word}
+@media(max-width:900px){.rt-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script src="../js/site.js"></script>
+<div class="main"><div class="wrap">
+<a href="../tools" class="article-back">← All Tools</a>
+<div class="sh"><h2>Robots.txt Builder</h2><p>Build a clean robots.txt file for launch checklists, migrations, and crawl control.</p></div>
+
+<div class="rt-grid">
+<div class="rt-stack">
+<div class="tool-panel">
+<h3>Site Setup</h3>
+<label for="rt-site">Site URL</label>
+<input id="rt-site" type="url" value="https://learnseohub.com" oninput="buildRobots()" placeholder="https://example.com"/>
+<div class="rt-help">Used to generate the sitemap line. Keep the protocol included.</div>
+
+<label for="rt-sitemap">Sitemap URL</label>
+<input id="rt-sitemap" type="url" value="https://learnseohub.com/sitemap.xml" oninput="buildRobots()" placeholder="https://example.com/sitemap.xml"/>
+
+<label for="rt-agent">Primary user-agent</label>
+<select id="rt-agent" onchange="buildRobots()">
+<option value="*">All bots (*)</option>
+<option value="Googlebot">Googlebot</option>
+<option value="Bingbot">Bingbot</option>
+<option value="Googlebot-Image">Googlebot-Image</option>
+</select>
+<div class="rt-help">Start broad with `*` unless you need bot-specific rules.</div>
+<div class="rt-checks">
+<label class="rt-row"><input id="rt-admin" type="checkbox" checked onchange="buildRobots()"/><span><span class="rt-label">Block admin and private areas</span><span class="rt-sub">Adds common disallow rules such as `/admin/`, `/cart/`, `/checkout/`, and `/search`.</span></span></label>
+<label class="rt-row"><input id="rt-params" type="checkbox" onchange="buildRobots()"/><span><span class="rt-label">Block parameter-based crawl traps</span><span class="rt-sub">Adds common parameter patterns for sort, filter, and session URLs when appropriate.</span></span></label>
+<label class="rt-row"><input id="rt-ai" type="checkbox" onchange="buildRobots()"/><span><span class="rt-label">Add AI crawler note</span><span class="rt-sub">Creates an extra comment block so you can review how you want to handle newer AI crawlers.</span></span></label>
+</div>
+<label for="rt-custom-allow">Custom allow rules</label>
+<textarea id="rt-custom-allow" rows="4" oninput="buildRobots()" placeholder="/wp-content/uploads/&#10;/assets/"></textarea>
+<div class="rt-help">One path per line. Use only paths, not full URLs.</div>
+<label for="rt-custom-disallow">Custom disallow rules</label>
+<textarea id="rt-custom-disallow" rows="6" oninput="buildRobots()" placeholder="/staging/&#10;/tmp/"></textarea>
+<div class="rt-help">One path per line. Useful for staging, temporary folders, or thin utility paths.</div>
+</div>
+
+<div class="rt-tip">
+<strong style="display:block;color:var(--t1);margin-bottom:6px">Quick reminder</strong>
+Robots.txt controls crawling, not indexing. If a URL is already known, you may still need `noindex`, canonical tags, redirects, or authentication depending on the case.
+</div>
+</div>
+
+<div class="tool-panel">
+<h3>Generated File</h3>
+<textarea id="rt-output" class="rt-output" spellcheck="false"></textarea>
+<div class="rt-actions">
+<button class="btn btn-a btn-sm" onclick="copyRobots()">Copy robots.txt</button>
+<button class="btn btn-outline btn-sm" onclick="loadRobotsExample()">Load ecommerce example</button>
+</div>
+<div id="rt-copy-status" class="rt-help" aria-live="polite"></div>
+</div>
+</div>
+
+<div class="tool-panel">
+<h3>Preview Summary</h3>
+<div class="rt-preview-list">
+<div class="rt-preview-item"><strong>User-agent</strong><span id="rt-preview-agent">All bots (*)</span></div>
+<div class="rt-preview-item"><strong>Sitemap</strong><span id="rt-preview-sitemap">https://learnseohub.com/sitemap.xml</span></div>
+<div class="rt-preview-item"><strong>Core blocks</strong><span id="rt-preview-blocks">/admin/, /cart/, /checkout/, /search</span></div>
+<div class="rt-preview-item"><strong>Custom allow rules</strong><span id="rt-preview-allows">None yet</span></div>
+<div class="rt-preview-item"><strong>Custom disallow rules</strong><span id="rt-preview-disallows">None yet</span></div>
+<div class="rt-preview-item"><strong>Best use case</strong><span>Use this before launch, after a redesign, or any time you need to formalize crawl boundaries.</span></div>
+</div>
+</div>
+</div>
+</div></div>
+<div id="site-footer"></div>
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+function cleanRuleList(value){
+  return value.split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
+}
+
+function buildRobots(){
+  const site = document.getElementById('rt-site').value.trim() || 'https://example.com';
+  const sitemap = document.getElementById('rt-sitemap').value.trim() || (site.replace(/\/+$/,'') + '/sitemap.xml');
+  const agent = document.getElementById('rt-agent').value;
+  const includeAdmin = document.getElementById('rt-admin').checked;
+  const includeParams = document.getElementById('rt-params').checked;
+  const includeAi = document.getElementById('rt-ai').checked;
+  const customAllow = cleanRuleList(document.getElementById('rt-custom-allow').value);
+  const customDisallow = cleanRuleList(document.getElementById('rt-custom-disallow').value);
+
+  const defaultDisallow = [];
+  if (includeAdmin) {
+    defaultDisallow.push('/admin/', '/cart/', '/checkout/', '/search');
+  }
+  if (includeParams) {
+    defaultDisallow.push('/*?sort=', '/*?filter=', '/*?sessionid=');
+  }
+
+  const lines = [];
+  lines.push('# robots.txt generated with LearnSEO Hub');
+  lines.push(`# ${new Date().toISOString().slice(0,10)}`);
+  lines.push('');
+  lines.push(`User-agent: ${agent}`);
+  lines.push('Allow: /');
+
+  [...new Set(defaultDisallow.concat(customDisallow))].forEach(rule => {
+    lines.push(`Disallow: ${rule}`);
+  });
+
+  customAllow.forEach(rule => {
+    lines.push(`Allow: ${rule}`);
+  });
+
+  lines.push('');
+  lines.push(`Sitemap: ${sitemap}`);
+
+  if (includeAi) {
+    lines.push('');
+    lines.push('# Review AI crawler access separately if needed');
+    lines.push('# User-agent: GPTBot');
+    lines.push('# Disallow:');
+    lines.push('# User-agent: ClaudeBot');
+    lines.push('# Disallow:');
+  }
+
+  document.getElementById('rt-output').value = lines.join('\n');
+  document.getElementById('rt-preview-agent').textContent = agent === '*' ? 'All bots (*)' : agent;
+  document.getElementById('rt-preview-sitemap').textContent = sitemap;
+  document.getElementById('rt-preview-blocks').textContent = defaultDisallow.length ? defaultDisallow.join(', ') : 'No default blocks enabled';
+  document.getElementById('rt-preview-allows').textContent = customAllow.length ? customAllow.join(', ') : 'None yet';
+  document.getElementById('rt-preview-disallows').textContent = customDisallow.length ? customDisallow.join(', ') : 'None yet';
+}
+
+function copyRobots(){
+  const output = document.getElementById('rt-output').value;
+  navigator.clipboard.writeText(output).then(() => {
+    document.getElementById('rt-copy-status').textContent = 'robots.txt copied to clipboard.';
+  });
+}
+
+function loadRobotsExample(){
+  document.getElementById('rt-site').value = 'https://shop.example.com';
+  document.getElementById('rt-sitemap').value = 'https://shop.example.com/sitemap.xml';
+  document.getElementById('rt-agent').value = '*';
+  document.getElementById('rt-admin').checked = true;
+  document.getElementById('rt-params').checked = true;
+  document.getElementById('rt-ai').checked = true;
+  document.getElementById('rt-custom-allow').value = '/wp-content/uploads/\n/products/';
+  document.getElementById('rt-custom-disallow').value = '/account/\n/compare/\n/wishlist/';
+  buildRobots();
+}
+
+buildRobots();
+</script>
+</body>
+</html>

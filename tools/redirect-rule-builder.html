@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Redirect Rule Builder &mdash; LearnSEO Hub</title>
+<meta name="description" content="Generate 301 redirect rules for Apache, Nginx, or Vercel from a simple old-to-new URL mapping list."/>
+<link rel="canonical" href="https://learnseohub.com/tools/redirect-rule-builder"/>
+<meta property="og:title" content="Redirect Rule Builder &mdash; LearnSEO Hub"/>
+<meta property="og:description" content="Paste old and new URLs to create clean redirect rules for migrations, redesigns, and slug changes."/>
+<meta property="og:type" content="website"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.rr-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:24px}
+.rr-help{font-size:12px;color:var(--t3);line-height:1.6;margin-top:6px}
+.rr-output{min-height:430px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7}
+.rr-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.rr-split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rr-summary{display:grid;gap:10px}
+.rr-summary-card{padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.05)}
+.rr-summary-card strong{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:6px}
+.rr-summary-card span{font-size:13px;color:var(--t1);line-height:1.6}
+.rr-note{padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--accent) 7%,transparent);border:1px solid color-mix(in srgb,var(--accent) 16%,transparent);font-size:13px;color:var(--t2);line-height:1.7}
+@media(max-width:900px){.rr-grid,.rr-split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script src="../js/site.js"></script>
+<div class="main"><div class="wrap">
+<a href="../tools" class="article-back">← All Tools</a>
+<div class="sh"><h2>Redirect Rule Builder</h2><p>Turn URL mappings into copy-ready 301 rules for Apache, Nginx, or Vercel.</p></div>
+
+<div class="rr-grid">
+<div>
+<div class="tool-panel">
+<h3>Migration Inputs</h3>
+<div class="rr-split">
+<div>
+<label for="rr-format">Output format</label>
+<select id="rr-format" onchange="buildRedirects()">
+<option value="apache">Apache (.htaccess)</option>
+<option value="nginx">Nginx</option>
+<option value="vercel">Vercel redirects</option>
+<option value="csv">CSV review list</option>
+</select>
+</div>
+<div>
+<label for="rr-status">Redirect type</label>
+<select id="rr-status" onchange="buildRedirects()">
+<option value="301">301 Permanent</option>
+<option value="302">302 Temporary</option>
+</select>
+</div>
+</div>
+<label for="rr-mappings">Mappings</label>
+<textarea id="rr-mappings" rows="14" oninput="buildRedirects()" placeholder="/old-page,/new-page&#10;https://example.com/blog/post-a,https://example.com/blog/post-b&#10;/category/seo,/guides/seo"></textarea>
+<div class="rr-help">Use one mapping per line in the format `old-url,new-url`. Absolute URLs are allowed and will be normalized into paths where possible.</div>
+<label for="rr-domain">Primary domain for normalization</label>
+<input id="rr-domain" type="url" value="https://learnseohub.com" oninput="buildRedirects()" placeholder="https://example.com"/>
+<div class="rr-actions">
+<button class="btn btn-a btn-sm" onclick="copyRedirects()">Copy output</button>
+<button class="btn btn-outline btn-sm" onclick="loadRedirectExample()">Load migration example</button>
+</div>
+<div id="rr-copy-status" class="rr-help" aria-live="polite"></div>
+</div>
+
+<div class="tool-panel">
+<h3>Generated Rules</h3>
+<textarea id="rr-output" class="rr-output" spellcheck="false"></textarea>
+</div>
+</div>
+
+<div>
+<div class="tool-panel">
+<h3>Rule Summary</h3>
+<div class="rr-summary">
+<div class="rr-summary-card"><strong>Total mappings</strong><span id="rr-total">0 rules detected</span></div>
+<div class="rr-summary-card"><strong>Platform format</strong><span id="rr-platform">Apache (.htaccess)</span></div>
+<div class="rr-summary-card"><strong>Status code</strong><span id="rr-code">301 permanent</span></div>
+<div class="rr-summary-card"><strong>Validation check</strong><span id="rr-validation">Waiting for mappings</span></div>
+<div class="rr-summary-card"><strong>Best use case</strong><span>Use this before changing slugs, merging sections, replacing templates, or moving to a new CMS.</span></div>
+</div>
+</div>
+
+<div class="rr-note">
+<strong style="display:block;color:var(--t1);margin-bottom:6px">Migration tip</strong>
+Keep the old URL list exact. Redirect chains, missing trailing slashes, and inconsistent canonical targets are common reasons migrations lose traffic even when redirects exist.
+</div>
+</div>
+</div>
+</div></div>
+<div id="site-footer"></div>
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+function normalizeUrl(raw, baseDomain){
+  const value = raw.trim();
+  if (!value) return '';
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      const url = new URL(value);
+      const base = new URL(baseDomain);
+      if (url.hostname === base.hostname) {
+        return url.pathname + url.search;
+      }
+      return value;
+    } catch (e) {
+      return value;
+    }
+  }
+  return value.startsWith('/') ? value : '/' + value.replace(/^\/+/, '');
+}
+
+function parseMappings(text, baseDomain){
+  return text.split(/\r?\n/).map(line => line.trim()).filter(Boolean).map(line => {
+    const parts = line.split(',');
+    const from = normalizeUrl(parts[0] || '', baseDomain);
+    const to = normalizeUrl(parts.slice(1).join(',') || '', baseDomain);
+    return { from, to, raw: line };
+  }).filter(item => item.from && item.to);
+}
+
+function buildRedirects(){
+  const format = document.getElementById('rr-format').value;
+  const status = document.getElementById('rr-status').value;
+  const baseDomain = document.getElementById('rr-domain').value.trim() || 'https://example.com';
+  const mappings = parseMappings(document.getElementById('rr-mappings').value, baseDomain);
+  const output = [];
+  let validation = 'Looks clean so far.';
+
+  if (!mappings.length) {
+    document.getElementById('rr-output').value = '';
+    document.getElementById('rr-total').textContent = '0 rules detected';
+    document.getElementById('rr-platform').textContent = document.getElementById('rr-format').selectedOptions[0].textContent;
+    document.getElementById('rr-code').textContent = status === '301' ? '301 permanent' : '302 temporary';
+    document.getElementById('rr-validation').textContent = 'Waiting for mappings';
+    return;
+  }
+
+  const duplicateSources = new Set();
+  const seenSources = new Set();
+  mappings.forEach(item => {
+    if (seenSources.has(item.from)) duplicateSources.add(item.from);
+    seenSources.add(item.from);
+  });
+  if (duplicateSources.size) {
+    validation = 'Duplicate source URLs detected: ' + [...duplicateSources].join(', ');
+  }
+
+  if (format === 'apache') {
+    output.push('# Redirect rules generated with LearnSEO Hub');
+    mappings.forEach(item => {
+      output.push(`Redirect ${status} ${item.from} ${item.to}`);
+    });
+  } else if (format === 'nginx') {
+    output.push('# Redirect rules generated with LearnSEO Hub');
+    mappings.forEach(item => {
+      output.push(`rewrite ^${item.from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$ ${item.to} ${status === '301' ? 'permanent' : 'redirect'};`);
+    });
+  } else if (format === 'vercel') {
+    output.push('{');
+    output.push('  "redirects": [');
+    mappings.forEach((item, index) => {
+      output.push(`    { "source": "${item.from}", "destination": "${item.to}", "permanent": ${status === '301' ? 'true' : 'false'} }${index < mappings.length - 1 ? ',' : ''}`);
+    });
+    output.push('  ]');
+    output.push('}');
+  } else if (format === 'csv') {
+    output.push('source,destination,status');
+    mappings.forEach(item => {
+      output.push(`${item.from},${item.to},${status}`);
+    });
+  }
+
+  document.getElementById('rr-output').value = output.join('\n');
+  document.getElementById('rr-total').textContent = `${mappings.length} rule${mappings.length === 1 ? '' : 's'} detected`;
+  document.getElementById('rr-platform').textContent = document.getElementById('rr-format').selectedOptions[0].textContent;
+  document.getElementById('rr-code').textContent = status === '301' ? '301 permanent' : '302 temporary';
+  document.getElementById('rr-validation').textContent = validation;
+}
+
+function copyRedirects(){
+  navigator.clipboard.writeText(document.getElementById('rr-output').value).then(() => {
+    document.getElementById('rr-copy-status').textContent = 'Redirect rules copied to clipboard.';
+  });
+}
+
+function loadRedirectExample(){
+  document.getElementById('rr-domain').value = 'https://learnseohub.com';
+  document.getElementById('rr-format').value = 'vercel';
+  document.getElementById('rr-status').value = '301';
+  document.getElementById('rr-mappings').value = '/seo-basics,/blog/seo-fundamentals\n/blog/old-geo-guide,/blog/geo-guide\nhttps://learnseohub.com/tools/old-schema,https://learnseohub.com/tools/schema-generator';
+  buildRedirects();
+}
+
+buildRedirects();
+</script>
+</body>
+</html>

@@ -2,15 +2,89 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Interactive SEO Tools — LearnSEO Hub</title>
-<meta name="description" content="Free SEO tools: SERP Previewer, Schema Generator, GEO Score Calculator, Content Workflow, Crawl Checker, and GSC Trend Analyzer."/>
+<title>Interactive SEO Tools &mdash; LearnSEO Hub</title>
+<meta name="description" content="Free SEO tools for SERP previews, schema markup, robots.txt generation, redirect mapping, GEO audits, content workflows, crawl checks, and AI SEO scorecards."/>
 <link rel="canonical" href="https://learnseohub.com/tools"/>
-<meta property="og:title" content="Interactive SEO Tools — LearnSEO Hub"/>
-<meta property="og:description" content="Free SEO tools: SERP Previewer, Schema Generator, GEO Score Calculator, Content Workflow, Crawl Checker, and GSC Trend Analyzer."/>
+<meta property="og:title" content="Interactive SEO Tools &mdash; LearnSEO Hub"/>
+<meta property="og:description" content="Explore free SEO tools for on-page optimization, structured data, redirects, robots.txt setup, AI search readiness, and technical audits."/>
 <meta property="og:type" content="website"/>
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='40' height='40' rx='8' fill='url(%23g)'/%3E%3Ccircle cx='17' cy='17' r='8' stroke='%23fff' stroke-width='2.5' fill='none'/%3E%3Cline x1='23' y1='23' x2='30' y2='30' stroke='%23fff' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M12 20 L15 14 L18 17 L22 11' stroke='%2334d399' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E"/>
 <link rel="stylesheet" href="./css/style.css"/>
+<style>
+.tools-hero{padding:24px 0 12px}
+.tools-kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--glass);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.tools-kicker::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--em);box-shadow:0 0 0 6px rgba(0,184,124,.12)}
+.tools-headline{font-size:clamp(34px,6vw,58px);line-height:1.02;letter-spacing:-.05em;font-weight:900;max-width:860px;margin-bottom:18px;color:var(--t1)}
+.tools-headline span{display:block;color:var(--t3)}
+.tools-intro{max-width:760px;font-size:17px;line-height:1.75;color:var(--t2);margin-bottom:28px}
+.tools-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.tools-meta-card{padding:18px 18px 16px;border-radius:16px;border:1px solid var(--glassBorder);background:var(--glass);backdrop-filter:var(--glassBlur);-webkit-backdrop-filter:var(--glassBlur);box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.tools-meta-num{font-size:26px;font-weight:900;letter-spacing:-.04em;color:var(--t1);margin-bottom:4px}
+.tools-meta-label{font-size:13px;color:var(--t3);line-height:1.5}
+.tools-panels{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.95fr);gap:24px;margin-top:16px}
+.tools-panel-card{padding:24px;border-radius:20px;border:1px solid var(--glassBorder);background:var(--glass);backdrop-filter:var(--glassBlur);-webkit-backdrop-filter:var(--glassBlur);box-shadow:0 10px 32px rgba(0,0,0,.05)}
+.tools-panel-card h3{font-size:20px;font-weight:900;letter-spacing:-.02em;margin-bottom:10px}
+.tools-panel-card p{font-size:14px;color:var(--t2);line-height:1.7}
+.tools-checks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.tools-check{padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid var(--glassBorder);font-size:13px;color:var(--t2);line-height:1.6}
+.tools-check strong{display:block;color:var(--t1);margin-bottom:4px}
+.tools-path{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.tools-path a{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid var(--border);background:var(--inputBg);color:var(--t1);font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}
+.tools-path a:hover{border-color:var(--accent);background:var(--accentG);transform:translateY(-1px)}
+.tools-mini-list{display:grid;gap:12px;margin-top:18px}
+.tools-mini-item{padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.07)}
+.tools-mini-item strong{display:block;color:var(--t1);font-size:13px;margin-bottom:4px}
+.tools-mini-item span{font-size:13px;color:var(--t3);line-height:1.6}
+.tools-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:48px 0 22px}
+.tools-toolbar-copy{font-size:14px;color:var(--t3)}
+.tools-filter-row{display:flex;flex-wrap:wrap;gap:8px}
+.tools-filter{padding:9px 15px;border-radius:999px;border:1px solid var(--border);background:var(--inputBg);color:var(--t2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.tools-filter:hover{border-color:var(--accent);color:var(--t1)}
+.tools-filter.on{background:var(--t1);border-color:var(--t1);color:var(--bg)}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.tool-card{display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:20px;border:1px solid var(--glassBorder);background:var(--glass);backdrop-filter:var(--glassBlur);-webkit-backdrop-filter:var(--glassBlur);text-decoration:none;color:inherit;box-shadow:0 8px 24px rgba(0,0,0,.04);transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,border-color .3s}
+.tool-card:hover{transform:translateY(-6px);border-color:rgba(0,102,255,.35);box-shadow:0 20px 50px rgba(0,102,255,.12),0 8px 20px rgba(0,0,0,.08)}
+.tool-card.is-hidden{display:none}
+.tool-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.tool-card-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 10px 24px rgba(0,0,0,.14)}
+.tool-card-badges{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+.tool-badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid transparent}
+.tool-badge.live{background:rgba(16,185,129,.12);color:#047857;border-color:rgba(16,185,129,.18)}
+.tool-badge.new{background:rgba(14,165,233,.12);color:#0369a1;border-color:rgba(14,165,233,.18)}
+.tool-badge.audit{background:rgba(124,58,237,.12);color:#6d28d9;border-color:rgba(124,58,237,.18)}
+.tool-badge.workflow{background:rgba(217,119,6,.12);color:#b45309;border-color:rgba(217,119,6,.18)}
+.tool-badge.instant{background:rgba(0,102,255,.1);color:var(--accent);border-color:rgba(0,102,255,.16)}
+.tool-card h3{font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--t1)}
+.tool-card p{font-size:14px;color:var(--t2);line-height:1.7}
+.tool-card-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tool-card-meta div{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid var(--glassBorder)}
+.tool-card-meta strong{display:block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.tool-card-meta span{font-size:13px;color:var(--t1);line-height:1.5}
+.tool-features{display:flex;flex-wrap:wrap;gap:8px}
+.tool-feature{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--glassBorder);font-size:12px;font-weight:700;color:var(--t2)}
+.tool-card-cta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:800;color:var(--accent)}
+.tool-card-cta span:last-child{color:var(--t3);font-weight:700}
+.tools-section{margin-top:58px}
+.tools-roadmap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:20px}
+.roadmap-callout{padding:24px;border-radius:20px;border:1px solid color-mix(in srgb,var(--accent) 22%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,transparent),color-mix(in srgb,var(--vi) 6%,transparent))}
+.roadmap-callout h3{font-size:23px;font-weight:900;letter-spacing:-.03em;margin-bottom:10px;color:var(--t1)}
+.roadmap-callout p{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:14px}
+.roadmap-note{padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(0,102,255,.12);font-size:13px;line-height:1.7;color:var(--t2)}
+.roadmap-list{display:grid;gap:12px}
+.roadmap-item{padding:18px;border-radius:18px;border:1px solid var(--glassBorder);background:var(--glass)}
+.roadmap-item strong{display:block;font-size:14px;color:var(--t1);margin-bottom:6px}
+.roadmap-item span{display:block;font-size:13px;color:var(--t3);line-height:1.65}
+.tools-empty{display:none;margin-top:16px;padding:18px 20px;border-radius:16px;border:1px dashed var(--border2);background:rgba(255,255,255,.05);font-size:14px;color:var(--t3)}
+@media(max-width:980px){
+  .tools-panels,.tools-roadmap{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .tools-meta{grid-template-columns:1fr}
+  .tools-checks,.tool-card-meta{grid-template-columns:1fr}
+  .tools-headline span{display:inline}
+}
+</style>
 </head>
 <body>
 <nav class="navbar">
@@ -22,7 +96,7 @@
 <a class="nav-link" href="./downloads">Downloads</a>
 <a class="nav-link" href="./guides">Guides</a>
 <div class="nav-dd">
-<div class="nav-link">Resources ▾</div>
+<div class="nav-link">Resources &#9662;</div>
 <div class="nav-dd-menu">
 <a class="nav-dd-item" href="./glossary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253</svg>SEO Glossary</a>
 <a class="nav-dd-item" href="./prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">M7.9 20A9 9 0 1 0 4 16.1L2 22Z</svg>AI Prompts</a>
@@ -50,63 +124,341 @@
 <a href="./glossary">SEO Glossary</a>
 <a href="./prompts">AI Prompts</a>
 <a href="./compare">Tool Comparison</a>
-<a href="./news">News & Trends</a>
+<a href="./news">News &amp; Trends</a>
 <a href="./career">Career Paths</a>
 <a href="./faq">FAQ</a>
 <div class="mm-group">More</div>
 <a href="./about">About</a>
 </div>
+
 <div class="main"><div class="wrap">
-<div class="sh"><h2>Interactive SEO Tools</h2><p>Free tools you can use right now — no account needed</p></div>
-<div class="tools-strip" style="margin-bottom:32px">
+<section class="tools-hero">
+<div class="tools-kicker">Free browser-based toolkit</div>
+<h1 class="tools-headline">SEO tools you can use in minutes<span>without a signup, demo call, or spreadsheet cleanup first.</span></h1>
+<p class="tools-intro">LearnSEO Hub bundles practical tools for quick checks, markup generation, AI search readiness, and hands-on audits. Pick the tool that matches the job in front of you, then move straight into implementation.</p>
 
-<a class="ts-item" href="./tools/serp-previewer" style="--tc:#0ea5e9;text-decoration:none;color:inherit">
-<div class="ts-icon" style="background:#0ea5e9">🖥️</div>
-<div class="ts-text"><div class="ts-name">SERP Previewer</div><div class="ts-desc">Google search preview</div></div>
-<svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></a>
-
-<a class="ts-item" href="./tools/schema-generator" style="--tc:#7c3aed;text-decoration:none;color:inherit">
-<div class="ts-icon" style="background:#7c3aed">⚡</div>
-<div class="ts-text"><div class="ts-name">Schema Generator</div><div class="ts-desc">JSON-LD markup</div></div>
-<svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></a>
-
-<a class="ts-item" href="./tools/geo-score" style="--tc:#059669;text-decoration:none;color:inherit">
-<div class="ts-icon" style="background:#059669">📊</div>
-<div class="ts-text"><div class="ts-name">GEO Score</div><div class="ts-desc">AI search readiness</div></div>
-<svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></a>
-
-<a class="ts-item" href="./tools/content-workflow" style="--tc:#d97706;text-decoration:none;color:inherit">
-<div class="ts-icon" style="background:#d97706">✍️</div>
-<div class="ts-text"><div class="ts-name">Content Workflow</div><div class="ts-desc">7-step SEO process</div></div>
-<svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></a>
-
-<a class="ts-item" href="./tools/crawl-checker" style="--tc:#ef4444;text-decoration:none;color:inherit">
-<div class="ts-icon" style="background:#ef4444">🤖</div>
-<div class="ts-text"><div class="ts-name">Crawl Checker</div><div class="ts-desc">2MB Googlebot limit</div></div>
-<svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></a>
-
-<a class="ts-item" href="./tools/gsc-analyzer" style="--tc:#a855f7;text-decoration:none;color:inherit">
-<div class="ts-icon" style="background:#a855f7">📈</div>
-<div class="ts-text"><div class="ts-name">GSC Trend Analyzer</div><div class="ts-desc">AI content strategy</div></div>
-<svg class="ts-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="8 6 12 10 8 14"/></svg></a>
-
+<div class="tools-meta">
+<div class="tools-meta-card"><div class="tools-meta-num">8</div><div class="tools-meta-label">Live tools currently available across SERP optimization, schema, robots, redirects, GEO, crawl audits, and scorecards.</div></div>
+<div class="tools-meta-card"><div class="tools-meta-num">0</div><div class="tools-meta-label">Required accounts. Everything on this page runs directly in the browser or starts with one input.</div></div>
+<div class="tools-meta-card"><div class="tools-meta-num">&lt;5 min</div><div class="tools-meta-label">Typical time to get a useful output from your first run, even if you are just testing an idea.</div></div>
 </div>
+
+<div class="tools-panels">
+<div class="tools-panel-card">
+<h3>Start with the problem, not the tool name</h3>
+<p>If you are improving click-through rate, start with SERP Previewer. If you are validating structured data, jump into Schema Generator. If you are planning AI-era content, use GEO Score, the Score Card, or the workflow planner depending on how deep you want the audit to go.</p>
+<div class="tools-checks">
+<div class="tools-check"><strong>For quick wins</strong>Preview snippets, generate markup, or spot crawl bloat before it slows a release.</div>
+<div class="tools-check"><strong>For strategy work</strong>Use GEO and score-based tools to pressure test content before publishing or refreshing pages.</div>
+<div class="tools-check"><strong>For client workflows</strong>Run repeatable audits and export actionable takeaways without rebuilding a template each time.</div>
+<div class="tools-check"><strong>For mixed skill levels</strong>Each tool is simple enough for beginners but specific enough to stay useful for hands-on SEO operators.</div>
+</div>
+<div class="tools-path">
+<a href="./guides">Need tutorials first?</a>
+<a href="./downloads">Want templates too?</a>
+<a href="./compare">Comparing external tools?</a>
+</div>
+</div>
+
+<div class="tools-panel-card">
+<h3>What is included</h3>
+<p>The current library mixes instant generators, audit helpers, and structured workflows so the tools page can support both fast execution and deeper optimization work.</p>
+<div class="tools-mini-list">
+<div class="tools-mini-item"><strong>Instant generators</strong><span>SERP Previewer and Schema Generator help you ship page-level improvements quickly.</span></div>
+<div class="tools-mini-item"><strong>AI search readiness</strong><span>GEO Score and AI SEO Score Card focus on entities, structure, and signal quality for modern search surfaces.</span></div>
+<div class="tools-mini-item"><strong>Technical and process audits</strong><span>Crawl Checker, Robots.txt Builder, and Content Workflow keep technical hygiene and publishing steps consistent.</span></div>
+<div class="tools-mini-item"><strong>Migration support</strong><span>Redirect Rule Builder helps turn messy URL changes into clean rules for Apache, Nginx, or Vercel.</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="tools-section">
+<div class="tools-toolbar">
+<div>
+<div class="sh" style="margin-bottom:8px"><h2>Browse Tools</h2><p>Filter by workflow so visitors can find the right starting point faster.</p></div>
+<div class="tools-toolbar-copy">Each card includes the best-fit use case, output type, and expected complexity.</div>
+</div>
+<div class="tools-filter-row" aria-label="Tool filters">
+<button class="tools-filter on" data-filter="all" type="button">All Tools</button>
+<button class="tools-filter" data-filter="serp-schema" type="button">SERP &amp; Schema</button>
+<button class="tools-filter" data-filter="ai-content" type="button">AI &amp; Content</button>
+<button class="tools-filter" data-filter="technical" type="button">Technical SEO</button>
+<button class="tools-filter" data-filter="audit" type="button">Audits</button>
+</div>
+</div>
+
+<div class="tools-grid" id="toolsGrid">
+<a class="tool-card" href="./tools/serp-previewer" data-category="serp-schema">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#0ea5e9">SERP</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge instant">Quick win</span>
+</div>
+</div>
+<div>
+<h3>SERP Previewer</h3>
+<p>Preview desktop and mobile search snippets so you can tighten titles, URLs, and descriptions before publishing.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>CTR improvements and meta QA</span></div>
+<div><strong>Complexity</strong><span>Beginner-friendly</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">Title length check</span>
+<span class="tool-feature">Meta description preview</span>
+<span class="tool-feature">Desktop + mobile views</span>
+</div>
+<div class="tool-card-cta"><span>Open tool</span><span>Use before publishing</span></div>
+</a>
+
+<a class="tool-card" href="./tools/schema-generator" data-category="serp-schema">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#7c3aed">JSON</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge instant">Markup</span>
+</div>
+</div>
+<div>
+<h3>Schema Generator</h3>
+<p>Create JSON-LD for articles, FAQs, how-tos, products, and local businesses without building each object manually.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>Structured data rollout</span></div>
+<div><strong>Complexity</strong><span>Low to medium</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">Article schema</span>
+<span class="tool-feature">FAQ and HowTo</span>
+<span class="tool-feature">Copy-paste ready JSON-LD</span>
+</div>
+<div class="tool-card-cta"><span>Generate markup</span><span>Ship rich results faster</span></div>
+</a>
+
+<a class="tool-card" href="./tools/geo-score" data-category="ai-content audit">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#059669">GEO</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge audit">AI search</span>
+</div>
+</div>
+<div>
+<h3>GEO Score</h3>
+<p>Measure whether a page is prepared for AI-powered search by checking entities, structure, clarity, and answer readiness.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>AI visibility reviews</span></div>
+<div><strong>Complexity</strong><span>Medium</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">Entity-focused scoring</span>
+<span class="tool-feature">Readiness checklist</span>
+<span class="tool-feature">Modern SEO framing</span>
+</div>
+<div class="tool-card-cta"><span>Run GEO review</span><span>Great for refresh decisions</span></div>
+</a>
+
+<a class="tool-card" href="./tools/content-workflow" data-category="ai-content">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#d97706">FLOW</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge workflow">Workflow</span>
+</div>
+</div>
+<div>
+<h3>Content Workflow</h3>
+<p>Walk through a seven-step SEO publishing process that keeps research, optimization, and AI-era checks in one flow.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>Editorial SOPs and training</span></div>
+<div><strong>Complexity</strong><span>Beginner to intermediate</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">7-step framework</span>
+<span class="tool-feature">Publishing discipline</span>
+<span class="tool-feature">Content optimization path</span>
+</div>
+<div class="tool-card-cta"><span>Open workflow</span><span>Useful for teams and freelancers</span></div>
+</a>
+
+<a class="tool-card" href="./tools/crawl-checker" data-category="technical audit">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#ef4444">2MB</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge audit">Technical</span>
+</div>
+</div>
+<div>
+<h3>Crawl Checker</h3>
+<p>Test whether page HTML risks crossing Google's 2MB crawl limit and identify bloat before it affects indexation signals.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>Large templates and heavy pages</span></div>
+<div><strong>Complexity</strong><span>Intermediate</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">2MB crawl-limit focus</span>
+<span class="tool-feature">Technical cleanup</span>
+<span class="tool-feature">Googlebot-oriented checks</span>
+</div>
+<div class="tool-card-cta"><span>Check page weight</span><span>Helpful before scaling templates</span></div>
+</a>
+
+<a class="tool-card" href="./tools/robots-txt-builder" data-category="technical">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#0f766e">ROBOTS</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge instant">Setup</span>
+</div>
+</div>
+<div>
+<h3>Robots.txt Builder</h3>
+<p>Create a clean robots.txt file with sitemap support, admin blocking, and common crawl directives without writing syntax by hand.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>Launches and technical cleanup</span></div>
+<div><strong>Complexity</strong><span>Beginner to intermediate</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">Sitemap line</span>
+<span class="tool-feature">Allow and disallow rules</span>
+<span class="tool-feature">Copy-ready output</span>
+</div>
+<div class="tool-card-cta"><span>Build robots.txt</span><span>Useful before going live</span></div>
+</a>
+
+<a class="tool-card" href="./tools/redirect-rule-builder" data-category="technical audit">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#1d4ed8">301</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge audit">Migration</span>
+</div>
+</div>
+<div>
+<h3>Redirect Rule Builder</h3>
+<p>Paste old and new URLs, then generate redirect rules for Apache, Nginx, or Vercel in a format your developer can use immediately.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>Site migrations and URL cleanup</span></div>
+<div><strong>Complexity</strong><span>Intermediate</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">301 rule generation</span>
+<span class="tool-feature">Apache, Nginx, Vercel output</span>
+<span class="tool-feature">Path normalization</span>
+</div>
+<div class="tool-card-cta"><span>Generate redirects</span><span>Great for redesigns and CMS moves</span></div>
+</a>
+
+<a class="tool-card" href="./tools/seo-scorecard" data-category="ai-content audit">
+<div class="tool-card-top">
+<div class="tool-card-icon" style="background:#111827">SCORE</div>
+<div class="tool-card-badges">
+<span class="tool-badge live">Live</span>
+<span class="tool-badge new">Featured</span>
+</div>
+</div>
+<div>
+<h3>AI SEO Score Card</h3>
+<p>Generate a richer page-level scorecard with radar-style evaluation, E-E-A-T cues, GEO framing, and export-friendly output.</p>
+</div>
+<div class="tool-card-meta">
+<div><strong>Best for</strong><span>Deeper content audits</span></div>
+<div><strong>Complexity</strong><span>Advanced but guided</span></div>
+</div>
+<div class="tool-features">
+<span class="tool-feature">Visual score card</span>
+<span class="tool-feature">E-E-A-T review</span>
+<span class="tool-feature">PDF export support</span>
+</div>
+<div class="tool-card-cta"><span>Launch score card</span><span>Best for stakeholder-ready outputs</span></div>
+</a>
+</div>
+
+<div class="tools-empty" id="toolsEmpty">No tools match this filter yet. Try another category to see the full library.</div>
+</section>
+
+<section class="tools-section">
+<div class="sh"><h2>How To Choose Fast</h2><p>Three simple paths for first-time visitors landing on the tools page.</p></div>
+<div class="start-row">
+<a class="start-step" href="./tools/serp-previewer" style="text-decoration:none;color:inherit">
+<div class="start-num">1</div>
+<div><div class="start-label">Fix a snippet</div><div class="start-sub">Start with SERP Previewer when you need the fastest visible on-page improvement.</div></div>
+</a>
+<a class="start-step" href="./tools/schema-generator" style="text-decoration:none;color:inherit">
+<div class="start-num">2</div>
+<div><div class="start-label">Add structure</div><div class="start-sub">Use Schema Generator when a page needs machine-readable context for search engines.</div></div>
+</a>
+<a class="start-step" href="./tools/redirect-rule-builder" style="text-decoration:none;color:inherit">
+<div class="start-num">3</div>
+<div><div class="start-label">Protect migrations</div><div class="start-sub">Generate redirect rules before changing slugs, moving sections, or rebuilding templates.</div></div>
+</a>
+</div>
+</section>
+
+<section class="tools-section">
+<div class="sh"><h2>Useful Add-Ons</h2><p>Extra utilities that help with launch checklists, migrations, and technical hygiene.</p></div>
+<div class="tools-roadmap">
+<div class="roadmap-callout">
+<h3>Build a toolkit that supports real SEO work, not just isolated checks</h3>
+<p>The strongest tools page is not only about audits. It should also help with the tasks people run into between audits: setting crawl rules, planning migrations, tightening metadata, and packaging outputs into something usable.</p>
+<div class="roadmap-note">This version expands the page with technical setup utilities so visitors can move from diagnosis into implementation without leaving the site.</div>
+</div>
+<div class="roadmap-list">
+<div class="roadmap-item"><strong>Launch-ready basics</strong><span>Robots.txt Builder covers one of the most common technical files teams forget to validate before launch.</span></div>
+<div class="roadmap-item"><strong>Migration protection</strong><span>Redirect Rule Builder reduces the risk of broken paths, traffic loss, and developer back-and-forth during URL changes.</span></div>
+<div class="roadmap-item"><strong>Better discovery</strong><span>Next iteration can pair each tool with one guide or download so utility traffic has a clear second step.</span></div>
+</div>
+</div>
+</section>
 </div></div>
+
 <footer class="ft">
 <div class="wrap">
 <div class="ft-grid">
 <div class="ft-col"><h4>Learn</h4><a href="./blog">Blog</a><a href="./guides">Guides</a><a href="./downloads">Downloads</a><a href="./glossary">Glossary</a></div>
-<div class="ft-col"><h4>Tools</h4><a href="./tools/serp-previewer">SERP Previewer</a><a href="./tools/schema-generator">Schema Generator</a><a href="./tools/geo-score">GEO Score</a><a href="./tools/content-workflow">Content Workflow</a><a href="./tools/crawl-checker">Crawl Checker</a><a href="./tools/gsc-analyzer">GSC Trend Analyzer</a></div>
+<div class="ft-col"><h4>Tools</h4><a href="./tools/serp-previewer">SERP Previewer</a><a href="./tools/schema-generator">Schema Generator</a><a href="./tools/geo-score">GEO Score</a><a href="./tools/content-workflow">Content Workflow</a><a href="./tools/crawl-checker">Crawl Checker</a><a href="./tools/robots-txt-builder">Robots.txt Builder</a><a href="./tools/redirect-rule-builder">Redirect Rule Builder</a><a href="./tools/seo-scorecard">AI SEO Score Card</a></div>
 <div class="ft-col"><h4>Resources</h4><a href="./downloads">Downloads</a><a href="./prompts">AI Prompts</a><a href="./compare">Tool Comparison</a><a href="./about">About</a></div>
 </div>
-<div class="ft-bottom"><span>© 2026 LearnSEO Hub. Free & open-source.</span><span style="font-size:11px;color:var(--t3)">Built for the AI Search Era</span></div>
+<div class="ft-bottom"><span>&copy; 2026 LearnSEO Hub. Free &amp; open-source.</span><span style="font-size:11px;color:var(--t3)">Built for the AI Search Era</span></div>
 </div>
 </footer>
-<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
 <script>
 function toggleTheme(){const h=document.documentElement;const t=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',t);localStorage.setItem('lsh-theme',t)}
 (function(){const t=localStorage.getItem('lsh-theme');if(t)document.documentElement.setAttribute('data-theme',t)})();
 window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
+
+const filterButtons=document.querySelectorAll('.tools-filter');
+const toolCards=[...document.querySelectorAll('.tool-card')];
+const emptyState=document.getElementById('toolsEmpty');
+
+function applyFilter(filter){
+  let visibleCount=0;
+  toolCards.forEach(card=>{
+    const categories=(card.dataset.category||'').split(' ');
+    const show=filter==='all'||categories.includes(filter);
+    card.classList.toggle('is-hidden',!show);
+    if(show) visibleCount++;
+  });
+  emptyState.style.display=visibleCount===0?'block':'none';
+}
+
+filterButtons.forEach(button=>{
+  button.addEventListener('click',()=>{
+    filterButtons.forEach(btn=>btn.classList.remove('on'));
+    button.classList.add('on');
+    applyFilter(button.dataset.filter);
+  });
+});
 </script>
 </body>
 </html>

@@ -526,6 +526,9 @@
         <a href="${root('tools/geo-score')}">GEO Score</a>
         <a href="${root('tools/content-workflow')}">Content Workflow</a>
         <a href="${root('tools/crawl-checker')}">Crawl Checker</a>
+        <a href="${root('tools/robots-txt-builder')}">Robots.txt Builder</a>
+        <a href="${root('tools/redirect-rule-builder')}">Redirect Rule Builder</a>
+        <a href="${root('tools/seo-scorecard')}">AI SEO Score Card</a>
       </div>
       <div class="ft-col">
         <h4>Resources</h4>
