@@ -1,5 +1,9 @@
 Sitemap: https://www.learnseohub.com/sitemap.xml
 
+User-agent: *
+Disallow: /*?prompt=
+Allow: /
+
 User-agent: Googlebot
 Disallow: /admin
 

@@ -514,6 +514,14 @@ Review the following article draft. Provide a table identifying the top 3 direct
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to Top">↑</button>
 
 <script>
+const homepageUrl = new URL(window.location.href);
+if (homepageUrl.searchParams.has('prompt')) {
+    homepageUrl.searchParams.delete('prompt');
+    const cleanSearch = homepageUrl.searchParams.toString();
+    const cleanUrl = `${homepageUrl.pathname}${cleanSearch ? `?${cleanSearch}` : ''}${homepageUrl.hash}`;
+    window.history.replaceState({}, '', cleanUrl);
+}
+
 function copyPrompt() {
     const textToCopy = document.getElementById('promptText').innerText;
     const btn = document.getElementById('copyBtn');
